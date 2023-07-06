@@ -35,11 +35,16 @@ _Asegúrate de tener instalado lo siguiente:_
 ### Instalación
 
 1. Clona este repositorio en tu máquina local.
-2. En la raíz del proyecto, ejecuta el siguiente comando para instalar las dependencias:
+
+   By HTTPS:
+   
+   `git clone https://github.com/<username>/app-server-express-v1.git`
+   
+3. En la raíz del proyecto, ejecuta el siguiente comando para instalar las dependencias:
 
    `npm install`
 
-3. Crea un archivo .env en la raíz del proyecto y configura las siguientes variables de entorno:
+4. Crea un archivo .env en la raíz del proyecto y configura las siguientes variables de entorno:
    
     * NODE_ENV <environment>
     * PERSISTENCE <type_of_persistence>
