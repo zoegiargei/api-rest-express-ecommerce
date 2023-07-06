@@ -2,18 +2,20 @@ import errors from '../../lib/customErrors.js'
 import userServices from '../../services/user.services.js'
 import Document from '../../models/Document.js'
 import encryptedJWT from '../../utils/jwt/encrypted.jwt.js'
+import emailService from '../../services/email.services.js'
+import templatesForEmails from '../../utils/templates/templates.send.email.js'
 
 const DocumentTypes = {
-    IDENTIFICACION: 'identificacion',
-    COMP_DOMICILIO: 'compDomicilio',
-    COMP_ESTADO_CUENTA: 'compEstadoCuenta'
+    IDENTIFICATION: 'identification',
+    PROOF_OF_ADDRESS: 'proofAddress',
+    STATEMENT_OF_ACCOUNT: 'statementAccount'
 }
 
 export async function handlerPostUser (req, res, next) {
     try {
         const dataUser = req.body
-        const response = await userServices.saveUser(dataUser)
-        res.status(201).json({ response })
+        const result = await userServices.saveUser(dataUser)
+        res.sendCreated({ message: 'User created successfully', object: result })
     } catch (error) {
         next(error)
     }
@@ -26,7 +28,7 @@ export async function handlerRegister (req, res, next) {
             signed: true,
             httpOnly: true
         })
-        res.status(201).json({ message: 'Successfully registration', object: req.user })
+        res.sendCreated({ message: 'successful user registration', object: req.user })
     } catch (error) {
         next(error)
     }
@@ -41,16 +43,21 @@ export async function handlerPostDocuments (req, res, next) {
 
         docNames.forEach(fieldName => {
             const newDocument = new Document(fieldName, files[fieldName][0].filename, uid)
-            const userDocuments = user.documents
+            const userDocuments = user.documents || []
             const existingIndex = userDocuments.findIndex(doc => doc.typeDoc === newDocument.typeDoc)
             if (existingIndex >= 0) {
                 user.documents.splice(existingIndex, 1, newDocument)
             } else {
-                user.documents.push(newDocument)
+                if (userDocuments.length) {
+                    user.documents.push(newDocument)
+                } else {
+                    user.documents = []
+                    user.documents.push(newDocument)
+                }
             }
         })
         userServices.updateUser(uid, user)
-        res.json({ user })
+        res.sendCreated({ message: 'Upload successful', object: user })
     } catch (error) {
         next(error)
     }
@@ -76,10 +83,10 @@ export async function handlerComePremium (req, res, next) {
                 throw errors.invalid_permission.withDetails('The user must have all required documents')
             }
         } else {
-            res.json({ message: 'You are Premium user' })
+            res.sendConflict({ message: 'The user is already Premium', object: user })
         }
 
-        res.json({ canBePremium, user })
+        res.sendOk({ message: 'The user has been upgraded to Premium', object: { user, canBePremium } })
     } catch (error) {
         next(error)
     }
@@ -100,7 +107,16 @@ export async function handlerPostProfileImg (req, res, next) {
             }
         }
         userServices.updateUser(uid, user)
-        res.json({ image, user })
+        res.sendCreated({ message: 'Upload successful', object: user })
+    } catch (error) {
+        next(error)
+    }
+}
+
+export async function handlerGetUsers (req, res, next) {
+    try {
+        const result = await userServices.getUsersByProjection({}, { _id: 1, username: 1, email: 1, role: 1, lastConnection: 1 })
+        res.sendOk({ message: 'Users found successfully', object: result })
     } catch (error) {
         next(error)
     }
@@ -109,8 +125,8 @@ export async function handlerPostProfileImg (req, res, next) {
 export async function handlerGetUser (req, res, next) {
     try {
         const uid = String(req.params.uid)
-        const response = await userServices.getUserById(uid)
-        res.json({ response })
+        const result = await userServices.getUserById(uid)
+        res.sendOk({ message: 'User found successfully', object: result })
     } catch (error) {
         next(error)
     }
@@ -119,8 +135,8 @@ export async function handlerGetUser (req, res, next) {
 export async function handlerPutLastConnection (req, res, next) {
     try {
         const uid = String(req.params.uid)
-        const response = await userServices.updateLastConnection(uid)
-        res.json({ response })
+        const result = await userServices.updateLastConnection(uid)
+        res.sendNoContent({ message: 'Last connection data of the user was updated', object: result })
     } catch (error) {
         next(error)
     }
@@ -130,8 +146,33 @@ export async function handlerPutPassword (req, res, next) {
     try {
         const uid = String(req.params.uid)
         const { currentPassword, newPassword } = req.body
-        const response = await userServices.updatePassword(uid, currentPassword, newPassword)
-        res.json({ response })
+        const result = await userServices.updatePassword(uid, currentPassword, newPassword)
+        res.sendNoContent({ message: "The user's password was successfully updated", object: result })
+    } catch (error) {
+        next(error)
+    }
+}
+
+export async function handlerDeleteUsers (req, res, next) {
+    try {
+        const date = new Date() // Obtiene la fecha actual
+        date.setDate(date.getDate() - 2) // Resta dos días a la fecha actual
+        // const dateQuery = date.toLocaleDateString()
+        const dateQuery = '9/7/2023' // proof dateQuery
+
+        const expiredUsers = await userServices.getUsersByProjection({ 'lastConnection.date': { $lt: dateQuery } }, { email: 1, lastConnection: 1 })
+        const emails = expiredUsers.map(user => user.email)
+
+        let result
+        if (emails.length > 0) {
+            emails.forEach(async em => {
+                const message = templatesForEmails.templateSendExpiredAccount()
+                const hardcodedEmail = 'zoegiargei00@gmail.com' // Must be email of user
+                await emailService.send(hardcodedEmail, message, 'Your account was expired')
+                result = await userServices.deleteUsersByQuery({ email: em })
+            })
+        }
+        res.json({ expiredUsers, result })
     } catch (error) {
         next(error)
     }

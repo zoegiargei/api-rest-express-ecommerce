@@ -1,4 +1,5 @@
 import { Router } from 'express'
+import { handlerPostProducts } from '../controllers/api/products.controllers.js'
 import errors from '../lib/customErrors.js'
 import { validateGetById } from '../middlewares/validators/id.validator.js'
 import ConfigMulter from '../utils/multer/config.files.multer.js'
@@ -18,15 +19,7 @@ productsRouter.param('pid', (req, res, next, param) => {
     }
 })
 
-productsRouter.post('/', upload.single('productImage'), (req, res, next) => {
-    try {
-        const prodImage = req.file
-        console.log(prodImage)
-        res.json({ prodImage })
-    } catch (error) {
-        next(error)
-    }
-})
+productsRouter.post('/product', upload.any('productImages'), handlerPostProducts)
 productsRouter.get('/:pid')
 productsRouter.put('/:pid')
 productsRouter.delete('/:pid')

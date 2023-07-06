@@ -29,7 +29,7 @@ const usersSchema = new mongoose.Schema({
         ]
     },
     documents: { type: Array, required: true },
-    lastConnection: { type: String, required: true }
+    lastConnection: { type: Object, required: true }
 }, { versionKey: false })
 
 usersSchema.pre(/^find/, function (next) {

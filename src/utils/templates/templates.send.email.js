@@ -91,6 +91,27 @@ class TemplatesForEmails {
             </html>
         `
     }
+
+    templateSendExpiredAccount () {
+        return `
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <title>Account Expiration Notification</title>
+            </head>
+            <body>
+                <div style="background-color: #f5f5f5; padding: 20px; font-family: Arial, sans-serif;">
+                    <div style="background-color: #ffffff; padding: 20px;">
+                        <h2 style="color: #333333;">Account Expiration Notification</h2>
+                        <p>We regret to inform you that your account has expired and has been deleted from our database.</p>
+                        <p>If you believe this action was a mistake, please contact our support team for further assistance.</p>
+                        <p>Thank you for being a part of our community.</p>
+                    </div>
+                </div>
+            </body>
+            </html>
+        `
+    }
 }
 
 const templatesForEmails = new TemplatesForEmails()

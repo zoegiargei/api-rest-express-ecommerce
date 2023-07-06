@@ -28,7 +28,7 @@ export class User {
         this.role = role
         this.orders = []
         this.documents = []
-        this.lastConnection = `${new Date().toLocaleDateString()} | ${new Date().toLocaleTimeString()}`
+        this.lastConnection = { date: new Date().toLocaleDateString(), hour: new Date().toLocaleTimeString() }
     }
 
     get _id () { return this.#_id }

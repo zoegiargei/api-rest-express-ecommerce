@@ -25,9 +25,7 @@ class DAODb {
     }
 
     async findElementByProjection (p1, p2) {
-        const param1 = p1 ? p1 : {}
-        const param2 = p2 ? p2 : {}
-        return await this.db.find(param1, param2)
+        return await this.db.find(p1, p2)
     }
 
     async replaceElement (id, newValues) {
@@ -44,6 +42,10 @@ class DAODb {
 
     async deleteElement (id) {
         return await this.db.deleteOne({ _id: id })
+    }
+
+    async deleteManyElemByQuery (query) {
+        return await this.db.deleteMany(query)
     }
 
     async reset () {

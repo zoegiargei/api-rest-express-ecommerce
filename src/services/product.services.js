@@ -11,7 +11,7 @@ class ProductServices {
     async loadProduct (data, attach) {
         const codeProd = await this.productsDao.findElementByProjection({ code: Number(data.code) }, { code: 1 })
 
-        if (codeProd.length > 0) throw errors.invalid_input.withDetails('CODE NOT EXISTING')
+        if (codeProd.length > 0) throw errors.invalid_input.withDetails('CODE already exist')
         const prod = { ...data, thumbnail: attach }
 
         const newProd = new Product(prod)

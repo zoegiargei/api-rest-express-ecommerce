@@ -35,7 +35,6 @@ app.get('*', (req, res) => {
 
 if (config.PERSISTENCE === 'MONGO') {
     const mongoose = await import('mongoose')
-    console.log(MONGO_CNX_STR)
     await mongoose.connect(MONGO_CNX_STR, { useNewUrlParser: true, useUnifiedTopology: true })
 }
 

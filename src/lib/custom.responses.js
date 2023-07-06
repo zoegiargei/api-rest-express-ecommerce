@@ -15,6 +15,10 @@ export const customResponses = (req, res, next) => {
         res.status(204).json({ status: 'Success', message: result.message, object: result.object })
     }
 
+    res.sendConflict = result => {
+        res.status(409).json({ status: 'Conflict', message: result.message, object: result.object })
+    }
+
     res.sendClientError = error => {
         res.status(error.status).json({ status: 'error', message: error.message, details: error.details || null })
     }

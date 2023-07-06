@@ -42,7 +42,8 @@ class UserServices {
         return await this.userDao.findElements()
     }
 
-    async getAField (param1, param2) {
+    async getUsersByProjection (param1, param2) {
+        if (typeof param1 !== 'object' || typeof param2 !== 'object') throw errors.invalid_input_format.withDetails('The data type of the projection search parameters must be "Object"')
         return await this.userDao.findElementByProjection(param1, param2)
     }
 
@@ -67,7 +68,7 @@ class UserServices {
     }
 
     async updateLastConnection (uid) {
-        const newTime = { lastConnection: `${new Date().toLocaleDateString()} | ${new Date().toLocaleTimeString()}` }
+        const newTime = { lastConnection: { date: new Date().toLocaleDateString(), hour: new Date().toLocaleTimeString() } }
         const response = this.userDao.updateElement(uid, newTime)
         return response
     }
@@ -77,6 +78,11 @@ class UserServices {
         const cid = user.cart._id
         await cartServices.deleteCart(cid)
         return await this.userDao.deleteElement(id)
+    }
+
+    async deleteUsersByQuery (query) {
+        if (typeof query !== 'object') throw errors.invalid_input_format.withDetails('The data type of the method parameter must be "Object"')
+        return await this.userDao.deleteManyElemByQuery(query)
     }
 }
 let userServices

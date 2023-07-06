@@ -3,7 +3,7 @@ import errors from '../lib/customErrors.js'
 import { validateSignUp } from '../middlewares/validators/user.validators.js'
 import { validateGetById } from '../middlewares/validators/id.validator.js'
 import ConfigMulter from '../utils/multer/config.files.multer.js'
-import { handlerComePremium, handlerGetUser, handlerPostDocuments, handlerPostProfileImg, handlerPostUser, handlerPutLastConnection, handlerPutPassword, handlerRegister } from '../controllers/api/user.controllers.js'
+import { handlerComePremium, handlerDeleteUsers, handlerGetUser, handlerGetUsers, handlerPostDocuments, handlerPostProfileImg, handlerPostUser, handlerPutLastConnection, handlerPutPassword, handlerRegister } from '../controllers/api/user.controllers.js'
 import { registerAuthentication } from '../middlewares/passport/passport.strategies.js'
 
 const userRouter = Router()
@@ -25,7 +25,9 @@ userRouter.post('/', validateSignUp, handlerPostUser)
 
 userRouter.post('/register', validateSignUp, registerAuthentication, handlerRegister)
 
-userRouter.post('/:uid/documents', upload.fields([{ name: 'identificacion', maxCount: 1 }, { name: 'compDomicilio', maxCount: 1 }, { name: 'compEstadoCuenta', maxCount: 1 }]), handlerPostDocuments)
+userRouter.post('/:uid/documents', upload.fields([{ name: 'identification', maxCount: 1 }, { name: 'compDomicilio', maxCount: 1 }, { name: 'compEstadoCuenta', maxCount: 1 }]), handlerPostDocuments)
+
+userRouter.get('/', handlerGetUsers)
 
 userRouter.get('/premium/:uid', handlerComePremium)
 
@@ -33,8 +35,10 @@ userRouter.post('/:uid/profileImage', upload.single('profileImage'), handlerPost
 
 userRouter.get('/:uid', handlerGetUser)
 
-userRouter.put('/:uid', handlerPutLastConnection)
+userRouter.put('/lastConnection/:uid/', handlerPutLastConnection)
 
 userRouter.put('updatePassword/:uid', handlerPutPassword)
+
+userRouter.delete('/', handlerDeleteUsers)
 
 export default userRouter
