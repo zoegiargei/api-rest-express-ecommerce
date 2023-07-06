@@ -1,5 +1,5 @@
 # app-server-express-v1
-Final proyect of Coderhouse
+_Final proyect of Coderhouse_
 
 # Servidor API REST - Express.js Node.js
 
@@ -27,7 +27,7 @@ _Este es un servidor API REST basado en el framework Express.js, desarrollado co
 
 ### Requisitos previos
 
-Asegúrate de tener instalado lo siguiente:
+_Asegúrate de tener instalado lo siguiente:_
 
 - Node.js (versión 20.2.0)
 - MongoDB (versión 5.6.0)
@@ -37,7 +37,7 @@ Asegúrate de tener instalado lo siguiente:
 1. Clona este repositorio en tu máquina local.
 2. En la raíz del proyecto, ejecuta el siguiente comando para instalar las dependencias:
 
-   npm install
+   `npm install`
 
 3. Crea un archivo .env en la raíz del proyecto y configura las siguientes variables de entorno:
    
@@ -57,9 +57,10 @@ Asegúrate de tener instalado lo siguiente:
   
 5. Inicia el servidor ejecutando el siguiente comando:
 
-   npm start
+   `npm start`
 
-   Esto iniciará el servidor en modo de producción.
+   _Esto iniciará el servidor en modo de producción._
 
 ### Uso
-_Una vez que el servidor esté en funcionamiento, podrás acceder a los diferentes endpoints de la API para gestionar Usuarios, Productos y el Carrito de compra. Puedes consultar la documentación de la API para obtener más detalles sobre cómo interactuar con los diferentes endpoints.
+
+_Una vez que el servidor esté en funcionamiento, podrás acceder a los diferentes endpoints de la API para gestionar Usuarios, Productos y el Carrito de compra. Puedes consultar la documentación de la API para obtener más detalles sobre cómo interactuar con los diferentes endpoints._
