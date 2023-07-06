@@ -3,8 +3,6 @@ Final proyect of Coderhouse
 
 # Servidor API REST - Express.js Node.js
 
-_Este es un servidor API REST basado en el framework Express.js, desarrollado con JavaScript en el entorno de desarrollo Node.js. El servidor sigue una arquitectura por capas y utiliza MongoDB como base de datos, utilizando el driver Mongoose para interactuar con la misma. 
-
 # Indice
 
 - [Descripción](#descripción)
@@ -12,6 +10,9 @@ _Este es un servidor API REST basado en el framework Express.js, desarrollado co
 - [Requisitos previos](#requisitos-previos)
 - [Instalación](#instalación)
 - [Uso](#uso)
+
+### Descripción
+_Este es un servidor API REST basado en el framework Express.js, desarrollado con JavaScript en el entorno de desarrollo Node.js. El servidor sigue una arquitectura por capas y utiliza MongoDB como base de datos, utilizando el driver Mongoose para interactuar con la misma._
 
 ### Características principales
 
