@@ -1,22 +1,41 @@
+import config from '../../config.js'
+import productDaoMemory from '../DAO/memory/product.dao.memory.js'
 import productsDaoMongo from '../DAO/mongo/products.dao.mongo.js'
 import productModel from '../DAO/mongoSchemas/Product.model.js'
 import errors from '../lib/customErrors.js'
 import { Product } from '../models/Product/Product.js'
+import templatesForEmails from '../utils/templates/templates.send.email.js'
+import emailService from './email.services.js'
 
 class ProductServices {
     constructor (productsDao) {
         this.productsDao = productsDao
     }
 
-    async loadProduct (data, attach) {
-        const codeProd = await this.productsDao.findElementByProjection({ code: Number(data.code) }, { code: 1 })
-
+    async loadProduct (data, attach, owner = null) {
+        const codeProd = await this.productsDao.findElementByProjection({ code: data.code }, { code: 1 })
         if (codeProd.length > 0) throw errors.invalid_input.withDetails('CODE already exist')
-        const prod = { ...data, thumbnail: attach }
+
+        const files = []
+        attach.forEach(file => {
+            files.push(file.filename)
+        })
+        console.log(files)
+
+        const prod = { ...data, thumbnail: files }
+        if (owner !== null) {
+            prod.owner = owner
+        } else {
+            prod.owner = config.ADMIN_EMAIL
+        }
 
         const newProd = new Product(prod)
-        await this.productsDao.creaeteElement(newProd)
-        return newProd
+        const prodAsDto = newProd.toDto()
+        if (prodAsDto._id === null) {
+            delete prodAsDto._id
+        }
+        const result = await this.productsDao.createElement(prodAsDto)
+        return result
     }
 
     async getProducts () {
@@ -45,6 +64,11 @@ class ProductServices {
     }
 
     async deleteProduct (pid) {
+        const product = await this.productsDao.findElementById(pid)
+        // const owner = product.owner
+        const hardcodedEmail = 'zoegiargei00@gmail.com' // Must be 'owner'
+        const message = templatesForEmails.templateSendProductRemoved(product.title, product._id)
+        emailService.send(hardcodedEmail, message, 'Product Deletion Notification')
         return await this.productsDao.deleteElement(pid)
     }
 
@@ -53,5 +77,11 @@ class ProductServices {
         return products
     }
 }
-const productServices = new ProductServices(productsDaoMongo)
+
+let productServices
+if (config.NODE_ENV === 'dev') {
+    productServices = new ProductServices(productDaoMemory)
+} else {
+    productServices = new ProductServices(productsDaoMongo)
+}
 export default productServices

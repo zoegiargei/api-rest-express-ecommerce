@@ -112,6 +112,30 @@ class TemplatesForEmails {
             </html>
         `
     }
+
+    templateSendProductRemoved (productName, productId) {
+        return `
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <title>Product Deletion Notification</title>
+            </head>
+            <body>
+                <div style="background-color: #f5f5f5; padding: 20px; font-family: Arial, sans-serif;">
+                    <div style="background-color: #ffffff; padding: 20px;">
+                        <h2 style="color: #333333;">Product Deletion Notification</h2>
+                        <p>Hello,</p>
+                        <p>We regret to inform you that your product "${productName}", id: ${productId} has been deleted from our database.</p>
+                        <p>If you have any questions or need further assistance, please feel free to contact our support team.</p>
+                        <p>Thank you for your understanding.</p>
+                        <p>Best regards,</p>
+                        <p>The Support Team</p>
+                    </div>
+                </div>
+            </body>
+            </html>
+        `
+    }
 }
 
 const templatesForEmails = new TemplatesForEmails()

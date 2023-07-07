@@ -3,24 +3,20 @@ import { validateResult } from './validation.result.js'
 
 const check = buildCheckFunction(['body', 'query', 'params'])
 
-const validateGeneralSearch = [
-    check('limit').escape(),
+const validateProductFields = [
+    check('title').exists().notEmpty().isString().escape(),
+    check('description').exists().notEmpty().isString().escape(),
+    check('code').exists().notEmpty().trim().escape(),
+    check('price').exists().notEmpty().trim().escape(),
+    check('status').exists().notEmpty().trim().escape(),
+    check('stock').exists().notEmpty().trim().escape().isLength({ min: 1, max: 3 }),
+    check('category').exists().notEmpty().escape(),
+
     (req, res, next) => {
-        validateResult(req, res, next, 400)
+        validateResult(req, res, next)
     }
 ]
 
-const validateQueryParams = (req) => {
-    // eslint-disable-next-line no-unused-expressions
-    [
-        check(req.query).exists().not().isEmpty().escape(),
-        (req, res, next) => {
-            validateResult(req, res, next, 400)
-        }
-    ]
-}
-
 export {
-  validateGeneralSearch,
-  validateQueryParams
+    validateProductFields
 }

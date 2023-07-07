@@ -25,7 +25,7 @@ userRouter.post('/', validateSignUp, handlerPostUser)
 
 userRouter.post('/register', validateSignUp, registerAuthentication, handlerRegister)
 
-userRouter.post('/:uid/documents', upload.fields([{ name: 'identification', maxCount: 1 }, { name: 'compDomicilio', maxCount: 1 }, { name: 'compEstadoCuenta', maxCount: 1 }]), handlerPostDocuments)
+userRouter.post('/:uid/documents', upload.fields([{ name: 'identification', maxCount: 1 }, { name: 'proofAddress', maxCount: 1 }, { name: 'statementAccount', maxCount: 1 }]), handlerPostDocuments)
 
 userRouter.get('/', handlerGetUsers)
 
@@ -37,7 +37,7 @@ userRouter.get('/:uid', handlerGetUser)
 
 userRouter.put('/lastConnection/:uid/', handlerPutLastConnection)
 
-userRouter.put('updatePassword/:uid', handlerPutPassword)
+userRouter.put('/updatePassword/:uid', handlerPutPassword)
 
 userRouter.delete('/', handlerDeleteUsers)
 

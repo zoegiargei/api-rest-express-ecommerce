@@ -2,7 +2,7 @@ import errors from '../../lib/customErrors.js'
 
 class Cart {
     #userEmail
-    #regexEmail = /^([a-zA-Z0-9._-]+)@(gmail|hotmail)\.com$/
+    #regexEmail = /^([a-zA-Z0-9._-]+)@(gmail|hotmail|coder)\.com$/
 
     constructor (userEmail) {
         this.productsCart = []

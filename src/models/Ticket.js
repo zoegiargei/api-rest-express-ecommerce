@@ -3,7 +3,7 @@ import errors from '../lib/customErrors.js'
 
 class Ticket {
     #purcharser
-    #regexEmail = /^([a-zA-Z0-9._-]+)@(gmail|hotmail)\.com$/
+    #regexEmail = /^([a-zA-Z0-9._-]+)@(gmail|hotmail|coder)\.com$/
 
     constructor (amount, purchaser) {
         this.code = this.generateCode()

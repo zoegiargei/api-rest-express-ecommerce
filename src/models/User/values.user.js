@@ -2,7 +2,7 @@ import errors from '../../lib/customErrors.js'
 import encryptedPass from '../../utils/password/encrypted.pass.js'
 
 export class UserEmail {
-    #regexEmail = /^([a-zA-Z0-9._-]+)@(gmail|hotmail)\.com$/
+    #regexEmail = /^([a-zA-Z0-9._-]+)@(gmail|hotmail|coder)\.com$/
     constructor (value) {
         this.value = this.toLowerCase(value)
 

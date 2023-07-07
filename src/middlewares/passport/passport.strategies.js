@@ -16,12 +16,12 @@ import errors from '../../lib/customErrors.js'
 import { JWT_PRIVATE_KEY } from '../../configs/auth.config.js'
 
 passport.use('register', new LocalStrategy({ passReqToCallback: true, usernameField: 'email' }, async (req, _u, _p, done) => {
-    const { first_name, last_name, email, age, password } = req.body
+    const { firstName, lastName, email, age, password, role } = req.body
 
     const exist = await userServices.getUserByQuery({ email: email })
     if (exist.length > 0) throw errors.invalid_input.withDetails('Email already exist')
 
-    const user = await userServices.saveUser({ first_name, last_name, email, age, password })
+    const user = await userServices.saveUser({ firstName, lastName, email, age, password, role })
     done(null, user)
 }))
 

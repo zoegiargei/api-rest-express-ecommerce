@@ -8,10 +8,12 @@ import cors from 'cors'
 import { customResponses } from './lib/custom.responses.js'
 import config from '../config.js'
 import { MONGO_CNX_STR } from './configs/mongo.config.js'
+import { logger } from './middlewares/logger/logger.js'
 
 const app = express()
 const PORT = 8080
 
+app.use(logger)
 app.use(customResponses)
 app.use(cookieParser(SECRET_WORD))
 app.use(passportInitialize)

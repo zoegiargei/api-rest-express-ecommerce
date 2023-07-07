@@ -26,20 +26,6 @@ const validateSignUp = [
             if (user.length > 0) throw new Error('Email already exist')
             return true
         }
-        /*         if (config.NODE_ENV === 'dev') {
-            const users = await userServices.getUsers()
-            let boolean
-            if (users.find(u => u.email === value)) {
-                boolean = false
-            } else {
-                boolean = true
-            }
-            return boolean
-        } else {
-            const user = await userServices.getUserByQuery({ email: value })
-            if (user.length > 0) throw errors.invalid_input.withDetails('Email already exist')
-            return true
-        } */
     })
     .trim()
     .escape(),

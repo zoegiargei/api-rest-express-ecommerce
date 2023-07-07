@@ -43,9 +43,9 @@ export class User {
     get documents () { return this.#documents }
     get lastConnection () { return this.#lastConnection }
 
-    ensureValueIsDefined (value) {
+    ensureValueIsDefined (field, value) {
         if (typeof value !== 'string' || value === null || value === '') {
-            throw errors.invalid_input.withDetails(`${value} is an invalid argument`)
+            throw errors.invalid_input.withDetails(`${value} is an invalid argument for the field ${field}`)
         }
     }
 
@@ -63,13 +63,13 @@ export class User {
     }
 
     set firstName (value) {
-        this.ensureValueIsDefined(value)
+        this.ensureValueIsDefined('firstName', value)
         if (!this.#regexNames.test(value)) this.throwArgumentError(value, 'firstName')
         this.#firstName = this.capitalizeName(value)
     }
 
     set lastName (value) {
-        this.ensureValueIsDefined(value)
+        this.ensureValueIsDefined('lastName', value)
         if (!this.#regexNames.test(value)) this.throwArgumentError(value, 'lastName')
         this.#lastName = this.capitalizeName(value)
     }
@@ -80,7 +80,7 @@ export class User {
     }
 
     set age (value) {
-        this.ensureValueIsDefined(value)
+        this.ensureValueIsDefined('age', value)
         if (!this.#regexAge.test(value)) this.throwArgumentError(value, 'age')
         this.#age = value
     }
@@ -95,7 +95,7 @@ export class User {
     }
 
     set role (value) {
-        this.ensureValueIsDefined(value)
+        this.ensureValueIsDefined('role', value)
         const roles = ['Admin', 'User', 'Premium']
         if (!roles.includes(value)) {
             throw errors.invalid_permission.withDetails(`${value} is not a valid Role`)

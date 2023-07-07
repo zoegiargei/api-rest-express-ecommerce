@@ -11,17 +11,18 @@ export class Product {
     #category
     #thumbnail
     #owner
-    #regexEmail = /^([a-zA-Z0-9._-]+)@(gmail|hotmail)\.com$/
+    #regexEmail = /^([a-zA-Z0-9._-]+)@(gmail|hotmail|coder)\.com$/
     #regexStock = /^(1?[1-9]|[1-9][0-9]|[1][01][0-9]|100)$/
+    #regexAlphanumeric = /^[a-zA-Z0-9]+$/
 
-    constructor ({ _id = null, title, description, code, price, status = true, stock, category, thumbnail = [], owner = 'Admin' }) {
+    constructor ({ _id = null, title, description, code, price, status = true, stock, category, thumbnail = [], owner }) {
         this._id = _id
         this.title = title
         this.description = description
-        this.code = code
-        this.price = price
-        this.status = status
-        this.stock = stock
+        this.code = code // Alphanumeric
+        this.price = price // Number
+        this.status = status // Boolean
+        this.stock = stock // Int Number
         this.category = category
         this.thumbnail = thumbnail
         this.owner = owner
@@ -38,15 +39,16 @@ export class Product {
     get thumbnail () { return this.#thumbnail }
     get owner () { return this.#owner }
 
-    ensureValueIsDefined (value) {
+    ensureValueIsDefined (field, value) {
         if (typeof value !== 'string' || value === null || value === '') {
-            throw errors.invalid_input.withDetails(`${value} is an invalid argument`)
+            this.throwArgumentError(field, value)
         }
     }
 
-    ensurePriceIsDefinded (value) {
-        if (isNaN(value) || value === null || value === '') {
-            throw errors.invalid_input.withDetails(`${value} is an invalid Price`)
+    ensureNumberIsDefinded (field, value) {
+        const num = Number(value)
+        if (isNaN(num) || num === null || num === '') {
+            this.throwArgumentError(field, value)
         }
     }
 
@@ -55,8 +57,8 @@ export class Product {
         return String(name)
     }
 
-    throwArgumentError (value, propertyName) {
-        throw errors.invalid_input.withDetails(`${value} is an invalid argument for the ${propertyName} field`)
+    throwArgumentError (field, value) {
+        throw errors.invalid_input.withDetails(`${value} is an invalid argument for field ${field}`)
     }
 
     set _id (value) {
@@ -64,47 +66,50 @@ export class Product {
     }
 
     set title (value) {
-        this.ensureValueIsDefined(value)
+        this.ensureValueIsDefined('title', value)
         this.#title = this.capitalizeName(value)
     }
 
     set description (value) {
-        this.ensureValueIsDefined(value)
+        this.ensureValueIsDefined('description', value)
         this.#description = value
     }
 
     set code (value) {
-        this.ensureValueIsDefined(value)
+        this.#regexAlphanumeric.test(value)
         this.#code = value
     }
 
     set price (value) {
-        this.ensurePriceIsDefinded(value)
-        this.#price = value
+        this.ensureNumberIsDefinded('Price', value)
+        this.#price = Number(value)
     }
 
     set status (value) {
-        if (typeof value !== 'boolean') this.throwArgumentError(value, 'status')
-        this.#status = value
+        const bool = Boolean(value)
+        if (typeof bool !== 'boolean') this.throwArgumentError('status', bool)
+        this.#status = bool
     }
 
     set stock (value) {
-        if (!this.#regexStock.test(value)) this.throwArgumentError(value, 'stock')
-        this.#stock = value
+        if (!this.#regexStock.test(value)) this.throwArgumentError('stock', value)
+        this.#stock = Number(value)
     }
 
     set category (value) {
+        this.ensureValueIsDefined('category', value)
         this.#category = value
     }
 
     set thumbnail (value) {
-        if (typeof value !== 'object') this.throwArgumentError(value, 'thumbnail')
+        if (typeof value !== 'object') this.throwArgumentError('thumbnail', value)
         this.#thumbnail = value
     }
 
     set owner (value) {
-        if (!this.#regexEmail.test(value)) this.throwArgumentError(value, 'owner')
-        this.#owner = value
+        const email = value.toLowerCase()
+        if (!this.#regexEmail.test(email)) this.throwArgumentError('owner', email)
+        this.#owner = email
     }
 
     toDto () {
@@ -113,9 +118,9 @@ export class Product {
             title: this.#title,
             description: this.#description,
             code: this.#code,
-            price: this.#price,
-            status: this.#status,
-            stock: this.#stock,
+            price: Number(this.#price),
+            status: Boolean(this.#status),
+            stock: Number(this.#stock),
             category: this.#category,
             thumbnail: this.#thumbnail,
             owner: this.#owner

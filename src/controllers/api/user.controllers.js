@@ -155,10 +155,10 @@ export async function handlerPutPassword (req, res, next) {
 
 export async function handlerDeleteUsers (req, res, next) {
     try {
-        const date = new Date() // Obtiene la fecha actual
-        date.setDate(date.getDate() - 2) // Resta dos días a la fecha actual
-        // const dateQuery = date.toLocaleDateString()
-        const dateQuery = '9/7/2023' // proof dateQuery
+        const date = new Date()
+        date.setDate(date.getDate() - 2)
+        const dateQuery = date.toLocaleDateString()
+        // const dateQuery = '9/7/2023' // proof dateQuery
 
         const expiredUsers = await userServices.getUsersByProjection({ 'lastConnection.date': { $lt: dateQuery } }, { email: 1, lastConnection: 1 })
         const emails = expiredUsers.map(user => user.email)
