@@ -12,7 +12,7 @@ class ProductServices {
         this.productsDao = productsDao
     }
 
-    async loadProduct (data, attach, owner = null) {
+    async loadProduct (data, attach, owner) {
         const codeProd = await this.productsDao.findElementByProjection({ code: data.code }, { code: 1 })
         if (codeProd.length > 0) throw errors.invalid_input.withDetails('CODE already exist')
 
@@ -23,11 +23,7 @@ class ProductServices {
         console.log(files)
 
         const prod = { ...data, thumbnail: files }
-        if (owner !== null) {
-            prod.owner = owner
-        } else {
-            prod.owner = config.ADMIN_EMAIL
-        }
+        prod.owner = owner
 
         const newProd = new Product(prod)
         const prodAsDto = newProd.toDto()
@@ -49,12 +45,31 @@ class ProductServices {
 
     async getProductById (pid) {
         const product = await this.productsDao.findElementById(pid)
-        if (!product) throw errors.invalid_input.withDetails('Sent an invalid product id')
+        if (!product) throw errors.not_found.withDetails(`Product not found: ${pid}`)
         return product
     }
 
     async updateProduct (pid, data) {
         return await this.productsDao.updateElement({ _id: pid }, data)
+    }
+
+    async updateProductByOwner (pid, data, role, uEmail) {
+        let productUpdated
+        if (role === 'Premium' || role === 'Admin') {
+            const product = await this.getProductById(pid)
+            const productOwner = product.owner
+            if (role === 'Premium') {
+                if (productOwner === uEmail) {
+                    productUpdated = await this.updateProduct(pid, data)
+                } else {
+                    throw errors.invalid_permission.withDetails('You are not allowed to updated that product')
+                }
+            } else {
+                productUpdated = await this.updateProduct(pid, data)
+            }
+        }
+
+        return productUpdated
     }
 
     async sortAndShowElements (value) {

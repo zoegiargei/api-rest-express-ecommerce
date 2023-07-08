@@ -1,3 +1,4 @@
+import config from '../../../config.js'
 import productServices from '../../services/product.services.js'
 
 export async function handlerPostProducts (req, res, next) {
@@ -8,7 +9,7 @@ export async function handlerPostProducts (req, res, next) {
         if (req.user.role === 'Premium') {
             owner = req.user.email
         } else {
-            owner = null
+            owner = config.ADMIN_EMAIL
         }
         const result = await productServices.loadProduct(productData, productImages, owner)
         res.sendCreated({ message: 'Product created successfully', object: result })
@@ -22,6 +23,20 @@ export async function handlerDeleteProduct (req, res, next) {
         const pid = req.params.pid
         const result = productServices.deleteProduct(pid)
         res.json({ result })
+    } catch (error) {
+        next(error)
+    }
+}
+
+export async function handlerPutProduct (req, res, next) {
+    try {
+        const pid = req.params.pid
+        const data = req.body
+        const role = req.user.role
+        const userEmail = req.user.email
+
+        const result = productServices.updateProductByOwner(pid, data, role, userEmail)
+        res.sendOk({ message: 'Product updated successfully', object: result })
     } catch (error) {
         next(error)
     }

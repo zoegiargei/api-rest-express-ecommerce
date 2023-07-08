@@ -1,6 +1,4 @@
-import errors from '../../lib/customErrors.js'
 import userServices from '../../services/user.services.js'
-import Document from '../../models/Document.js'
 import encryptedJWT from '../../utils/jwt/encrypted.jwt.js'
 import emailService from '../../services/email.services.js'
 import templatesForEmails from '../../utils/templates/templates.send.email.js'
@@ -38,55 +36,18 @@ export async function handlerPostDocuments (req, res, next) {
     try {
         const files = req.files
         const uid = req.params.uid
-        const docNames = Object.keys(files)
-        const user = await userServices.getUserById(uid)
-
-        docNames.forEach(fieldName => {
-            const newDocument = new Document(fieldName, files[fieldName][0].filename, uid)
-            const userDocuments = user.documents || []
-            const existingIndex = userDocuments.findIndex(doc => doc.typeDoc === newDocument.typeDoc)
-            if (existingIndex >= 0) {
-                user.documents.splice(existingIndex, 1, newDocument)
-            } else {
-                if (userDocuments.length) {
-                    user.documents.push(newDocument)
-                } else {
-                    user.documents = []
-                    user.documents.push(newDocument)
-                }
-            }
-        })
-        userServices.updateUser(uid, user)
-        res.sendCreated({ message: 'Upload successful', object: user })
+        const result = await userServices.addUserDocuments(files, uid)
+        res.sendCreated({ message: 'Upload successful', object: result })
     } catch (error) {
         next(error)
     }
 }
 
-export async function handlerComePremium (req, res, next) {
+export async function handlerConvertToPremium (req, res, next) {
     try {
         const uid = req.params.uid
-        const user = await userServices.getUserById(uid)
-
-        const userDocuments = user.documents
-        const hasAllDocuments = Object.values(DocumentTypes).every(type => {
-            return userDocuments.some(doc => doc.typeDoc === type)
-        })
-
-        const canBePremium = hasAllDocuments
-
-        if (user.role !== 'Premium') {
-            if (canBePremium) {
-                user.role = 'Premium'
-                await userServices.updateUser(uid, user)
-            } else {
-                throw errors.invalid_permission.withDetails('The user must have all required documents')
-            }
-        } else {
-            res.sendConflict({ message: 'The user is already Premium', object: user })
-        }
-
-        res.sendOk({ message: 'The user has been upgraded to Premium', object: { user, canBePremium } })
+        const result = await userServices.convertToPremium(uid, DocumentTypes)
+        res.sendOk({ message: 'The user has been upgraded to Premium', object: result })
     } catch (error) {
         next(error)
     }
@@ -94,20 +55,10 @@ export async function handlerComePremium (req, res, next) {
 
 export async function handlerPostProfileImg (req, res, next) {
     try {
-        const uid = req.params.uid
+        const uid = req.user._id
         const image = req.file
-        const user = await userServices.getUserById(uid)
-        if (image) {
-            const profileImage = new Document('profileImage', req.file.filename, uid)
-            const existingIndex = user.documents.findIndex(doc => doc.typeDoc === profileImage.typeDoc)
-            if (existingIndex >= 0) {
-                user.documents.splice(existingIndex, 1, profileImage)
-            } else {
-                user.documents.push(profileImage)
-            }
-        }
-        userServices.updateUser(uid, user)
-        res.sendCreated({ message: 'Upload successful', object: user })
+        const result = await userServices.addProfileImage(uid, image)
+        res.sendCreated({ message: 'Upload successful', object: result })
     } catch (error) {
         next(error)
     }

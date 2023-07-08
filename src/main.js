@@ -8,23 +8,48 @@ import cors from 'cors'
 import { customResponses } from './lib/custom.responses.js'
 import config from '../config.js'
 import { MONGO_CNX_STR } from './configs/mongo.config.js'
-import { logger } from './middlewares/logger/logger.js'
+import { logger, winstonLogger } from './middlewares/logger/logger.js'
+import compression from 'express-compression'
+import cluster from 'cluster'
+import { cpus } from 'node:os'
+import { createServer } from 'http'
+import swaggerJSDoc from 'swagger-jsdoc'
+import swaggerUi from 'swagger-ui-express'
+
+cluster.schedulingPolicy = cluster.SCHED_RR
 
 const app = express()
-const PORT = 8080
+const PORT = config.PORT
 
-app.use(logger)
-app.use(customResponses)
-app.use(cookieParser(SECRET_WORD))
-app.use(passportInitialize)
 const corsOptions = {
     origin: `http://localhost:${PORT}`,
     methods: 'GET, POST, PUT, DELETE',
     allowedHeaders: 'Origin, X-Requested-With, Content-Type, Accept'
 }
+
+const swaggerOptions = {
+    definition: {
+        openapi: '3.0.0',
+        info: {
+            title: 'Server Express API Documentation with Swagger',
+            description: 'API documentation for an Express server'
+        }
+    },
+    apis: ['./docs/**/*.yaml']
+}
+// http://localhost:8080/docs/#/Products/get_products_product__id_
+const specs = swaggerJSDoc(swaggerOptions)
+
+app.use(logger)
+app.use(cookieParser(SECRET_WORD))
+app.use(passportInitialize)
 app.use(cors(corsOptions))
+app.use(customResponses)
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
+app.use(compression({ brotli: { enabled: true, zlib: {} } }))
+app.use(express.static('./public'))
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(specs))
 app.use('/api', apiRouter)
 app.use(errorHandler)
 
@@ -35,9 +60,17 @@ app.get('*', (req, res) => {
     res.json({ message: `Unknown route: ${req.url}` })
 })
 
-if (config.PERSISTENCE === 'MONGO') {
-    const mongoose = await import('mongoose')
-    await mongoose.connect(MONGO_CNX_STR, { useNewUrlParser: true, useUnifiedTopology: true })
-}
+if (cluster.isPrimary) {
+    for (let i = 0; i < cpus().length; i++) { cluster.fork() }
+    cluster.on('exit', worker => {
+        cluster.fork()
+    })
+} else if (cluster.isWorker) {
+    const server = createServer(app)
+    server.listen(PORT, () => { winstonLogger.fatal(`Server running on port: ${PORT}`) })
 
-app.listen(PORT, () => { console.log(`Server connected to port ${8080}`) })
+    if (config.PERSISTENCE === 'MONGO') {
+        const mongoose = await import('mongoose')
+        await mongoose.connect(MONGO_CNX_STR, { useNewUrlParser: true, useUnifiedTopology: true })
+    }
+}

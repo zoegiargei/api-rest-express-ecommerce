@@ -1,10 +1,12 @@
 import { Router } from 'express'
 import errors from '../lib/customErrors.js'
-import { validateSignUp } from '../middlewares/validators/user.validators.js'
+import { validateSignUp, validateUpdatePassword } from '../middlewares/validators/user.validators.js'
 import { validateGetById } from '../middlewares/validators/id.validator.js'
 import ConfigMulter from '../utils/multer/config.files.multer.js'
-import { handlerComePremium, handlerDeleteUsers, handlerGetUser, handlerGetUsers, handlerPostDocuments, handlerPostProfileImg, handlerPostUser, handlerPutLastConnection, handlerPutPassword, handlerRegister } from '../controllers/api/user.controllers.js'
+import { handlerConvertToPremium, handlerDeleteUsers, handlerGetUser, handlerGetUsers, handlerPostDocuments, handlerPostProfileImg, handlerPostUser, handlerPutLastConnection, handlerPutPassword, handlerRegister } from '../controllers/api/user.controllers.js'
 import { registerAuthentication } from '../middlewares/passport/passport.strategies.js'
+import { authJwtApi } from '../middlewares/authentication/jwt/auth.byJwt.api.js'
+import { authByRole } from '../middlewares/authentication/authentication.byRole.js'
 
 const userRouter = Router()
 
@@ -14,30 +16,30 @@ const upload = configMulter.configUpload()
 userRouter.param('uid', (req, res, next, param) => {
     try {
         if (param === null || param === undefined) throw errors.invalid_input.withDetails('You did not send the USER ID')
-        validateGetById(param)
+        validateGetById(param, req.url)
         next()
     } catch (error) {
         next(error)
     }
 })
 
-userRouter.post('/', validateSignUp, handlerPostUser)
-
 userRouter.post('/register', validateSignUp, registerAuthentication, handlerRegister)
 
-userRouter.post('/:uid/documents', upload.fields([{ name: 'identification', maxCount: 1 }, { name: 'proofAddress', maxCount: 1 }, { name: 'statementAccount', maxCount: 1 }]), handlerPostDocuments)
+userRouter.post('/', authJwtApi, authByRole(['Admin', 'Premium']), validateSignUp, handlerPostUser)
 
-userRouter.get('/', handlerGetUsers)
+userRouter.post('/:uid/documents', authJwtApi, upload.fields([{ name: 'identification', maxCount: 1 }, { name: 'proofAddress', maxCount: 1 }, { name: 'statementAccount', maxCount: 1 }]), handlerPostDocuments)
 
-userRouter.get('/premium/:uid', handlerComePremium)
+userRouter.get('/', authJwtApi, authByRole(['Admin', 'Premium']), handlerGetUsers)
 
-userRouter.post('/:uid/profileImage', upload.single('profileImage'), handlerPostProfileImg)
+userRouter.get('/premium/:uid', authJwtApi, authByRole(['Admin', 'User']), handlerConvertToPremium)
 
-userRouter.get('/:uid', handlerGetUser)
+userRouter.post('/profileImage', authJwtApi, upload.single('profileImage'), handlerPostProfileImg)
 
-userRouter.put('/lastConnection/:uid/', handlerPutLastConnection)
+userRouter.get('/:uid', authJwtApi, handlerGetUser)
 
-userRouter.put('/updatePassword/:uid', handlerPutPassword)
+userRouter.put('/lastConnection/:uid', authJwtApi, handlerPutLastConnection)
+
+userRouter.put('/updatePassword/:uid', authJwtApi, validateUpdatePassword, handlerPutPassword)
 
 userRouter.delete('/', handlerDeleteUsers)
 

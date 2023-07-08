@@ -6,9 +6,9 @@ import { validateResult } from './validation.result.js'
 const check = buildCheckFunction(['body', 'query', 'params'])
 
 const validateSignUp = [
-    check('firstName').exists().notEmpty().isString().trim().escape(),
-    check('lastName').exists().notEmpty().isString().trim().escape(),
-    check('email')
+    check('firstName', 'Invalid argument for user.firstName field').exists().notEmpty().isString().trim().escape(),
+    check('lastName', 'Invalid argument for user.lastName field').exists().notEmpty().isString().trim().escape(),
+    check('email', 'Invalid argument for user.email field')
     .exists()
     .notEmpty()
     .normalizeEmail({ all_lowercase: true })
@@ -29,10 +29,10 @@ const validateSignUp = [
     })
     .trim()
     .escape(),
-    check('age').exists().notEmpty().isString().trim().escape(),
-    check('password', 'Validation error: Please, introduce a valid password. Minimum eight characters, at least one letter and one number').exists()
-    .isLength({ min: 8, max: 16 }),
-    check('confirmPassword').exists().notEmpty()
+    check('age', 'Invalid argument for user.age field').exists().notEmpty().isString().trim().escape(),
+    check('password', 'Validation error: Please, introduce a valid password. Minimum eight characters, at least one letter and one number')
+    .exists().escape().isLength({ min: 8, max: 16 }),
+    check('confirmPassword').exists().notEmpty().escape()
     .custom((value, { req }) => {
         if (value !== req.body.password) {
             throw new Error('Passwords do not match')
@@ -46,7 +46,7 @@ const validateSignUp = [
 ]
 
 const validateLogin = [
-    check('email').exists().notEmpty().normalizeEmail({ all_lowercase: true })
+    check('email', 'Invalid argument for email field').exists().notEmpty().normalizeEmail({ all_lowercase: true })
     .isEmail({ blacklisted_chars: ['<', '>', '&', "'", '"', '/'] })
     .trim().escape(),
     check('password', 'Validation error: Please, introduce a valid password. Minimum eight characters, at least one letter and one number').exists()
@@ -57,7 +57,30 @@ const validateLogin = [
     }
 ]
 
+const validateUpdatePassword = [
+    check('currentPassword').exists().escape().isLength({ min: 8, max: 16 }),
+    check('newPassword').exists().escape().isLength({ min: 8, max: 16 })
+    .custom((value, { req }) => {
+        if (value === req.body.currentPassword) {
+            throw new Error('New password cannot be equal to the old')
+        }
+        return true
+    }),
+    check('confirmNewPassword').exists().escape().isLength({ min: 8, max: 16 })
+    .custom((value, { req }) => {
+        if (value !== req.body.newPassword) {
+            throw new Error('NewPasswords and confirmNewPassword do not match')
+        }
+        return true
+    }),
+
+    (req, res, next) => {
+        validateResult(req, res, next)
+    }
+]
+
 export {
   validateSignUp,
-  validateLogin
+  validateLogin,
+  validateUpdatePassword
 }

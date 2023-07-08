@@ -1,0 +1,76 @@
+paths:
+  /carts/{cid}:
+    get:
+      summary: Get a cart with the given ID
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          description: ID of the cart to retrieve
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Cart found successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cart'
+        "404":
+          description: Cart not found
+        "500":
+          description: Internal Server Error
+
+    put:
+      summary: Update cart
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          description: Cart ID
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Cart'
+      responses:
+        "201":
+          description: Cart updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cart'
+        "401":
+          description: Unauthorized Error
+        "500":
+          description: Internal server error
+
+    delete:
+      summary: Delete cart
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          description: Cart ID
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Cart deleted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cart'
+        "401":
+          description: Unauthorized Error
+        "500":
+          description: Internal server error

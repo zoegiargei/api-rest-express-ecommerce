@@ -1,0 +1,23 @@
+paths:
+  /products/addProduct:
+    post:
+      summary: Create a new product
+      tags:
+        - Products
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/requestBodyes/NewProduct'
+      responses:
+        "201":
+          description: Product created successfully
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        "400":
+          description: Bad request Error
+        "500":
+          description: Internal server error

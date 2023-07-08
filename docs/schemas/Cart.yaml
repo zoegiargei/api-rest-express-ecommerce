@@ -1,0 +1,18 @@
+components:
+  schemas:
+    Cart:
+      type: object
+      properties:
+        productsCart:
+          type: array
+          items:
+            type: string
+            format: objectId
+        userEmail:
+          type: string
+          format: email
+      required:
+        - userEmail
+      example:
+        productsCart: ["60cda4e6b2572c001e2a1c37", "60cda4e6b2572c001e2a1c38"]
+        userEmail: example@example.com

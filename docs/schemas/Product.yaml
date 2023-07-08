@@ -1,0 +1,47 @@
+components:
+  schemas:
+    Product:
+      type: object
+      properties:
+        _id:
+          type: string
+          format: objectId
+        title:
+          type: string
+        description:
+          type: string
+        code:
+          type: string
+        price:
+          type: number
+          format: float
+        status:
+          type: boolean
+        stock:
+          type: integer
+        category:
+          type: integer
+        thumbnail:
+          type: array
+          items:
+            type: string
+        owner:
+          type: string
+      required:
+        - title
+        - description
+        - code
+        - price
+        - stock
+        - category
+      example:
+        _id: "60cda4e6b2572c001e2a1c37"
+        title: "Example Product"
+        description: "This is an example product"
+        code: "ABC123"
+        price: 9.99
+        status: true
+        stock: 50
+        category: 1
+        thumbnail: ["image1.jpg", "image2.jpg"]
+        owner: "Admin"

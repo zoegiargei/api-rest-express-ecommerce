@@ -6,6 +6,7 @@ import encryptedPass from '../utils/password/encrypted.pass.js'
 import cartServices from './cart.services.js'
 import config from '../../config.js'
 import userDaoMemory from '../DAO/memory/user.dao.memory.js'
+import Document from '../models/Document.js'
 
 class UserServices {
     constructor (repository, dao) {
@@ -49,6 +50,64 @@ class UserServices {
 
     async updateUser (id, newValues) {
         return await this.userDao.updateElement(id, newValues)
+    }
+
+    async addUserDocuments (files, uid) {
+        const docNames = Object.keys(files)
+        const user = await this.getUserById(uid)
+        docNames.forEach(fieldName => {
+            const newDocument = new Document(fieldName, files[fieldName][0].filename, uid)
+            const userDocuments = user.documents || []
+            const existingIndex = userDocuments.findIndex(doc => doc.typeDoc === newDocument.typeDoc)
+            if (existingIndex >= 0) {
+                user.documents.splice(existingIndex, 1, newDocument)
+            } else {
+                if (userDocuments.length) {
+                    user.documents.push(newDocument)
+                } else {
+                    user.documents = []
+                    user.documents.push(newDocument)
+                }
+            }
+        })
+        return this.updateUser(uid, user)
+    }
+
+    async convertToPremium (uid, DocumentTypes) {
+        const user = await this.getUserById(uid)
+        const userDocuments = user.documents
+        const hasAllDocuments = Object.values(DocumentTypes).every(type => {
+            return userDocuments.some(doc => doc.typeDoc === type)
+        })
+        const canBePremium = hasAllDocuments
+
+        let result
+        if (user.role !== 'Premium') {
+            if (canBePremium) {
+                user.role = 'Premium'
+                result = await userServices.updateUser(uid, user)
+            } else {
+                throw errors.invalid_permission.withDetails('The user must have all required documents')
+            }
+        } else {
+            throw errors.conflict.withDetails('The user is already Premium')
+        }
+
+        return result
+    }
+
+    async addProfileImage (uid, image) {
+        const user = await this.getUserById(uid)
+        if (image) {
+            const profileImage = new Document('profileImage', image.filename, uid)
+            const existingIndex = user.documents.findIndex(doc => doc.typeDoc === profileImage.typeDoc)
+            if (existingIndex >= 0) {
+                user.documents.splice(existingIndex, 1, profileImage)
+            } else {
+                user.documents.push(profileImage)
+            }
+        }
+        return this.updateUser(uid, user)
     }
 
     async updatePassword (id, currentPass, newPass) {

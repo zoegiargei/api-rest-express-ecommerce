@@ -7,7 +7,7 @@ const cartRouter = Router()
 cartRouter.param('cid', (req, res, next, param) => {
     try {
         if (param === null || param === undefined) throw errors.invalid_input.withDetails('You did not send the USER ID')
-        validateGetById(param)
+        validateGetById(param, req.url)
         next()
     } catch (error) {
         next(error)

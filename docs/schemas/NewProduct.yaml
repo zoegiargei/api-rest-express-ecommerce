@@ -1,0 +1,43 @@
+components:
+  requestBodyes:
+    NewProduct:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        code:
+          type: string
+        price:
+          type: number
+          format: float
+        status:
+          type: boolean
+        stock:
+          type: integer
+        category:
+          type: integer
+        thumbnail:
+          type: array
+          items:
+            type: string
+        owner:
+          type: string
+      required:
+        - title
+        - description
+        - code
+        - price
+        - stock
+        - category
+      example:
+        title: "Example Product"
+        description: "This is an example product"
+        code: "ABC123"
+        price: 9.99
+        status: true
+        stock: 50
+        category: 1
+        thumbnail: ["image1.jpg", "image2.jpg"]
+        owner: "Admin"
