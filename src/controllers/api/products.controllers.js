@@ -1,4 +1,5 @@
 import config from '../../../config.js'
+import { winstonLogger } from '../../middlewares/logger/logger.js'
 import productServices from '../../services/product.services.js'
 
 export async function handlerPostProducts (req, res, next) {
@@ -22,7 +23,8 @@ export async function handlerDeleteProduct (req, res, next) {
     try {
         const pid = req.params.pid
         const result = productServices.deleteProduct(pid)
-        res.json({ result })
+        winstonLogger.fatal(result)
+        res.sendNoContent()
     } catch (error) {
         next(error)
     }

@@ -80,10 +80,14 @@ class ProductServices {
 
     async deleteProduct (pid) {
         const product = await this.productsDao.findElementById(pid)
-        // const owner = product.owner
-        const hardcodedEmail = 'zoegiargei00@gmail.com' // Must be 'owner'
+        let owner
+        if (config.NODE_ENV === 'dev' || config.NODE_ENV === 'test') {
+            owner = String(config.HARDCODED_EMAIL)
+        } else {
+            owner = product.owner
+        }
         const message = templatesForEmails.templateSendProductRemoved(product.title, product._id)
-        emailService.send(hardcodedEmail, message, 'Product removed notification')
+        emailService.send(owner, message, 'Product removed notification')
         return await this.productsDao.deleteElement(pid)
     }
 

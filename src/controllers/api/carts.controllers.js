@@ -28,8 +28,7 @@ export async function handlerPutProductsCart (req, res, next) {
         const pid = req.body.pid
         const quantity = req.body.quantity
         const result = await cartServices.updateProdInCart(cid, pid, quantity)
-        req.logger.warn(`Result in Put products cart: ${result}`)
-        res.sendNoContent()
+        res.sendOk({ message: 'Product updated successfully', object: result })
     } catch (error) {
         next(error)
     }
@@ -67,7 +66,7 @@ export async function handlerDeleteCart (req, res, next) {
     }
 }
 
-export const handlerPurchase = async (req, res, next) => {
+export async function handlerPurchase (req, res, next) {
     try {
         const user = req.user
         const { totalPurchase, purchaseData } = await cartServices.purchaseFirstStep(user)
@@ -75,7 +74,15 @@ export const handlerPurchase = async (req, res, next) => {
         if (totalPurchase > 0) {
             ticket = await cartServices.purchaseSecondStep(totalPurchase, req.user, purchaseData)
         }
-        res.sendOk({ message: '', object: { totalPurchase, purchaseData, ticket } })
+        res.sendOk({ message: 'The purchase was successful', object: { totalPurchase, purchaseData, ticket } })
+    } catch (error) {
+        next(error)
+    }
+}
+
+export async function payment (req, res, next) {
+    try {
+        res.send('we are working on this endpoint')
     } catch (error) {
         next(error)
     }

@@ -152,9 +152,15 @@ class CartServices {
         const newOrder = new Order(purchaseData, ticketInDb)
         user.orders.push(newOrder)
         await userServices.updateUser(user._id, user)
-        const hardcodedEmail = 'zoegiargei00@gmail.com'
         const message = templatesForEmails.templateSendTicket(ticket)
-        await emailService.send(hardcodedEmail, message, 'Purchase ticket')
+
+        let purchaser
+        if (config.NODE_ENV === 'dev' || config.NODE_ENV === 'test') {
+            purchaser = String(config.HARDCODED_EMAIL)
+        } else {
+            purchaser = user.email
+        }
+        await emailService.send(purchaser, message, 'Purchase ticket')
         return ticket
     }
 }

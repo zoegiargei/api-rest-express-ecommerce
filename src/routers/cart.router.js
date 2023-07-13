@@ -18,17 +18,11 @@ cartRouter.param('cid', (req, res, next, param) => {
 })
 
 cartRouter.get('/:cid', authJwtApi, handlerGetCart)
-
 cartRouter.post('/products/:pid', authJwtApi, validateQuantity, handlerAddProductToCart)
-
 cartRouter.post('/purchase/:cid', authJwtApi, handlerPurchase)
-
 cartRouter.put('/products', authJwtApi, validateQuantity, handlerPutProductsCart)
-
 cartRouter.delete('/:cid/products/:pid', authJwtApi, handlerDelProdInCart)
-
 cartRouter.delete('/:cid', authJwtApi, handlerDeleteCart)
-
 cartRouter.delete('/cleanCart/:cid', authJwtApi, handlerCleanCart)
 
 export default cartRouter

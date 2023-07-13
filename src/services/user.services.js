@@ -122,8 +122,14 @@ class UserServices {
         winstonLogger.fatal(resultSaveToken)
         const url = `http://localhost:8080/api/users/updatePassword?token=${tokenToUrl}`
         const message = templatesForEmails.templateEmailResetPass(url, user.username)
-        // email hardcodeado || real case: user.email
-        const result = await emailService.send('zoegiargei00@gmail.com', message)
+
+        let userEmail
+        if (config.NODE_ENV === 'dev' || config.NODE_ENV === 'test') {
+            userEmail = String(config.HARDCODED_EMAIL)
+        } else {
+            userEmail = user.email
+        }
+        const result = await emailService.send(userEmail, message)
         return result
     }
 
@@ -167,8 +173,14 @@ class UserServices {
         if (emails.length > 0) {
             emails.forEach(async em => {
                 const message = templatesForEmails.templateSendExpiredAccount()
-                const hardcodedEmail = 'zoegiargei00@gmail.com' // Must be email of user
-                await emailService.send(hardcodedEmail, message, 'Your account was expired')
+
+                let userEmail
+                if (config.NODE_ENV === 'dev' || config.NODE_ENV === 'test') {
+                    userEmail = String(config.HARDCODED_EMAIL)
+                } else {
+                    userEmail = em
+                }
+                await emailService.send(userEmail, message, 'Your account was expired')
                 result = await this.deleteUsersByQuery({ email: em })
             })
             carts.forEach(async cid => {

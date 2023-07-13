@@ -16,6 +16,7 @@ program
     .option('AUTH_TOKEN_TWILIO <token>')
     .option('PHONE_NUMBER_TWILIO <phone>')
     .option('LEVEL_LOG <number>', 'Level of errors we want to see', 0)
+    .option('HARDCODED_EMAIL <email>', 'Email that will be used for default information cases')
 program.parse()
 
 dotenv.config({
@@ -38,5 +39,6 @@ export default {
     PASS_NODEMAILER: process.env.PASS_NODEMAILER,
     ACCOUNT_SID_TWILIO: process.env.ACCOUNT_SID_TWILIO,
     AUTH_TOKEN_TWILIO: process.env.AUTH_TOKEN_TWILIO,
-    PHONE_NUMBER_TWILIO: process.env.PHONE_NUMBER_TWILIO
+    PHONE_NUMBER_TWILIO: process.env.PHONE_NUMBER_TWILIO,
+    HARDCODED_EMAIL: process.env.HARDCODED_EMAIL
 }
