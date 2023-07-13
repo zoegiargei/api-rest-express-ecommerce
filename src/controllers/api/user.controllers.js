@@ -1,7 +1,5 @@
 import userServices from '../../services/user.services.js'
 import encryptedJWT from '../../utils/jwt/encrypted.jwt.js'
-import emailService from '../../services/email.services.js'
-import templatesForEmails from '../../utils/templates/templates.send.email.js'
 
 const DocumentTypes = {
     IDENTIFICATION: 'identification',
@@ -93,37 +91,32 @@ export async function handlerPutLastConnection (req, res, next) {
     }
 }
 
-export async function handlerPutPassword (req, res, next) {
+export async function handlerDeleteUsers (req, res, next) {
     try {
-        const uid = String(req.params.uid)
-        const { currentPassword, newPassword } = req.body
-        const result = await userServices.updatePassword(uid, currentPassword, newPassword)
-        res.sendNoContent({ message: "The user's password was successfully updated", object: result })
+        const result = await userServices.deleteOldUsers()
+        res.json({ result })
     } catch (error) {
         next(error)
     }
 }
 
-export async function handlerDeleteUsers (req, res, next) {
+export async function handlerUpdatePassFirstStep (req, res, next) {
     try {
-        const date = new Date()
-        date.setDate(date.getDate() - 2)
-        const dateQuery = date.toLocaleDateString()
-        // const dateQuery = '9/7/2023' // proof dateQuery
+        const uid = req.user._id
+        req.logger.fatal(`User ID: ${req.user._id}`)
+        const result = userServices.sendEmailToUpdatePass(uid)
+        res.sendOk({ message: 'Email to reset password sent successfully', object: result })
+    } catch (error) {
+        next(error)
+    }
+}
 
-        const expiredUsers = await userServices.getUsersByProjection({ 'lastConnection.date': { $lt: dateQuery } }, { email: 1, lastConnection: 1 })
-        const emails = expiredUsers.map(user => user.email)
-
-        let result
-        if (emails.length > 0) {
-            emails.forEach(async em => {
-                const message = templatesForEmails.templateSendExpiredAccount()
-                const hardcodedEmail = 'zoegiargei00@gmail.com' // Must be email of user
-                await emailService.send(hardcodedEmail, message, 'Your account was expired')
-                result = await userServices.deleteUsersByQuery({ email: em })
-            })
-        }
-        res.json({ expiredUsers, result })
+export async function handlerPutPassword (req, res, next) {
+    try {
+        const uid = req.user._id
+        const { currentPassword, newPassword } = req.body
+        const result = await userServices.updatePassword(uid, currentPassword, newPassword)
+        res.sendNoContent({ message: "The user's password was successfully updated", object: result })
     } catch (error) {
         next(error)
     }

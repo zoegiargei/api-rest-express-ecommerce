@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { handlerDeleteProduct, handlerPostProducts } from '../controllers/api/products.controllers.js'
+import { handlerDeleteProduct, handlerGetProduct, handlerGetProducts, handlerPostProducts, handlerPutProduct } from '../controllers/api/products.controllers.js'
 import errors from '../lib/customErrors.js'
 import { authByRole } from '../middlewares/authentication/authentication.byRole.js'
 import { authJwtApi } from '../middlewares/authentication/jwt/auth.byJwt.api.js'
@@ -23,8 +23,9 @@ productsRouter.param('pid', (req, res, next, param) => {
 })
 
 productsRouter.post('/', authJwtApi, authByRole(['Admin', 'Premium']), upload.any('productImages'), validateProductFields, handlerPostProducts)
-productsRouter.get('/:pid')
-productsRouter.put('/:pid')
+productsRouter.get('/:pid', authJwtApi, handlerGetProduct)
+productsRouter.get('/', authJwtApi, handlerGetProducts)
+productsRouter.put('/:pid', authJwtApi, authByRole(['Admin', 'Premium']), handlerPutProduct)
 productsRouter.delete('/:pid', authJwtApi, authByRole(['Admin']), handlerDeleteProduct)
 
 export default productsRouter

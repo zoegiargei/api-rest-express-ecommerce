@@ -7,6 +7,10 @@ import cartServices from './cart.services.js'
 import config from '../../config.js'
 import userDaoMemory from '../DAO/memory/user.dao.memory.js'
 import Document from '../models/Document.js'
+import tokenServices from './token.services.js'
+import templatesForEmails from '../utils/templates/templates.send.email.js'
+import emailService from './email.services.js'
+import { winstonLogger } from '../middlewares/logger/logger.js'
 
 class UserServices {
     constructor (repository, dao) {
@@ -110,6 +114,19 @@ class UserServices {
         return this.updateUser(uid, user)
     }
 
+    async sendEmailToUpdatePass (uid) {
+        const user = await this.getUserById(uid)
+        const token = await tokenServices.createToken(uid)
+        const tokenToUrl = token.token
+        const resultSaveToken = await tokenServices.saveTockenUpdatePass(user._id, token)
+        winstonLogger.fatal(resultSaveToken)
+        const url = `http://localhost:8080/api/users/updatePassword?token=${tokenToUrl}`
+        const message = templatesForEmails.templateEmailResetPass(url, user.username)
+        // email hardcodeado || real case: user.email
+        const result = await emailService.send('zoegiargei00@gmail.com', message)
+        return result
+    }
+
     async updatePassword (id, currentPass, newPass) {
         const user = await this.userDao.findElementById(id)
 
@@ -132,16 +149,42 @@ class UserServices {
         return response
     }
 
+    async deleteUsersByQuery (query) {
+        if (typeof query !== 'object') throw errors.invalid_input_format.withDetails('The data type of the method parameter must be "Object"')
+        return await this.userDao.deleteManyElemByQuery(query)
+    }
+
+    async deleteOldUsers () {
+        const date = new Date()
+        date.setDate(date.getDate() - 2)
+        const dateQuery = date.toLocaleDateString()
+
+        const expiredUsers = await this.getUsersByProjection({ 'lastConnection.date': { $lt: dateQuery } }, { email: 1, cart: 1, lastConnection: 1 })
+        const emails = expiredUsers.map(user => user.email)
+        const carts = expiredUsers.map(user => user.cart[0]._id)
+
+        let result
+        if (emails.length > 0) {
+            emails.forEach(async em => {
+                const message = templatesForEmails.templateSendExpiredAccount()
+                const hardcodedEmail = 'zoegiargei00@gmail.com' // Must be email of user
+                await emailService.send(hardcodedEmail, message, 'Your account was expired')
+                result = await this.deleteUsersByQuery({ email: em })
+            })
+            carts.forEach(async cid => {
+                const deletedCarts = await cartServices.deleteCart(cid)
+                winstonLogger.warn(deletedCarts)
+            })
+        }
+
+        return { result, expiredUsers }
+    }
+
     async deleteUser (id) {
         const user = this.userDao.findElementById(id)
         const cid = user.cart._id
         await cartServices.deleteCart(cid)
         return await this.userDao.deleteElement(id)
-    }
-
-    async deleteUsersByQuery (query) {
-        if (typeof query !== 'object') throw errors.invalid_input_format.withDetails('The data type of the method parameter must be "Object"')
-        return await this.userDao.deleteManyElemByQuery(query)
     }
 }
 let userServices

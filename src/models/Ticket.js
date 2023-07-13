@@ -2,20 +2,20 @@ import { v4 as uuidv4 } from 'uuid'
 import errors from '../lib/customErrors.js'
 
 class Ticket {
-    #purcharser
+    #purchaser
     #regexEmail = /^([a-zA-Z0-9._-]+)@(gmail|hotmail|coder)\.com$/
 
     constructor (amount, purchaser) {
         this.code = this.generateCode()
-        this.purchase_datetime = this.generateDatetime()
-        this.amount = amount
-        this.purchaser = purchaser
+        this.purchase_datetime = String(this.generateDatetime())
+        this.amount = Number(amount)
+        this.purchaser = String(purchaser)
     }
 
-    get purchaser () { return this.#purcharser }
+    get purchaser () { return this.#purchaser }
     set purchaser (value) {
         if (!this.#regexEmail.test(value)) throw errors.invalid_input.withDetails('An email must be provided to generate the ticket.')
-        this.#purcharser = value
+        this.#purchaser = value
     }
 
     generateCode () {
@@ -30,7 +30,7 @@ class Ticket {
     getTicket () {
         return {
             ...this,
-            purcharser: this.#purcharser
+            purchaser: this.#purchaser
         }
     }
 }

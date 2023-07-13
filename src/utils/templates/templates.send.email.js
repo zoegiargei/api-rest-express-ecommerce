@@ -80,7 +80,9 @@ class TemplatesForEmails {
                         
                         <div style="border: 1px solid #dddddd; padding: 10px;">
                             <h3 style="color: #333333;">Purchase Ticket</h3>
-                            <p>Ticket Value: <strong>${ticket}</strong></p>>
+                            <p>Code: <strong>${ticket.code}</strong></p>
+                            <p>Date: <strong>${ticket.purchase_datetime}</strong></p>
+                            <p>Amount: <strong> $ ${ticket.amount}</strong></p>
                         </div>
                         
                         <p>If you have any questions or need further information, feel free to contact us.</p>

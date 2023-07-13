@@ -8,7 +8,6 @@ export async function handlerPostAuth (req, res, next) {
             signed: true,
             httpOnly: true
         })
-        req.logger.info(req.signedCookies)
         const userToShow = req.user
         delete userToShow.password
         res.sendAccepted({ message: 'User successfully logged in', object: userToShow })
@@ -23,7 +22,6 @@ export async function handlerPostLogout (req, res, next) {
             signed: true,
             httpOnly: true
         })
-        req.logger.info(req.signedCookies)
         res.sendOk({ message: 'Successfully Logout', object: req.user })
     } catch (error) {
         next(error)

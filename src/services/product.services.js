@@ -83,7 +83,7 @@ class ProductServices {
         // const owner = product.owner
         const hardcodedEmail = 'zoegiargei00@gmail.com' // Must be 'owner'
         const message = templatesForEmails.templateSendProductRemoved(product.title, product._id)
-        emailService.send(hardcodedEmail, message, 'Product Deletion Notification')
+        emailService.send(hardcodedEmail, message, 'Product removed notification')
         return await this.productsDao.deleteElement(pid)
     }
 

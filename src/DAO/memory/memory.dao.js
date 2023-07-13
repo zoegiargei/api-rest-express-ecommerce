@@ -40,11 +40,6 @@ class DAOMemory {
         return this.memory
     }
 
-    async replaceElement (id, newValues) {
-        const index = this.findIndex(id)
-        this.memory[index] = newValues
-    }
-
     async updateElement (id, newValues) {
         const index = this.findIndex(id)
         this.memory[index] = { ...this.memory[index], ...newValues }

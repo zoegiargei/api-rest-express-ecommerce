@@ -41,3 +41,22 @@ export async function handlerPutProduct (req, res, next) {
         next(error)
     }
 }
+
+export async function handlerGetProduct (req, res, next) {
+    try {
+        const pid = req.params.pid
+        const result = await productServices.getProductById(pid)
+        res.sendOk({ message: 'Product found successfully', object: result })
+    } catch (error) {
+        next(error)
+    }
+}
+
+export async function handlerGetProducts (req, res, next) {
+    try {
+        const result = await productServices.getProducts()
+        res.sendOk({ message: 'Products found successfully', object: result })
+    } catch (error) {
+        next(error)
+    }
+}

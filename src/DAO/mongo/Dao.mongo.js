@@ -16,6 +16,10 @@ class DAODb {
         return await this.db.findOne({ _id: id }).lean()
     }
 
+    async findElementByIdAndQuery (id, query) {
+        return await this.db.findOne({ _id: id }, query)
+    }
+
     async findTheLastOne () {
         return await this.db.find().limit(1).sort({ $natural: -1 }).lean()
     }
@@ -26,10 +30,6 @@ class DAODb {
 
     async findElementByProjection (p1, p2) {
         return await this.db.find(p1, p2)
-    }
-
-    async replaceElement (id, newValues) {
-        return await this.db.replaceOne({ _id: id }, newValues)
     }
 
     async updateElement (id, newValues) {

@@ -11,7 +11,6 @@ import encryptedPass from '../../utils/password/encrypted.pass.js'
 // import { Strategy as GithubStrategy } from 'passport-github2'
 import config from '../../../config.js'
 import cartServices from '../../services/cart.services.js'
-import { winstonLogger } from '../logger/logger.js'
 import errors from '../../lib/customErrors.js'
 import { JWT_PRIVATE_KEY } from '../../configs/auth.config.js'
 
@@ -49,7 +48,6 @@ passport.use('login', new LocalStrategy({ usernameField: 'email' }, async (usern
         if (!user || user.length === 0) throw errors.invalid_auth.withDetails('One of the credentials is wrong')
 
         const isValidatePassword = encryptedPass.isValidPassword(user[0].password, password)
-        winstonLogger.warn(`Esto es en la estrategia de passport: ${isValidatePassword}`)
         if (isValidatePassword === false) throw errors.invalid_auth.withDetails('One of the credentials is wrong')
         const userToSend = user[0]
         done(null, userToSend)

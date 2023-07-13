@@ -3,10 +3,11 @@ import errors from '../lib/customErrors.js'
 import { validateSignUp, validateUpdatePassword } from '../middlewares/validators/user.validators.js'
 import { validateGetById } from '../middlewares/validators/id.validator.js'
 import ConfigMulter from '../utils/multer/config.files.multer.js'
-import { handlerConvertToPremium, handlerDeleteUsers, handlerGetUser, handlerGetUsers, handlerPostDocuments, handlerPostProfileImg, handlerPostUser, handlerPutLastConnection, handlerPutPassword, handlerRegister } from '../controllers/api/user.controllers.js'
+import { handlerConvertToPremium, handlerDeleteUsers, handlerGetUser, handlerGetUsers, handlerPostDocuments, handlerPostProfileImg, handlerPostUser, handlerPutLastConnection, handlerPutPassword, handlerRegister, handlerUpdatePassFirstStep } from '../controllers/api/user.controllers.js'
 import { registerAuthentication } from '../middlewares/passport/passport.strategies.js'
 import { authJwtApi } from '../middlewares/authentication/jwt/auth.byJwt.api.js'
 import { authByRole } from '../middlewares/authentication/authentication.byRole.js'
+import authTokenResetPass from '../middlewares/user/auth.token.reset.pass.middleware.js'
 
 const userRouter = Router()
 
@@ -39,7 +40,9 @@ userRouter.get('/:uid', authJwtApi, handlerGetUser)
 
 userRouter.put('/lastConnection/:uid', authJwtApi, handlerPutLastConnection)
 
-userRouter.put('/updatePassword/:uid', authJwtApi, validateUpdatePassword, handlerPutPassword)
+userRouter.post('/updatePassword/firstStep', authJwtApi, handlerUpdatePassFirstStep)
+
+userRouter.put('/updatePassword', authJwtApi, validateUpdatePassword, authTokenResetPass, handlerPutPassword)
 
 userRouter.delete('/', handlerDeleteUsers)
 
