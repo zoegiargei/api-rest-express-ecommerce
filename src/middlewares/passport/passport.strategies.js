@@ -2,13 +2,9 @@
 /* eslint-disable camelcase */
 import passport from 'passport'
 import userServices from '../../services/user.services.js'
-// import ghUserService from '../../services/gh.users.service.js'
-// import GithubUser from '../../entities/Github.User.entity.js'
 import { ExtractJwt, Strategy as JwtStrategy } from 'passport-jwt'
-// import { githubCallbackUrl, githubClienteId, githubClientSecret, JWT_PRIVATE_KEY } from '../../configs/auth.config.js'
 import { Strategy as LocalStrategy } from 'passport-local'
 import encryptedPass from '../../utils/password/encrypted.pass.js'
-// import { Strategy as GithubStrategy } from 'passport-github2'
 import config from '../../../config.js'
 import cartServices from '../../services/cart.services.js'
 import errors from '../../lib/customErrors.js'
@@ -37,8 +33,7 @@ passport.use('login', new LocalStrategy({ usernameField: 'email' }, async (usern
                 email: 'adminCoder@coder.com',
                 cart: cid,
                 role: 'Admin',
-                admin: true,
-                orders: []
+                admin: true
             }
 
             return done(null, userAdmin)
@@ -55,33 +50,6 @@ passport.use('login', new LocalStrategy({ usernameField: 'email' }, async (usern
         done(error, null)
     }
 }))
-
-// GH
-/* passport.use('github', new GithubStrategy({
-    clientID: githubClienteId,
-    clientSecret: githubClientSecret,
-    callbackURL: githubCallbackUrl
-
-}, async (accessToken, refreshToken, profile, done) => {
-    winstonLogger.debug(profile)
-    const exist = await ghUserService.getUserByQuery({ username: profile.username })
-    if (exist.length > 0) {
-        return done(null, exist[0])
-    }
-
-    try {
-        const user = new GithubUser({
-            full_name: profile.displayName,
-            user_id: profile.id,
-            username: profile.username
-        })
-
-        await ghUserService.saveUser(user)
-        return done(null, user)
-    } catch (error) {
-        return done(error, null)
-    }
-})) */
 
 // JWT
 passport.use('jwt', new JwtStrategy({
@@ -109,5 +77,3 @@ export const passportInitialize = passport.initialize()
 
 export const registerAuthentication = passport.authenticate('register', { session: false, failWithError: true })
 export const loginAuthentication = passport.authenticate('login', { session: false, failWithError: true })
-// export const authenticationByGithub = passport.authenticate('github', { session: false, scope: ['user:email'] })
-// export const authenticationByGithub_CB = passport.authenticate('github', { session: false, failWithError: true })

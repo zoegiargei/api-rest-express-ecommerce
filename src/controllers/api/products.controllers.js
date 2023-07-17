@@ -56,7 +56,12 @@ export async function handlerGetProduct (req, res, next) {
 
 export async function handlerGetProducts (req, res, next) {
     try {
-        const result = await productServices.getProducts()
+        let result
+        if (req.query.category) {
+            result = await productServices.getProductsByQuery({ category: req.query.category })
+        } else {
+            result = await productServices.getProducts()
+        }
         res.sendOk({ message: 'Products found successfully', object: result })
     } catch (error) {
         next(error)

@@ -16,11 +16,11 @@ export class User {
     #regexNames = /^[a-zA-Z]+$/
     #regexAge = /^(0?[1-9]|[1-9][0-9]|[1][01][0-9]|100)$/
 
-    constructor ({ _id = null, firstName, lastName, email, age, password, cart = [], role = 'User' }) {
+    constructor ({ _id = null, firstName, lastName, username = null, email, age, password, cart = [], role = 'User' }) {
         this._id = _id
         this.firstName = firstName
         this.lastName = lastName
-        this.username = `${firstName} ${lastName}`
+        this.username = username || `${firstName} ${lastName}`
         this.email = email
         this.age = age
         this.password = password
