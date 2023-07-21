@@ -1,0 +1,52 @@
+<div class="container-fluid m-0 p-0">
+    <div class="row w-100 h-100">
+        <div class="col-10 mx-auto p-2">
+
+            <table class="table table-hover table-sm-responsive mb-5">
+                <thead>
+                    <tr class="table-secondary">
+                        <th scope="col">#</th>
+                        <th scope="col">User</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Role</th>
+                        <th scope="col">Last Connection</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#if thAreUsers}}
+                    {{#each users}}
+                    <tr>
+                        <th scope="row">{{this._id}}</th>
+                        <td>{{this.username}}</td>
+                        <td>{{this.email}}</td>
+                        <td>{{this.role}}</td>
+                        <td>
+                            <button type="button" class="btn btnDeleteUser" id="btnDeleteUser" uid={{this._id}}>
+                                <a class="icon-link icon-link-hover" href="">
+                                    <i class="bi bi-trash3-fill" style="font-size: 1em;"></i>
+                                </a>
+                            </button>
+                        </td>
+                        <td>
+                            <!-- Formulario para modificar el rol -->
+                            <form method="POST" action="/api/users/updateRole" id="formUpdateRole" class="formUpdateRole" uid={{this._id}}>
+                                <select name="role" id="role">
+                                    <option value="Admin">Admin</option>
+                                    <option value="Premium">Premium</option>
+                                    <option value="User">User</option>
+                                </select>
+                                <button type="submit" class="btn">Save</button>
+                            </form>
+                        </td>
+                        <td>{{this.lastConnection.date}}</td>
+                    </tr>
+                    {{/each}}
+                    {{/if}}
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>
+<script src="/js/users.js" type="module"></script>

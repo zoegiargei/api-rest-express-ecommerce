@@ -94,7 +94,9 @@ class CartServices {
         const index = productsCart.findIndex(prod => String(prod.product._id) === pid)
         if (index !== -1) {
             const newCartInDb = productsCart.filter(prod => String(prod.product._id) !== pid)
-            await this.cartDao.updateElement(cid, newCartInDb)
+            console.log(newCartInDb)
+            cartInDb.productsCart = newCartInDb
+            await this.cartDao.updateElement(cid, cartInDb)
             return cartInDb
         } else {
             throw errors.not_found.withDetails('Product not found in cart')

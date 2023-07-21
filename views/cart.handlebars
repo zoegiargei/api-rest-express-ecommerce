@@ -1,0 +1,47 @@
+<div class="container-fluid m-0 p-0">
+    <div class="row w-100 h-100">
+        <div class="col-10 mx-auto p-2">
+
+            <table class="table table-hover table-sm-responsive mb-5">
+                <thead>
+                    <tr class="table-secondary">
+                        <th scope="col">#</th>
+                        <th scope="col">Product</th>
+                        <th scope="col">Category</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Amount</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#if thAreProducts}}
+                    {{#each cart}}
+                        <tr>
+                            <th scope="row">{{this.product._id}}</th>
+                            <td>{{this.product.title}}</td>
+                            <td>{{this.product.category}}</td>
+                            <td>$ {{this.product.price}}</td>
+                            <td>{{this.quantity}}</td>
+                            <td id="productAmount" price={{this.product.price}} quantity={{this.quantity}} class="productAmount"></td>
+                            <td>
+                                <button type="button" class="btn btnDeleteProduct" pid={{this.product._id}}>
+                                    <a class="icon-link icon-link-hover">
+                                        <i class="bi bi-trash3-fill" style="font-size: 1em;"></i>
+                                    </a>
+                                </button>
+                            </td>
+                        </tr>
+                    {{/each}}
+                    {{/if}}
+                </tbody>
+            </table>
+
+            <button type="button" class="btn btn-success btn-lg d-flex flex-row justify-content-around align-items-center" id="btnContinueShopping" style="width: 280px;">
+                <i class="bi bi-bag-heart-fill m-0 p-0" style="font-size: 1.8em;"></i>
+                <p class="m-0 p-0">Continue Shopping</p>
+            </button>
+        </div>
+    </div>
+</div>
+<script src="/js/cart.js" type="module"></script>

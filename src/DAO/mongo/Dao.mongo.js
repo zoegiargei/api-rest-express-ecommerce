@@ -29,7 +29,7 @@ class DAODb {
     }
 
     async findElementByProjection (p1, p2) {
-        return await this.db.find(p1, p2)
+        return await this.db.find(p1, p2).lean()
     }
 
     async updateElement (id, newValues) {

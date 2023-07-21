@@ -1,0 +1,62 @@
+<div class="container-fluid m-0 p-0">
+    <div class="row w-100 h-100">
+        <div class="col-6 m-5 mx-auto">
+            
+            <div class="card p-5" style="width: 100%; height: min-content; background-color: rgba(169, 145, 211, 0.097);">
+
+                <div class="card-body mx-auto">
+                    <h1 class="card-title">Join up</h1>
+
+                    <p class="card-text">
+                    <form id="registerForm" class="p-3">
+
+                        <div class="mb-3">
+                            <label for="firstName" class="form-label" style="font-size: 1.2em;">First Name</label>
+                            <input type="text" class="form-control" id="firstName" name="firstName"
+                                aria-describedby="nameHelp">
+                            <div id="nameHelp" class="form-text">My name is...</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="lastName" class="form-label" style="font-size: 1.2em;">Last Name</label>
+                            <input type="text" class="form-control" id="lastName" name="lastName"
+                                aria-describedby="lastNameHelp">
+                            <div id="nameHelp" class="form-text">My last name is...</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="exampleInputEmail1" class="form-label" style="font-size: 1.2em;">Email address</label>
+                            <input type="email" class="form-control" id="exampleInputEmail1" name="regEmail"
+                                aria-describedby="emailHelp">
+                            <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="age" class="form-label" style="font-size: 1.2em;">Age</label>
+                            <input type="number" class="form-control" id="age" name="age" aria-describedby="ageHelp">
+                            <div id="ageHelp" class="form-text">30</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="exampleInputPassword1" class="form-label" style="font-size: 1.2em;">Password</label>
+                            <input type="password" class="form-control" id="registerPassword" name="regPassword"
+                                placeholder="example: 'wMH432595@'">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="exampleInputPassword1" class="form-label" style="font-size: 1.2em;">Confirm password</label>
+                            <input type="password" class="form-control" id="registerPassword" name="confirmPassword"
+                                placeholder="example: 'wMH432595@'">
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                    </p>
+
+                    <a href="http://localhost:8080/web/auth/login" class="card-link" style="font-size: 1.2em;"> Do you have an account? >>> Log in</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/js/register.js" type="module"></script>

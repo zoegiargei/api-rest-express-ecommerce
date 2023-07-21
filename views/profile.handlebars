@@ -1,0 +1,28 @@
+<div class="container-fluid m-0 p-0">
+    <div class="row w-100 h-100">
+        <div class="col-5 m-5 mx-auto">
+
+            <div class="card p-5" style="width: 100%; height: min-content">
+                {{#if profileImage}}
+                    <img src={{profileImage}} class="card-img-top" alt="...">
+                {{else}}
+                    <i class="bi bi-person-circle mx-auto" style="font-size: 10em; color: #A991D3;"></i>
+                {{/if}}
+                <div class="card-body mx-auto text-center">
+                    <h5 class="card-title mb-2" style="font-size: 2em;">{{user.username}}</h5>
+                    <p class="card-text mb-2" style="font-size: 1.4em;">Email: {{user.email}}</p>
+                    <p class="card-text mb-2" style="font-size: 1.4em;">Role: {{user.role}}</p>
+                
+                    <form class="mb-2 mx-auto" id="formResetPassword" action="/web/users/updatePassword/firstStep/true" method="post">
+                        <button type="submit" class="btnStyle mx-auto"><p>Reset Password</p></button>
+                    </form>
+                    
+                    <form class="mb-2 mx-auto" id="logoutForm" action="/api/auth/logout" method="post">
+                        <button type="submit" class="btnStyle btnStyle--logout mx-auto" id="btnLogout"><p>Logout</p></button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/js/profile.js"></script>

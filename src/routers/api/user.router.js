@@ -1,13 +1,13 @@
 import { Router } from 'express'
-import errors from '../lib/customErrors.js'
-import { validateSignUp, validateUpdatePassword } from '../middlewares/validators/user.validators.js'
-import { validateGetById } from '../middlewares/validators/id.validator.js'
-import ConfigMulter from '../utils/multer/config.files.multer.js'
-import { handlerConvertToPremium, handlerDeleteUsers, handlerGetUser, handlerGetUsers, handlerPostDocuments, handlerPostProfileImg, handlerPostUser, handlerPutLastConnection, handlerPutPassword, handlerRegister, handlerUpdatePassFirstStep } from '../controllers/api/user.controllers.js'
-import { registerAuthentication } from '../middlewares/passport/passport.strategies.js'
-import { authJwtApi } from '../middlewares/authentication/jwt/auth.byJwt.api.js'
-import { authByRole } from '../middlewares/authentication/authentication.byRole.js'
-import authTokenResetPass from '../middlewares/user/auth.token.reset.pass.middleware.js'
+import errors from '../../lib/customErrors.js'
+import { validateSignUp, validateUpdatePassword } from '../../middlewares/validators/user.validators.js'
+import { validateGetById } from '../../middlewares/validators/id.validator.js'
+import ConfigMulter from '../../utils/multer/config.files.multer.js'
+import { handlerConvertToPremium, handlerDeleteUser, handlerDeleteUsers, handlerGetUser, handlerGetUsers, handlerPostDocuments, handlerPostProfileImg, handlerPostUser, handlerPutLastConnection, handlerPutPassword, handlerRegister, handlerUpdatePassFirstStep, handlerUpdateRole } from '../../controllers/api/user.controllers.js'
+import { registerAuthentication } from '../../middlewares/passport/passport.strategies.js'
+import { authJwtApi } from '../../middlewares/api/authentication/jwt/auth.byJwt.api.js'
+import { authByRole } from '../../middlewares/api/authentication/auth.role.api.js'
+import authTokenResetPass from '../../middlewares/user/auth.token.reset.pass.middleware.js'
 
 const userRouter = Router()
 
@@ -32,8 +32,10 @@ userRouter.get('/premium/:uid', authJwtApi, authByRole(['Admin', 'User']), handl
 userRouter.post('/profileImage', authJwtApi, upload.single('profileImage'), handlerPostProfileImg)
 userRouter.get('/:uid', authJwtApi, handlerGetUser)
 userRouter.put('/lastConnection/:uid', authJwtApi, handlerPutLastConnection)
-userRouter.post('/updatePassword/firstStep', authJwtApi, handlerUpdatePassFirstStep)
+userRouter.post('/updatePassword/firstStep/:web', authJwtApi, handlerUpdatePassFirstStep)
 userRouter.put('/updatePassword', authJwtApi, validateUpdatePassword, authTokenResetPass, handlerPutPassword)
-userRouter.delete('/', handlerDeleteUsers)
+userRouter.put('/updateRole', authJwtApi, authByRole(['Admin']), handlerUpdateRole)
+userRouter.delete('/', authJwtApi, authByRole(['Admin']), handlerDeleteUsers)
+userRouter.delete('/deleteUser/:uid', authJwtApi, authByRole(['Admin']), handlerDeleteUser)
 
 export default userRouter

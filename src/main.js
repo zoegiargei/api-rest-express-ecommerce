@@ -1,6 +1,6 @@
 import express from 'express'
 import { errorHandler } from './middlewares/errorHandler.js'
-import apiRouter from './routers/api.router.js'
+import apiRouter from './routers/api/api.router.js'
 import cookieParser from 'cookie-parser'
 import { SECRET_WORD } from './configs/cookie.config.js'
 import { passportInitialize } from './middlewares/passport/passport.strategies.js'
@@ -15,6 +15,10 @@ import { cpus } from 'node:os'
 import { createServer } from 'http'
 import swaggerJSDoc from 'swagger-jsdoc'
 import swaggerUi from 'swagger-ui-express'
+import webRouter from './routers/web/web.router.js'
+import { engine } from 'express-handlebars'
+
+// import generateMocks from '../mocks/generateMocks.js'
 
 cluster.schedulingPolicy = cluster.SCHED_RR
 
@@ -49,8 +53,12 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(compression({ brotli: { enabled: true, zlib: {} } }))
 app.use(express.static('./public'))
+app.engine('handlebars', engine())
+app.set('views', './views')
+app.set('view engine', 'handlebars')
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(specs))
 app.use('/api', apiRouter)
+app.use('/web', webRouter)
 app.use(errorHandler)
 
 app.get('*', (req, res) => {
@@ -73,4 +81,6 @@ if (cluster.isPrimary) {
         const mongoose = await import('mongoose')
         await mongoose.connect(MONGO_CNX_STR, { useNewUrlParser: true, useUnifiedTopology: true })
     }
+
+    // await generateMocks.createProductMock(30)
 }

@@ -19,10 +19,10 @@ export class Product {
         this._id = _id
         this.title = title
         this.description = description
-        this.code = code // Alphanumeric
-        this.price = price // Number
-        this.status = status // Boolean
-        this.stock = stock // Int Number
+        this.code = code
+        this.price = price
+        this.status = status
+        this.stock = stock
         this.category = category
         this.thumbnail = thumbnail
         this.owner = owner

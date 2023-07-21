@@ -1,4 +1,5 @@
 import cartServices from '../../services/cart.services.js'
+import userServices from '../../services/user.services.js'
 
 export async function handlerGetCart (req, res, next) {
     try {
@@ -13,8 +14,10 @@ export async function handlerGetCart (req, res, next) {
 export async function handlerAddProductToCart (req, res, next) {
     try {
         const cid = req.user.cart[0]._id
+        console.log(cid)
         const pid = req.params.pid
-        const quantity = req.body.quantity
+        console.log(pid)
+        const quantity = Number(req.body.quantity)
         const result = await cartServices.addToCart(cid, pid, quantity)
         res.sendCreated({ message: 'Product added to cart successfully', object: result })
     } catch (error) {
@@ -36,11 +39,11 @@ export async function handlerPutProductsCart (req, res, next) {
 
 export async function handlerDelProdInCart (req, res, next) {
     try {
-        const cid = req.params.cid
+        const cid = req.user.cart[0]._id
         const pid = req.params.pid
         const result = await cartServices.delProdInCart(cid, pid)
         req.logger.warn(`Result in Delete products cart: ${result}`)
-        res.sendNoContent()
+        res.sendOk({ message: 'Product deleted of cart successfully', object: result })
     } catch (error) {
         next(error)
     }
@@ -48,7 +51,7 @@ export async function handlerDelProdInCart (req, res, next) {
 
 export async function handlerCleanCart (req, res, next) {
     try {
-        const cid = req.params.cid
+        const cid = req.user.cart[0]._id
         const result = await cartServices.deleteAllProducts(cid)
         res.sendOk({ message: 'Cart emptyed successfully', object: result })
     } catch (error) {
@@ -58,7 +61,7 @@ export async function handlerCleanCart (req, res, next) {
 
 export async function handlerDeleteCart (req, res, next) {
     try {
-        const cid = req.params.cid
+        const cid = req.user.cart[0]._id
         const result = await cartServices.deleteCart(cid)
         res.sendOk({ message: 'Car deleted successfully', object: result })
     } catch (error) {
@@ -68,7 +71,8 @@ export async function handlerDeleteCart (req, res, next) {
 
 export async function handlerPurchase (req, res, next) {
     try {
-        const user = req.user
+        const uid = req.user._id
+        const user = await userServices.getUserById(uid)
         const { totalPurchase, purchaseData } = await cartServices.purchaseFirstStep(user)
         let ticket
         if (totalPurchase > 0) {

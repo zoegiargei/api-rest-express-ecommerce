@@ -1,0 +1,50 @@
+{{#if thIsProducts}}
+    <div class="container-fluid position-relative">
+
+        <div class="row p-5">
+            <div class="p-2 d-flex justify-content-around align-content-center flex-wrap">
+                {{#each products}}
+                <div class="m-2">
+                    <div class="card p-1" style="width: 18rem; heigth: 10rem;">
+                        {{#each this.thumbnail}}
+                        {{#if @first}}
+                        <img src={{this.url}} class="card-img-top">
+                        {{/if}}
+                        {{/each}}
+                        <div class="card-body">
+                            <h5 class="card-title">{{this.title}}</h5>
+                            <p class="card-text">Price: $ {{this.price}}.00</p>
+
+                            <form>
+                                <button type="button" class="btn btn-primary p-2 m-2 btnSeeProduct" id="btnSeeProduct"
+                                    pid={{this._id}}>
+                                    <i class="bi bi-eye" style="font-size: 1.5em;"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                {{/each}}
+            </div>
+        </div>
+
+        <nav class="position-absolute top-100 start-50 translate-middle p-3">
+            <ul class="pagination">
+                {{#if prevLink}}
+                <li class="page-item"><a class="page-link" href={{prevLink}}>Anterior</a></li>
+                {{else}}
+                <li class="page-item disabled"><a class="page-link" href={{prevLink}}>Anterior</a></li>
+                {{/if}}
+
+                <li class="page-item"><a class="page-link" href="#">{{numberPage}}</a></li>
+
+                {{#if nextLink}}
+                <li class="page-item"><a class="page-link" href={{nextLink}}>Siguiente</a></li>
+                {{else}}
+                <li class="page-item disabled"><a class="page-link" href={{nextLink}}>Siguiente</a></li>
+                {{/if}}
+            </ul>
+        </nav>
+    </div>
+{{/if}}
+<script src="/js/home.js"></script>

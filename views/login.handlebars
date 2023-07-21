@@ -1,0 +1,35 @@
+<div class="container-fluid m-0 p-0">
+    <div class="row w-100 h-100">
+        <div class="col-5 m-5 mx-auto">
+
+            <div class="card p-5" style="width: 100%; height: min-content; background-color: rgba(169, 145, 211, 0.097);">
+                <div class="card-body mx-auto">
+                    <h1 class="card-title"><i class="bi bi-box-arrow-in-right"></i>LOG IN</h1>
+                    
+                    <p class="card-text">
+                        <form id="loginForm" class="mt-5">
+
+                            <div class="mb-3">
+                                <label class="col-form-label col-form-label-md mt-2" for="email" style="font-size: 1.8em;">Email address</label>
+                                <input type="email" class="form-control form-control-lg h-50" placeholder="email@xxx.com" id="loginEmail"
+                                name="loginEmail" aria-describedby="emailHelp">
+                                <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="exampleInputPassword1" class="col-form-label col-form-label-md mt-2" style="font-size: 1.8em;">Password</label>
+                                <input type="password" class="form-control form-control-lg h-50" id="loginPassword" name="loginPassword">
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">Submit</button>
+
+                        </form>
+                    </p>
+
+                    <a href="http://localhost:8080/web/users/register" class="card-link" style="font-size: 1.2em;"> You don't have an account yet? >>> Register</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/js/login.js" type="module"></script>

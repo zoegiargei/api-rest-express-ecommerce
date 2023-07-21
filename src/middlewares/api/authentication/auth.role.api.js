@@ -1,4 +1,4 @@
-import errors from '../../lib/customErrors.js'
+import errors from '../../../lib/customErrors.js'
 
 export const authByRole = (roles) => {
     return (req, res, next) => {

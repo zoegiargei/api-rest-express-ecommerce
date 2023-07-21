@@ -58,7 +58,6 @@ const validateLogin = [
 ]
 
 const validateUpdatePassword = [
-    check('token', 'The token must be in the header').exists(),
     check('currentPassword', 'The current password is wrong').exists().escape().isLength({ min: 8, max: 16 }),
     check('newPassword', 'This new password is not allowed').exists().escape().isLength({ min: 8, max: 16 })
     .custom((value, { req }) => {

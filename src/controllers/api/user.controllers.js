@@ -103,8 +103,12 @@ export async function handlerDeleteUsers (req, res, next) {
 export async function handlerUpdatePassFirstStep (req, res, next) {
     try {
         const uid = req.user._id
-        req.logger.fatal(`User ID: ${req.user._id}`)
-        const result = userServices.sendEmailToUpdatePass(uid)
+        let result
+        if (req.params.web) {
+            result = await userServices.sendEmailToUpdatePass(uid, true)
+        } else {
+            result = await userServices.sendEmailToUpdatePass(uid, false)
+        }
         res.sendOk({ message: 'Email to reset password sent successfully', object: result })
     } catch (error) {
         next(error)
@@ -114,9 +118,44 @@ export async function handlerUpdatePassFirstStep (req, res, next) {
 export async function handlerPutPassword (req, res, next) {
     try {
         const uid = req.user._id
+        console.log(req.body)
         const { currentPassword, newPassword } = req.body
         const result = await userServices.updatePassword(uid, currentPassword, newPassword)
-        res.sendNoContent({ message: "The user's password was successfully updated", object: result })
+        res.sendCreated({ message: "The user's password was successfully updated", object: result })
+    } catch (error) {
+        next(error)
+    }
+}
+
+export async function handlerPutRole (req, res, next) {
+    try {
+        const uid = req.body.uid
+        const role = req.body.role
+        const result = await userServices.updateAField(uid, role)
+        res.sendOk({ message: 'User role updated successfully', object: result })
+    } catch (error) {
+        next(error)
+    }
+}
+
+export async function handlerDeleteUser (req, res, next) {
+    try {
+        const uid = req.params.uid
+        const result = await userServices.deleteUser(uid)
+        res.sendOk({ message: 'User deleted successfully', object: result })
+    } catch (error) {
+        next(error)
+    }
+}
+
+export async function handlerUpdateRole (req, res, next) {
+    try {
+        const uid = req.params.uid
+        const user = await userServices.getUserById(uid)
+        const newRole = req.body.role
+        user.role = newRole
+        const result = await userServices.updateUser(uid, user)
+        res.sendOk({ message: 'User updated successfully', object: result })
     } catch (error) {
         next(error)
     }

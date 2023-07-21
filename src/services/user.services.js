@@ -114,13 +114,18 @@ class UserServices {
         return this.updateUser(uid, user)
     }
 
-    async sendEmailToUpdatePass (uid) {
+    async sendEmailToUpdatePass (uid, web) {
         const user = await this.getUserById(uid)
         const token = await tokenServices.createToken(uid)
         const tokenToUrl = token.token
         const resultSaveToken = await tokenServices.saveTockenUpdatePass(user._id, token)
         winstonLogger.fatal(resultSaveToken)
-        const url = `http://localhost:8080/api/users/updatePassword?token=${tokenToUrl}`
+        let url
+        if (web) {
+            url = `http://localhost:8080/web/users/updatePassword?token=${tokenToUrl}`
+        } else {
+            url = `http://localhost:8080/api/users/updatePassword?token=${tokenToUrl}`
+        }
         const message = templatesForEmails.templateEmailResetPass(url, user.username)
 
         let userEmail
@@ -192,11 +197,12 @@ class UserServices {
         return { result, expiredUsers }
     }
 
-    async deleteUser (id) {
-        const user = this.userDao.findElementById(id)
-        const cid = user.cart._id
+    async deleteUser (uid) {
+        const user = await this.getUserById(uid)
+        console.log(user)
+        const cid = user.cart[0]._id
         await cartServices.deleteCart(cid)
-        return await this.userDao.deleteElement(id)
+        return await this.userDao.deleteElement(uid)
     }
 }
 let userServices

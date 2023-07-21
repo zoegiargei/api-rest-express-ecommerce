@@ -18,7 +18,7 @@ class ProductServices {
 
         const files = []
         attach.forEach(file => {
-            files.push(file.filename)
+            files.push({ url: file.filename })
         })
         console.log(files)
 
@@ -93,6 +93,11 @@ class ProductServices {
 
     async productsByPaginate (limitValue, pageValue) {
         const products = await productModel.paginate({}, { limit: limitValue, page: pageValue, lean: true })
+        return products
+    }
+
+    async productsByPaginateWithQuery (query, limitValue, pageValue) {
+        const products = await productModel.paginate(query, { limit: limitValue, page: pageValue, lean: true })
         return products
     }
 }

@@ -1,9 +1,9 @@
 import { Router } from 'express'
-import { handlerAddProductToCart, handlerCleanCart, handlerDeleteCart, handlerDelProdInCart, handlerGetCart, handlerPurchase, handlerPutProductsCart } from '../controllers/api/carts.controllers.js'
-import errors from '../lib/customErrors.js'
-import { authJwtApi } from '../middlewares/authentication/jwt/auth.byJwt.api.js'
-import { validateQuantity } from '../middlewares/validators/cart.validator.js'
-import { validateGetById } from '../middlewares/validators/id.validator.js'
+import { handlerAddProductToCart, handlerCleanCart, handlerDeleteCart, handlerDelProdInCart, handlerGetCart, handlerPurchase, handlerPutProductsCart } from '../../controllers/api/carts.controllers.js'
+import errors from '../../lib/customErrors.js'
+import { authJwtApi } from '../../middlewares/api/authentication/jwt/auth.byJwt.api.js'
+import { validateQuantity } from '../../middlewares/validators/cart.validator.js'
+import { validateGetById } from '../../middlewares/validators/id.validator.js'
 
 const cartRouter = Router()
 
@@ -19,9 +19,9 @@ cartRouter.param('cid', (req, res, next, param) => {
 
 cartRouter.get('/:cid', authJwtApi, handlerGetCart)
 cartRouter.post('/products/:pid', authJwtApi, validateQuantity, handlerAddProductToCart)
-cartRouter.post('/purchase/:cid', authJwtApi, handlerPurchase)
+cartRouter.post('/purchase', authJwtApi, handlerPurchase)
 cartRouter.put('/products', authJwtApi, validateQuantity, handlerPutProductsCart)
-cartRouter.delete('/:cid/products/:pid', authJwtApi, handlerDelProdInCart)
+cartRouter.delete('/products/:pid', authJwtApi, handlerDelProdInCart)
 cartRouter.delete('/:cid', authJwtApi, handlerDeleteCart)
 cartRouter.delete('/cleanCart/:cid', authJwtApi, handlerCleanCart)
 

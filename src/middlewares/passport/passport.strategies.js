@@ -22,7 +22,7 @@ passport.use('register', new LocalStrategy({ passReqToCallback: true, usernameFi
 
 passport.use('login', new LocalStrategy({ usernameField: 'email' }, async (username, password, done) => {
     try {
-        const adminEmail = config.ADMIN_EMAIL
+        const adminEmail = config.ADMIN_EMAIL.toLowerCase()
         const adminPassword = config.ADMIN_PASSWORD
         if (username === adminEmail && password === adminPassword) {
             await cartServices.createCart(username)

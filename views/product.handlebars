@@ -1,0 +1,42 @@
+<div class="container-fluid m-0 p-0">
+    <div class="row w-100 h-100">
+        <div class="col-8 m-5 mx-auto">
+
+            <div class="card bg-light" style="width: 100%; height: min-content; background-color: rgba(169, 145, 211, 0.097);" id="productId" value={{product._id}}>
+                {{#each product.thumbnail}}
+                    {{#if @first}}
+                        <img src={{this.url}} class="card-img-top p-5 mx-auto" style="width:auto; height: 500px">
+                    {{/if}}
+                {{/each}}
+                <div class="card-body">
+                    <h5 class="card-title">{{product.title}}</h5>
+                    <p class="card-text">{{product.description}}</p>
+                    <p class="productStock" id="productStock" value={{product.stock}}></p>
+                </div>
+                <ul class="list-group list-group-flush bg-light">
+                    <li class="list-group-item">Category: {{product.category}}</li>
+                    <li class="list-group-item">Code {{product.code}}</li>
+                    <li class="list-group-item">Price: $ {{product.price}}.00</li>
+                </ul>
+
+                <div class="card-body">
+                    <div class="form-group" style="max-width: 120px;">
+                        <label for="quantity">Cantidad:</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <button class="btn btn-outline-secondary" type="button" id="decrementBtn">-</button>
+                            </div>
+                            <input type="number" class="form-control" id="quantity" value="1">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary" type="button" id="incrementBtn">+</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-primary" id="addToCart" pid={{product._id}}>Add to cart</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/js/product.js" type="module"></script>

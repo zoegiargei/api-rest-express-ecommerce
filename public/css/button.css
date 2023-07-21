@@ -1,0 +1,50 @@
+.btnStyle{
+    padding: 11px 28px;
+    
+    display: inline-block;
+    text-decoration: none;
+    background-color: #A991D3;
+
+    border: none;
+    border-radius: 32px;
+
+    transition: all 0.5s ease-out;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.btnStyle i{
+    font-size: 20px;
+    font-weight: 400;
+    color: hsl(96, 71%, 99%);
+    margin: auto;
+    margin-right: 5px;
+}
+
+.btnStyle p{
+    font-size: 20px;
+    font-weight: 400;
+    color: hsl(96, 71%, 99%);
+    margin: auto;
+    text-align: center;
+}
+
+.btnStyle:hover{
+    transform: scale(1.1);
+}
+
+.btnLogin{
+    padding: 15px 32px;
+}
+.btnLogin i{
+    font-size: 24px;
+}
+.btnLogin p{
+    font-size: 22px;
+}
+
+.btnStyle--logout{
+    background-color: #ff3232;
+}

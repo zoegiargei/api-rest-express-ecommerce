@@ -10,6 +10,14 @@ const validateQueryCategory = [
     }
 ]
 
+const validateQueryPage = [
+    check('page').optional().not().isEmpty().trim().escape().isNumeric(),
+    (req, res, next) => {
+        validateResult(req, res, next, 400)
+    }
+]
+
 export {
-    validateQueryCategory
+    validateQueryCategory,
+    validateQueryPage
 }

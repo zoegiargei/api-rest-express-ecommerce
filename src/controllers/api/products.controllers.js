@@ -67,3 +67,19 @@ export async function handlerGetProducts (req, res, next) {
         next(error)
     }
 }
+
+export async function handlerGetProductsPaginate (req, res, next) {
+    try {
+        const page = req.query.page || 1
+        const limit = req.query.limit || 10
+        const result = await productServices.productsByPaginate(limit, page)
+
+        const prevLink = result.hasPrevPage ? `api/products/limit=${limit}&?page=${Number(page) - 1}` : null
+        const nextLink = result.hasPrevPage ? `api/products/limit=${limit}&?page=${Number(page) + 1}` : null
+
+        // eslint-disable-next-line dot-notation
+        return res.sendOk({ message: 'Products lookup by page were found successfully', object: [result['docs'], prevLink, nextLink] })
+    } catch (error) {
+        next(error)
+    }
+}
