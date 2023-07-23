@@ -69,8 +69,10 @@ app.get('*', (req, res) => {
 })
 
 if (cluster.isPrimary) {
-    for (let i = 0; i < cpus().length; i++) { cluster.fork() }
+    let numWorkers = cpus().length
+    for (let i = 0; i < numWorkers; i++) { cluster.fork() }
     cluster.on('exit', worker => {
+        numWorkers--
         cluster.fork()
     })
 } else if (cluster.isWorker) {
@@ -81,5 +83,9 @@ if (cluster.isPrimary) {
         const mongoose = await import('mongoose')
         await mongoose.connect(MONGO_CNX_STR, { useNewUrlParser: true, useUnifiedTopology: true })
     }
+
+    cluster.on('error', (err) => {
+        winstonLogger.fatal(err)
+    })
     // await generateMocks.createProductMock(30)
 }
