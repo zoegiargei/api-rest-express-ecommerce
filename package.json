@@ -1,11 +1,11 @@
 {
   "type": "module",
-  "name": "app-test",
+  "name": "app",
   "version": "1.0.0",
   "description": "",
   "main": "src/main.js",
   "scripts": {
-    "start": "NODE_ENV=prod node .",
+    "start": "node .",
     "start:debug": "NODE_ENV=debug nodemon -e 'js,yaml,handlebars,css' .",
     "start:dev": "NODE_ENV=dev nodemon -e 'js,yaml,handlebars,css' .",
     "start:prod": "NODE_ENV=prod nodemon -e 'js,yaml,handlebars,css' .",

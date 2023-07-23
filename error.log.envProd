@@ -1928,3 +1928,13 @@
 11:42:04 [31merror[39m: ">>> INSTANCE OF ERROR: SyntaxError"
 11:42:04 [31merror[39m: {}
 11:42:04 [31merror[39m: "Unexpected token \" in JSON at position 0"
+18:17:14 [31mfatal[39m: "Server running on port: 8080"
+18:17:14 [31mfatal[39m: "Server running on port: 8080"
+18:17:14 [31mfatal[39m: "Server running on port: 8080"
+18:17:14 [31mfatal[39m: "Server running on port: 8080"
+18:17:14 [31mfatal[39m: "Server running on port: 8080"
+18:17:14 [31mfatal[39m: "Server running on port: 8080"
+18:17:14 [31mfatal[39m: "Server running on port: 8080"
+18:17:14 [31mfatal[39m: "Server running on port: 8080"
+18:17:30 [31mfatal[39m: "GET on /api/products"
+18:17:50 [31mfatal[39m: "GET on /api/products/64b6f0766f92760e76daa868"
