@@ -1,4 +1,4 @@
-class Repository {
+class RepositoryStatic {
     static saveDtoInDB (element, dao) {
         const response = dao.createElement(element)
         return response
@@ -11,4 +11,4 @@ class Repository {
         return response
     }
 }
-export default Repository
+export default RepositoryStatic
