@@ -141,7 +141,7 @@ export async function handlerDeleteUser (req, res, next) {
 
 export async function handlerUpdateRole (req, res, next) {
     try {
-        const uid = req.params.uid
+        const uid = req.body.uid
         const user = await userServices.getUserById(uid)
         const newRole = req.body.role
         user.role = newRole

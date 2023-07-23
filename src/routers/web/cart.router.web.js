@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { handlerShowUserCart } from '../../controllers/web/cart.controllers.js'
+import { handlerShowUserCart } from '../../controllers/web/cart.controllers.web.js'
 import { authJwtWeb } from '../../middlewares/web/authentication/jwt/auth.byJwt.web.js'
 
 const cartRouter = Router()

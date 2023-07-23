@@ -1,4 +1,11 @@
 /* eslint-disable no-undef */
+class DataToUpdateRole {
+    constructor (uid, role) {
+        this.uid = uid
+        this.role = role
+    }
+}
+
 const buttons = document.querySelectorAll('.btnDeleteUser')
 buttons.forEach(button => {
     button.addEventListener('click', (e) => {
@@ -23,17 +30,30 @@ forms.forEach(form => {
     form.addEventListener('submit', (e) => {
         e.preventDefault()
         const uid = form.getAttribute('uid')
-        const url = `/api/users/updateRole/${uid}`
-        const newRole = form.elements.role.value
-        fetch(url, {
+        console.log(uid)
+        const dataToSend = new DataToUpdateRole(uid, String(form.elements.role.value))
+
+        fetch('/api/users/updateRole', {
             method: 'PUT',
+            body: JSON.stringify(dataToSend),
             headers: {
                 'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(newRole)
+            }
         }).then(result => {
             if (result.status === 200) {
-                location.reload()
+                Swal.fire({
+                    icon: 'success',
+                    title: 'User Role updated successfully'
+                })
+
+                setTimeout(() => {
+                    location.reload()
+                }, 3000)
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Internal Server Error'
+                })
             }
         })
     })

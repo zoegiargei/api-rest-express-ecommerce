@@ -8,6 +8,7 @@ export function authJwtWeb (req, res, next) {
         req.user = securityUser
         const cart = await cartServices.getCartById(securityUser.cart[0]._id)
         req.quantity = cart.productsCart.length
+        req.admin = req.user.role === 'Admin'
         next()
     })(req, res, next)
 }

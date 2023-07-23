@@ -25,7 +25,8 @@ passport.use('login', new LocalStrategy({ usernameField: 'email' }, async (usern
         const adminEmail = config.ADMIN_EMAIL.toLowerCase()
         const adminPassword = config.ADMIN_PASSWORD
         if (username === adminEmail && password === adminPassword) {
-            const exist = await cartServices.getCartByQuery({ userEmail: config.ADMIN_EMAIL })
+            const exist = await cartServices.getCartByQuery({ userEmail: adminEmail })
+            console.log(exist)
             let cid
             if (exist.length > 0) {
                 cid = exist[0]
@@ -37,9 +38,8 @@ passport.use('login', new LocalStrategy({ usernameField: 'email' }, async (usern
             const userAdmin = {
                 username: 'User Admin',
                 email: 'adminCoder@coder.com',
-                cart: cid,
-                role: 'Admin',
-                admin: true
+                cart: [cid],
+                role: 'Admin'
             }
 
             return done(null, userAdmin)

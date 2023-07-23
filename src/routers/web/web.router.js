@@ -3,7 +3,7 @@ import { handlerShowProducts } from '../../controllers/web/products.controller.w
 import { validateQueryPage } from '../../middlewares/validators/query.validators.js'
 import { catchDataUserWeb } from '../../middlewares/web/authentication/catch.data.user.web.js'
 import authRouterWeb from './auth.router.web.js'
-import cartRouter from './cart.router.js'
+import cartRouter from './cart.router.web.js'
 import productsRouterWeb from './products.router.web.js'
 import userRouterWeb from './user.router.web.js'
 

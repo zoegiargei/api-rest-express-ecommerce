@@ -13,7 +13,7 @@ export async function handlerShowProducts (req, res, next) {
         const user = req.user
         let dataCart
         if (user) dataCart = req.quantity
-        res.render('home', { title: 'Home', loggedin: user, quantity: dataCart, thIsProducts: thIsProd, products: allProducts['docs'], prevLink: prevLink || false, nextLink: nextLink || false, numberPage: numPage })
+        res.render('home', { title: 'Home', loggedin: user, quantity: dataCart, admin: req.admin, thIsProducts: thIsProd, products: allProducts['docs'], prevLink: prevLink || false, nextLink: nextLink || false, numberPage: numPage })
     } catch (error) {
         next(error)
     }
@@ -25,7 +25,7 @@ export async function handlerShowProductDetails (req, res, next) {
         const dataCart = req.user ? req.quantity : null
         const cid = user ? req.user.cart[0]._id : null
         const result = await productServices.getProductById(req.params.pid)
-        res.render('product', { title: 'Details of product', loggedin: user, quantity: dataCart, product: result, cartId: cid, stock: result.stock })
+        res.render('product', { title: 'Details of product', loggedin: user, quantity: dataCart, admin: req.admin, product: result, cartId: cid, stock: result.stock })
     } catch (error) {
         next(error)
     }
@@ -48,7 +48,7 @@ export async function handlerShowProductsByCategory (req, res, next) {
         let dataCart
         if (user) dataCart = req.quantity
 
-        res.render('home', { title: 'Home', loggedin: user, quantity: dataCart, thIsProducts: thIsProd, products: allProducts['docs'], prevLink: prevLink || false, nextLink: nextLink || false, numberPage: numPage })
+        res.render('home', { title: 'Home', loggedin: user, quantity: dataCart, admin: req.admin, thIsProducts: thIsProd, products: allProducts['docs'], prevLink: prevLink || false, nextLink: nextLink || false, numberPage: numPage })
     } catch (error) {
         next(error)
     }

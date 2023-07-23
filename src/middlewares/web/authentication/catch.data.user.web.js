@@ -6,9 +6,10 @@ export async function catchDataUserWeb (req, res, next) {
         if (error || !user) return next()
         const securityUser = { ...JSON.parse(user.payload), password: '' }
         req.user = securityUser
-        const cart = await cartServices.getCartById(securityUser.cart[0]._id)
+        console.log(securityUser)
+        const cart = await cartServices.getCartById(securityUser.cart[0]?._id)
         req.quantity = cart.productsCart.length
-        console.log(req.quantity)
+        req.admin = req.user.role === 'Admin'
         next()
     })(req, res, next)
 }

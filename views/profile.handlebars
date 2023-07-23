@@ -3,11 +3,7 @@
         <div class="col-5 m-5 mx-auto">
 
             <div class="card p-5 animate__animated animate__fadeIn animate__delay-0.8s" style="width: 100%; height: min-content">
-                {{#if profileImage}}
-                    <img src={{profileImage}} class="card-img-top" alt="...">
-                {{else}}
-                    <i class="bi bi-person-circle mx-auto" style="font-size: 10em; color: #A991D3;"></i>
-                {{/if}}
+                <i class="bi bi-person-circle mx-auto" style="font-size: 10em; color: #A991D3;"></i>
                 <div class="card-body mx-auto text-center">
                     <h5 class="card-title mb-2" style="font-size: 2em;">{{user.username}}</h5>
                     <p class="card-text mb-2" style="font-size: 1.4em;">Email: {{user.email}}</p>

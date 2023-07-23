@@ -20,7 +20,18 @@
                         <th scope="row">{{this._id}}</th>
                         <td>{{this.username}}</td>
                         <td>{{this.email}}</td>
-                        <td>{{this.role}}</td>
+                        <td>
+                            {{this.role}}
+                            <form class="formUpdateRole" uid={{this._id}}>
+                                <select name="role" id="role" class="form-small-select">
+                                    <option value="Admin">Admin</option>
+                                    <option value="Premium">Premium</option>
+                                    <option value="User">User</option>
+                                </select>
+                                <button type="submit" class="btn btn-success btn-sm">Save</button>
+                            </form>
+                        </td>
+                        <td>{{this.lastConnection.date}}</td>
                         <td>
                             <button type="button" class="btn btnDeleteUser" id="btnDeleteUser" uid={{this._id}}>
                                 <a class="icon-link icon-link-hover" href="">
@@ -28,18 +39,6 @@
                                 </a>
                             </button>
                         </td>
-                        <td>
-                            <!-- Formulario para modificar el rol -->
-                            <form method="POST" action="/api/users/updateRole" id="formUpdateRole" class="formUpdateRole" uid={{this._id}}>
-                                <select name="role" id="role">
-                                    <option value="Admin">Admin</option>
-                                    <option value="Premium">Premium</option>
-                                    <option value="User">User</option>
-                                </select>
-                                <button type="submit" class="btn">Save</button>
-                            </form>
-                        </td>
-                        <td>{{this.lastConnection.date}}</td>
                     </tr>
                     {{/each}}
                     {{/if}}
