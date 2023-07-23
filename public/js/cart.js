@@ -1,3 +1,7 @@
+function spinner () {
+    document.getElementById('loader').classList.toggle('loader2')
+}
+
 const fields = document.querySelectorAll('.productAmount')
 fields.forEach(field => {
     const price = field.getAttribute('price')
@@ -31,12 +35,14 @@ const btnContinueShopping = document.getElementById('btnContinueShopping')
 btnContinueShopping.addEventListener('click', (e) => {
     e.preventDefault()
 
+    spinner()
     fetch('/api/carts/purchase', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         }
     }).then(result => {
+        spinner()
         if (result.status === 200) {
             // eslint-disable-next-line no-undef
             Swal.fire({

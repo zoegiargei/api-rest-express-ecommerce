@@ -25,7 +25,8 @@ export async function handlerShowProfile (req, res, next) {
         const dataUser = req.user
         const dataCart = req.quantity
         const profileImage = dataUser.documents.profileImage ? dataUser.documents.profileImage : null
-        res.render('profile', { title: 'Profile', loggedin: dataUser, profileImage, quantity: dataCart, user: dataUser })
+        const thIsDocuments = dataUser.documents.length > 0 ? dataUser.document : false
+        res.render('profile', { title: 'Profile', loggedin: dataUser, profileImage, quantity: dataCart, user: dataUser, document: thIsDocuments })
     } catch (error) {
         next(error)
     }

@@ -1,3 +1,7 @@
+function spinner () {
+    document.getElementById('loader').classList.toggle('loader2')
+}
+
 /* eslint-disable no-undef */
 class Quantity {
     constructor (quantity) {
@@ -37,6 +41,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const btnAddToCart = document.getElementById('addToCart')
     btnAddToCart.addEventListener('click', (e) => {
         e.preventDefault()
+
+        spinner()
         const quantity = new Quantity(quantityInput.value)
         const pid = btnAddToCart.getAttribute('pid')
 
@@ -48,6 +54,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }).then(result => {
             if (result.status === 201) {
+                spinner()
                 Swal.fire({
                     icon: 'success',
                     title: 'Product added to cart'
@@ -55,12 +62,16 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 setTimeout(() => {
                     location.reload()
-                }, 3000)
+                }, 4000)
             } else {
                 Swal.fire({
                     icon: 'error',
                     title: 'You are not authenticated'
                 })
+
+                setTimeout(() => {
+                    window.location.replace('/web/auth/login')
+                }, 4000)
             }
             return result.json()
         }).then(data => {
