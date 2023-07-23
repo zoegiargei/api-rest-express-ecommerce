@@ -2,6 +2,9 @@
   "type": "module",
   "name": "app",
   "version": "1.0.0",
+  "engines": {
+    "node": ">=18.17.0 <19.0.0"
+  },
   "description": "",
   "main": "src/main.js",
   "scripts": {

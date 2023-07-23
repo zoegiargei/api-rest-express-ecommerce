@@ -29,7 +29,7 @@ _Este es un servidor API REST basado en el framework Express.js, desarrollado co
 
 _Asegúrate de tener instalado lo siguiente:_
 
-- Node.js (versión 20.2.0)
+- Node.js (versión 18.17.0)
 - MongoDB (versión 5.6.0)
 
 ### Instalación
