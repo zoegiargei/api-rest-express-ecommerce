@@ -22,9 +22,9 @@ passport.use('register', new LocalStrategy({ passReqToCallback: true, usernameFi
 
 passport.use('login', new LocalStrategy({ usernameField: 'email' }, async (username, password, done) => {
     try {
-        const adminEmail = config.ADMIN_EMAIL.toLowerCase()
+        const adminEmail = config.ADMIN_EMAIL
         const adminPassword = config.ADMIN_PASSWORD
-        if (username === adminEmail && password === adminPassword) {
+        if (username === adminEmail.toLowerCase() && password === adminPassword) {
             const exist = await cartServices.getCartByQuery({ userEmail: adminEmail })
             console.log(exist)
             let cid
