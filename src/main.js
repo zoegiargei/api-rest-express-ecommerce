@@ -68,7 +68,7 @@ app.get('*', (req, res) => {
     res.json({ message: `Unknown route: ${req.url}` })
 })
 
-if (cluster.isPrimary) {
+/* if (cluster.isPrimary) {
     let numWorkers = cpus().length
     for (let i = 0; i < numWorkers; i++) { cluster.fork() }
     cluster.on('exit', worker => {
@@ -88,4 +88,12 @@ if (cluster.isPrimary) {
         winstonLogger.fatal(err)
     })
     // await generateMocks.createProductMock(30)
+} */
+
+const server = createServer(app)
+server.listen(PORT, '0.0.0.0', () => { winstonLogger.fatal(`Server running on port: ${PORT}`) })
+
+if (config.PERSISTENCE === 'MONGO') {
+    const mongoose = await import('mongoose')
+    await mongoose.connect(MONGO_CNX_STR, { useNewUrlParser: true, useUnifiedTopology: true })
 }
