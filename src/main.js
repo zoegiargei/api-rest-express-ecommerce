@@ -81,6 +81,5 @@ if (cluster.isPrimary) {
         const mongoose = await import('mongoose')
         await mongoose.connect(MONGO_CNX_STR, { useNewUrlParser: true, useUnifiedTopology: true })
     }
-
     // await generateMocks.createProductMock(30)
 }
