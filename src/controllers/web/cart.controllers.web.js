@@ -4,7 +4,7 @@ import cartServices from '../../services/cart.services.js'
 export async function handlerShowUserCart (req, res, next) {
     try {
         const cid = req.user.cart[0]._id
-        req.logger.warn(`CID: ${cid}`)
+        // req.logger.warn(`CID: ${cid}`)
         const dataCart = await cartServices.getCartById(cid)
         const productsCart = dataCart.productsCart
         const thAreProducts = productsCart.length > 0

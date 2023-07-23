@@ -27,7 +27,6 @@ class UserServices {
         if (config.NODE_ENV === 'dev') userData._id = String(uuidv4())
         const newUser = new User(userData)
         const userAsDto = newUser.toDto()
-        winstonLogger.warn(userAsDto)
         if (userAsDto._id === null) {
             delete userAsDto._id
         }
@@ -120,8 +119,7 @@ class UserServices {
         const user = await this.getUserById(uid)
         const token = await tokenServices.createToken(uid)
         const tokenToUrl = token.token
-        const resultSaveToken = await tokenServices.saveTockenUpdatePass(user._id, token)
-        winstonLogger.fatal(resultSaveToken)
+        await tokenServices.saveTockenUpdatePass(user._id, token)
         let url
         if (web) {
             url = `http://localhost:8080/web/users/updatePassword?token=${tokenToUrl}`

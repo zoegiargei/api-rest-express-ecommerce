@@ -11,7 +11,7 @@ import { MONGO_CNX_STR } from './configs/mongo.config.js'
 import { logger, winstonLogger } from './middlewares/logger/logger.js'
 import compression from 'express-compression'
 import cluster from 'cluster'
-import { cpus } from 'node:os'
+// import { cpus } from 'node:os'
 import { createServer } from 'http'
 import swaggerJSDoc from 'swagger-jsdoc'
 import swaggerUi from 'swagger-ui-express'
@@ -91,7 +91,7 @@ app.get('*', (req, res) => {
 } */
 
 const server = createServer(app)
-server.listen(PORT, '0.0.0.0', () => { winstonLogger.fatal(`Server running on port: ${PORT}`) })
+server.listen(PORT, '0.0.0.0', () => { console.log(`Server running on port: ${PORT}`) })
 
 if (config.PERSISTENCE === 'MONGO') {
     const mongoose = await import('mongoose')

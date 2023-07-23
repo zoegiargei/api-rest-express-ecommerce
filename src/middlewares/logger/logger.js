@@ -74,7 +74,8 @@ export const winstonLogger = winston.createLogger({
 })
 
 export const logger = (req, res, next) => {
-    winstonLogger.fatal(`${req.method} on ${req.url}`)
+    // winstonLogger.fatal(`${req.method} on ${req.url}`)
+    console.dir((`${req.method} on ${req.url}`))
     req.logger = winstonLogger
     next()
 }

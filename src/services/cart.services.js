@@ -145,16 +145,13 @@ class CartServices {
             }
         }
 
-        const result = this.updateProductsCart(cid, newProductsCart)
-        winstonLogger.warn(result)
-
+        await this.updateProductsCart(cid, newProductsCart)
         return { totalPurchase, purchaseData }
     }
 
     async purchaseSecondStep (totalPurchase, user, purchaseData) {
         const ticket = new Ticket(totalPurchase, user.email)
-        const resultSaveTicket = await ticketServices.saveTicket(ticket)
-        winstonLogger.info(resultSaveTicket)
+        await ticketServices.saveTicket(ticket)
         const ticketInDb = await ticketServices.getLastCreatedTicket()
         const newOrder = new Order(purchaseData, ticketInDb)
         user.orders.push(newOrder)

@@ -4,7 +4,6 @@ import mongoose from 'mongoose'
 import { after, afterEach, before, beforeEach, describe, it } from 'mocha'
 import generatorProductsMock from '../../mocks/utils/mocks/generator.products.mock.js'
 import generatorUserMock from '../../mocks/utils/mocks/generator.user.mock.js'
-import { winstonLogger } from '../../src/middlewares/loggers/logger.js'
 import UsersDAODb from '../../src/DAO/DB_DAOs/Users.DAO.db.js'
 import ProductsDbDAO from '../../src/DAO/DB_DAOs/Products.DAO.db.js'
 import config from '../../config.js'
@@ -65,7 +64,6 @@ describe('Testing router products', () => {
                 .attach('attach', user.thumbnail)
                 assert.ok(ok, 'The request was not successfully')
                 assert.deepStrictEqual(statusCode, 201, 'The status code is wrong')
-                winstonLogger.debug(body.object)
                 assert.deepStrictEqual(body.object, prodProof, 'The expected product was not equal to the real')
             })
         })

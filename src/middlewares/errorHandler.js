@@ -16,9 +16,11 @@ export async function errorHandler (error, req, res, next) {
         } else if (error instanceof Error) {
             instanceOfError = 'RangeError'
         }
-    req.logger.error(`>>> INSTANCE OF ERROR: ${instanceOfError}`)
-    req.logger.error({ status: error.httpCode, details: error.details })
-    if (error !== {}) req.logger.error(error)
+    // req.logger.error(`>>> INSTANCE OF ERROR: ${instanceOfError}`)
+    // req.logger.error({ status: error.httpCode, details: error.details })
+    console.dir({ status: error.httpCode, details: error.details })
+    // if (error !== {}) req.logger.error(error)
+    if (error !== {}) console.log(error)
     const statusCode = error.httpCode ? error.httpCode : 500
     res.status(statusCode).json(error)
 }

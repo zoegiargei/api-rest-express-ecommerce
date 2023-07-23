@@ -16,7 +16,6 @@ export class Regex {
 
     validation (regex, value) {
         const newValue = String(value)
-        winstonLogger.fatal(newValue)
         if ((regex).test(newValue)) {
             return value
         } else {

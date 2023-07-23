@@ -44,7 +44,6 @@ class TokenServices {
         const tokenInDb = await this.tokenDAO.findElementsByQuery({ token: tk })
         if (tokenInDb.length > 0) {
             const tkId = tokenInDb[0]._id
-            winstonLogger.debug(`Token ID for delete token: ${tkId}`)
             return await this.tokenDAO.deleteElement(tkId)
         }
         throw errors.not_found.withDetails('Token not found')

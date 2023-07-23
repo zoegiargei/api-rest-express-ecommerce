@@ -42,7 +42,7 @@ export async function handlerDelProdInCart (req, res, next) {
         const cid = req.user.cart[0]._id
         const pid = req.params.pid
         const result = await cartServices.delProdInCart(cid, pid)
-        req.logger.warn(`Result in Delete products cart: ${result}`)
+        // req.logger.warn(`Result in Delete products cart: ${result}`)
         res.sendOk({ message: 'Product deleted of cart successfully', object: result })
     } catch (error) {
         next(error)
