@@ -1,4 +1,4 @@
-import config from '../../config.js'
+ import config from '../../config.js'
 import cartDaoMemory from '../DAO/memory/cart.dao.memory.js'
 import cartDaoMongo from '../DAO/mongo/cart.dao.mongo.js'
 import errors from '../lib/customErrors.js'
@@ -43,6 +43,11 @@ class CartServices {
 
     async getCartById (cid) {
         return await this.cartDao.findElementById(cid)
+    }
+
+    async getCartByQuery (query) {
+        if (typeof query !== 'object') throw errors.invalid_input_format.withDetails('Query must be an object')
+        return await this.cartDao.findElementsByQuery(query)
     }
 
     async getCartByIdAndQuery (cid, query) {

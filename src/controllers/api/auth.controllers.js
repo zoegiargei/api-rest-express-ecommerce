@@ -8,9 +8,7 @@ export async function handlerPostAuth (req, res, next) {
             signed: true,
             httpOnly: true
         })
-        const userToShow = req.user
-        delete userToShow.password
-        res.sendAccepted({ message: 'User successfully logged in', object: userToShow })
+        res.sendAccepted({ message: 'User successfully logged in', object: req.user })
     } catch (error) {
         next(error)
     }

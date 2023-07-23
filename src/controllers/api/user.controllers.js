@@ -24,7 +24,9 @@ export async function handlerRegister (req, res, next) {
             signed: true,
             httpOnly: true
         })
-        res.sendCreated({ message: 'successful user registration', object: req.user })
+        const userToShow = req.user
+        delete userToShow.password
+        res.sendCreated({ message: 'successful user registration', object: userToShow })
     } catch (error) {
         next(error)
     }
@@ -122,17 +124,6 @@ export async function handlerPutPassword (req, res, next) {
         const { currentPassword, newPassword } = req.body
         const result = await userServices.updatePassword(uid, currentPassword, newPassword)
         res.sendCreated({ message: "The user's password was successfully updated", object: result })
-    } catch (error) {
-        next(error)
-    }
-}
-
-export async function handlerPutRole (req, res, next) {
-    try {
-        const uid = req.body.uid
-        const role = req.body.role
-        const result = await userServices.updateAField(uid, role)
-        res.sendOk({ message: 'User role updated successfully', object: result })
     } catch (error) {
         next(error)
     }

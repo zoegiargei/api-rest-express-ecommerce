@@ -11,6 +11,7 @@ import tokenServices from './token.services.js'
 import templatesForEmails from '../utils/templates/templates.send.email.js'
 import emailService from './email.services.js'
 import { winstonLogger } from '../middlewares/logger/logger.js'
+import { v4 as uuidv4 } from 'uuid'
 
 class UserServices {
     constructor (repository, dao) {
@@ -23,9 +24,10 @@ class UserServices {
         const cid = await cartServices.getLastOne()
 
         const userData = { ...data, cart: cid }
-        if (config.NODE_ENV === 'dev') userData._id = '1234'
+        if (config.NODE_ENV === 'dev') userData._id = String(uuidv4())
         const newUser = new User(userData)
         const userAsDto = newUser.toDto()
+        winstonLogger.warn(userAsDto)
         if (userAsDto._id === null) {
             delete userAsDto._id
         }
@@ -139,7 +141,7 @@ class UserServices {
     }
 
     async updatePassword (id, currentPass, newPass) {
-        const user = await this.userDao.findElementById(id)
+        const user = await this.getUserById(id)
 
         const isValidCurrentPassword = encryptedPass.isValidPassword(user.password, currentPass)
         if (isValidCurrentPassword === false) throw errors.authentication_failed.withDetails('The current password is wrong')
@@ -147,7 +149,7 @@ class UserServices {
         const isValidNewPassword = encryptedPass.isValidPassword(user.password, newPass)
         if (isValidNewPassword) throw errors.invalid_input.withDetails('The new password cannot be equal to the current password')
 
-        const rehydratedUser = this.userRepository.getRehydratedElement(null, user)
+        const rehydratedUser = new User(user)
         rehydratedUser.password = newPass
         const userDto = rehydratedUser.toDto()
         const response = this.userDao.updateElement(id, userDto)

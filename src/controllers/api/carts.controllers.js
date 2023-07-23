@@ -76,7 +76,7 @@ export async function handlerPurchase (req, res, next) {
         const { totalPurchase, purchaseData } = await cartServices.purchaseFirstStep(user)
         let ticket
         if (totalPurchase > 0) {
-            ticket = await cartServices.purchaseSecondStep(totalPurchase, req.user, purchaseData)
+            ticket = await cartServices.purchaseSecondStep(totalPurchase, user, purchaseData)
         }
         res.sendOk({ message: 'The purchase was successful', object: { totalPurchase, purchaseData, ticket } })
     } catch (error) {

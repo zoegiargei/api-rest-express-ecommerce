@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 class Quantity {
     constructor (quantity) {
         this.quantity = Number(quantity)
@@ -47,7 +48,6 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }).then(result => {
             if (result.status === 201) {
-                // eslint-disable-next-line no-undef
                 Swal.fire({
                     icon: 'success',
                     title: 'Product added to cart'
@@ -56,6 +56,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 setTimeout(() => {
                     location.reload()
                 }, 3000)
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'You are not authenticated'
+                })
             }
             return result.json()
         }).then(data => {

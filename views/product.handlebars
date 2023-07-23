@@ -2,7 +2,7 @@
     <div class="row w-100 h-100">
         <div class="col-8 m-5 mx-auto">
 
-            <div class="card bg-light" style="width: 100%; height: min-content; background-color: rgba(169, 145, 211, 0.097);" id="productId" value={{product._id}}>
+            <div class="card bg-light animate__animated animate__fadeIn animate__delay-0.9s" style="width: 100%; height: min-content; background-color: rgba(169, 145, 211, 0.097);" id="productId" value={{product._id}}>
                 {{#each product.thumbnail}}
                     {{#if @first}}
                         <img src={{this.url}} class="card-img-top p-5 mx-auto" style="width:auto; height: 500px">
