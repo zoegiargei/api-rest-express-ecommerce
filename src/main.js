@@ -75,7 +75,7 @@ if (cluster.isPrimary) {
     })
 } else if (cluster.isWorker) {
     const server = createServer(app)
-    server.listen(PORT, () => { winstonLogger.fatal(`Server running on port: ${PORT}`) })
+    server.listen(PORT, '0.0.0.0', () => { winstonLogger.fatal(`Server running on port: ${PORT}`) })
 
     if (config.PERSISTENCE === 'MONGO') {
         const mongoose = await import('mongoose')
