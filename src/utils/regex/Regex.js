@@ -1,6 +1,5 @@
 /* eslint-disable no-useless-escape */
 import { errorsModel } from '../../models/Errors.js'
-import { winstonLogger } from '../../middlewares/loggers/logger.js'
 
 export class Regex {
     constructor () {

@@ -8,7 +8,7 @@ import cors from 'cors'
 import { customResponses } from './lib/custom.responses.js'
 import config from '../config.js'
 import { MONGO_CNX_STR } from './configs/mongo.config.js'
-import { logger, winstonLogger } from './middlewares/logger/logger.js'
+import { logger } from './middlewares/logger/logger.js'
 import compression from 'express-compression'
 import cluster from 'cluster'
 // import { cpus } from 'node:os'
@@ -17,7 +17,6 @@ import swaggerJSDoc from 'swagger-jsdoc'
 import swaggerUi from 'swagger-ui-express'
 import webRouter from './routers/web/web.router.js'
 import { engine } from 'express-handlebars'
-
 // import generateMocks from '../mocks/generateMocks.js'
 
 cluster.schedulingPolicy = cluster.SCHED_RR

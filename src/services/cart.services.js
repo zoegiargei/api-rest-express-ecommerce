@@ -2,7 +2,6 @@
 import cartDaoMemory from '../DAO/memory/cart.dao.memory.js'
 import cartDaoMongo from '../DAO/mongo/cart.dao.mongo.js'
 import errors from '../lib/customErrors.js'
-import { winstonLogger } from '../middlewares/logger/logger.js'
 import Cart from '../models/Cart/Cart.js'
 import Order from '../models/Order.js'
 import Ticket from '../models/Ticket.js'

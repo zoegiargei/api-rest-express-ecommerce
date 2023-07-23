@@ -5,7 +5,7 @@ import productServices from '../../services/product.services.js'
 export async function handlerShowProducts (req, res, next) {
     try {
         const page = req.query.page || 1
-        const allProducts = await productServices.productsByPaginate(10, page)
+        const allProducts = await productServices.productsByPaginate(5, page)
         const thIsProd = allProducts['docs'].length > 0
         const prevLink = allProducts.hasPrevPage ? `http://localhost:${PORT}/web/home?page=${allProducts.prevPage}` : null
         const nextLink = allProducts.hasNextPage ? `http://localhost:${PORT}/web/home?page=${allProducts.nextPage}` : null
@@ -36,7 +36,7 @@ export async function handlerShowProductsByCategory (req, res, next) {
         const productCategory = req.query.category
         const cod = '%20'
         const clearCategory = String(productCategory.replace(cod, ' '))
-        const limitValue = 10
+        const limitValue = 5
         const page = req.query.page || 1
         const allProducts = await productServices.productsByPaginateWithQuery({ category: clearCategory }, limitValue, page)
         console.log(allProducts)

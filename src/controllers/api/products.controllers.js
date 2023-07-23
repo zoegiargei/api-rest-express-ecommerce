@@ -69,7 +69,7 @@ export async function handlerGetProducts (req, res, next) {
 export async function handlerGetProductsPaginate (req, res, next) {
     try {
         const page = req.query.page || 1
-        const limit = req.query.limit || 10
+        const limit = req.query.limit || 5
         const result = await productServices.productsByPaginate(limit, page)
 
         const prevLink = result.hasPrevPage ? `api/products/limit=${limit}&?page=${Number(page) - 1}` : null
