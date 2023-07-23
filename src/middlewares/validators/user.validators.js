@@ -46,7 +46,7 @@ const validateSignUp = [
 ]
 
 const validateLogin = [
-    check('email', 'Invalid argument for email field').exists().notEmpty().normalizeEmail({ all_lowercase: true })
+    check('email', 'Invalid argument for email field').exists().notEmpty()
     .isEmail({ blacklisted_chars: ['<', '>', '&', "'", '"', '/'] })
     .trim().escape(),
     check('password', 'Validation error: Please, introduce a valid password. Minimum eight characters, at least one letter and one number').exists()
