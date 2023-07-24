@@ -17,6 +17,7 @@ program
     .option('PHONE_NUMBER_TWILIO <phone>', '+12542496693')
     .option('LEVEL_LOG <number>', 'Level of errors we want to see', 0)
     .option('HARDCODED_EMAIL <email>', 'Email that will be used for default information cases', 'zoegiargei00@gmail.com')
+    .option('DOMAIN <domain>', 'String with domain name of the site', 'http://localhost/')
 program.parse()
 
 dotenv.config({
@@ -40,5 +41,6 @@ export default {
     ACCOUNT_SID_TWILIO: process.env.ACCOUNT_SID_TWILIO,
     AUTH_TOKEN_TWILIO: process.env.AUTH_TOKEN_TWILIO,
     PHONE_NUMBER_TWILIO: process.env.PHONE_NUMBER_TWILIO,
-    HARDCODED_EMAIL: process.env.HARDCODED_EMAIL
+    HARDCODED_EMAIL: process.env.HARDCODED_EMAIL,
+    DOMAIN: process.env.DOMAIN
 }
