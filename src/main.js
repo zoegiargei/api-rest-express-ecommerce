@@ -43,12 +43,22 @@ const swaggerOptions = {
 // http://localhost:8080/docs/#/Products/get_products_product__id_
 const specs = swaggerJSDoc(swaggerOptions)
 
-if (config.PERSISTENCE === 'MONGO') {
+/* if (config.PERSISTENCE === 'MONGO') {
     const mongoose = await import('mongoose')
-    console.log('process.env.mongo_conexion_string')
-    console.log(process.env.MONGO_CNX_STR)
-    await mongoose.connect(process.env.MONGO_CNX_STR)
+    await mongoose.connect(MONGO_CNX_STR)
+} */
+
+async function connectMongoose () {
+    try {
+        const mongoose = await import('mongoose')
+        await mongoose.connect('mongodb+srv://zoegiargei00:215133@clusterecommerce.lb7hufo.mongodb.net/ecommerce?retryWrites=true&w=majority')
+    } catch (error) {
+        console.log(error)
+        throw new Error(error)
+    }
 }
+
+await connectMongoose()
 
 app.use(logger)
 app.use(cookieParser(SECRET_WORD))
