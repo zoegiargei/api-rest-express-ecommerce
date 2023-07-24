@@ -99,6 +99,11 @@ class ProductServices {
         const products = await productModel.paginate(query, { limit: limitValue, page: pageValue, lean: true })
         return products
     }
+
+    async productsByCategory (cat, limitValue, pageValue) {
+        const products = await productModel.paginate({ category: String(cat) }, { limit: limitValue, page: pageValue, lean: true })
+        return products
+    }
 }
 
 let productServices

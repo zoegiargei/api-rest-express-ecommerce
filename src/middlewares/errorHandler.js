@@ -18,10 +18,12 @@ export async function errorHandler (error, req, res, next) {
         }
     // req.logger.error(`>>> INSTANCE OF ERROR: ${instanceOfError}`)
     // req.logger.error({ status: error.httpCode, details: error.details })
-    console.log(instanceOfError)
-    console.log({ status: error.httpCode, details: error.details })
     // if (error !== {}) req.logger.error(error)
     if (error !== {}) console.log(error)
+    if (error.httpCode) {
+        console.log({ status: error.httpCode, details: error.details })
+    }
+    console.log('Instance of error: ' + instanceOfError)
     const statusCode = error.httpCode ? error.httpCode : 500
     res.status(statusCode).json(error)
 }

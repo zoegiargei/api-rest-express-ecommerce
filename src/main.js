@@ -7,7 +7,7 @@ import { passportInitialize } from './middlewares/passport/passport.strategies.j
 import cors from 'cors'
 import { customResponses } from './lib/custom.responses.js'
 import { PORT } from './configs/server.config.js'
-// import { MONGO_CNX_STR } from './configs/mongo.config.js'
+import { MONGO_CNX_STR } from './configs/mongo.config.js'
 import { logger } from './middlewares/logger/logger.js'
 import compression from 'express-compression'
 import cluster from 'cluster'
@@ -45,7 +45,7 @@ const specs = swaggerJSDoc(swaggerOptions)
 async function connectMongoose () {
     try {
         const mongoose = await import('mongoose')
-        await mongoose.connect(process.env.MONGO_CNX_STR)
+        await mongoose.connect(MONGO_CNX_STR)
     } catch (error) {
         console.log(error)
         throw new Error(error)

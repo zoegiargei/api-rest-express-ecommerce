@@ -42,7 +42,7 @@ class GenerateMocks {
                 stock: Number(faker.number.int({ min: 10, max: 50 })),
                 category: categories[randomIndex],
                 thumbnail: thumbnailArray,
-                owner: process.env.ADMIN_EMAIL
+                owner: 'admincoder@coder.com'
             })
             const prodDto = newProduct.toDto()
             products.push(prodDto)
