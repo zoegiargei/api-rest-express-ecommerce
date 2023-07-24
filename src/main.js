@@ -95,5 +95,4 @@ server.listen(PORT, '0.0.0.0', () => { console.log(`Server running on port: ${PO
 if (config.PERSISTENCE === 'MONGO') {
     const mongoose = await import('mongoose')
     await mongoose.connect(MONGO_CNX_STR, { useNewUrlParser: true, useUnifiedTopology: true, socketTimeoutMS: 60000, serverSelectionTimeoutMS: 60000 })
-    mongoose.set('bufferCommands', false)
 }

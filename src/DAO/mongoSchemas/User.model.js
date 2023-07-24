@@ -30,7 +30,7 @@ const usersSchema = new mongoose.Schema({
     },
     documents: { type: Array, required: true },
     lastConnection: { type: Object, required: true }
-}, { versionKey: false })
+}, { versionKey: false, bufferTimeoutMS: 60000 })
 
 usersSchema.pre(/^find/, function (next) {
     this.populate('cart.cart')
