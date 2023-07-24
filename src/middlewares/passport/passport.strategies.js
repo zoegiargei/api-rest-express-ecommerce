@@ -21,11 +21,10 @@ passport.use('register', new LocalStrategy({ passReqToCallback: true, usernameFi
 
 passport.use('login', new LocalStrategy({ usernameField: 'email' }, async (username, password, done) => {
     try {
-        const adminEmail = process.env.ADMIN_EMAIL
-        const adminPassword = process.env.ADMIN_PASSWORD
+        const adminEmail = process.env.ADMIN_EMAIL || 'adminCoder@coder.com'
+        const adminPassword = process.env.ADMIN_PASSWORD || 'adminCod3r123'
         if (username.toLowerCase() === adminEmail.toLowerCase() && password === adminPassword) {
             const exist = await cartServices.getCartByQuery({ userEmail: adminEmail })
-            console.log(exist)
             let cid
             if (exist.length > 0) {
                 cid = exist[0]
@@ -45,13 +44,12 @@ passport.use('login', new LocalStrategy({ usernameField: 'email' }, async (usern
         }
 
         const user = await userServices.getUserByEmail(username)
-        console.log(user)
         if (!user || user.length === 0) throw errors.invalid_auth.withDetails('One of the credentials is wrong')
 
         const isValidatePassword = encryptedPass.isValidPassword(user.password, password)
         if (isValidatePassword === false) throw errors.invalid_auth.withDetails('One of the credentials is wrong')
-        const userToSend = user
-        done(null, userToSend)
+
+        done(null, user)
     } catch (error) {
         done(error, null)
     }
@@ -66,6 +64,8 @@ passport.use('jwt', new JwtStrategy({
             if (req && req.signedCookies) {
                 token = req.signedCookies.jwt_authorization
             }
+            console.log('Token to signedCookie')
+            console.log(token)
             return token
         }
     ]),
