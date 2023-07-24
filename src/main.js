@@ -6,7 +6,8 @@ import { SECRET_WORD } from './configs/cookie.config.js'
 import { passportInitialize } from './middlewares/passport/passport.strategies.js'
 import cors from 'cors'
 import { customResponses } from './lib/custom.responses.js'
-import config from '../config.js'
+// import config from '../config.js'
+import { PORT } from './configs/server.config.js'
 import { MONGO_CNX_STR } from './configs/mongo.config.js'
 import { logger } from './middlewares/logger/logger.js'
 import compression from 'express-compression'
@@ -22,7 +23,7 @@ import { engine } from 'express-handlebars'
 cluster.schedulingPolicy = cluster.SCHED_RR
 
 const app = express()
-const PORT = config.PORT
+// const PORT = config.PORT
 
 const corsOptions = {
     origin: `http://localhost:${PORT}`,
@@ -43,15 +44,11 @@ const swaggerOptions = {
 // http://localhost:8080/docs/#/Products/get_products_product__id_
 const specs = swaggerJSDoc(swaggerOptions)
 
-/* if (config.PERSISTENCE === 'MONGO') {
-    const mongoose = await import('mongoose')
-    await mongoose.connect(MONGO_CNX_STR)
-} */
-
 async function connectMongoose () {
     try {
         const mongoose = await import('mongoose')
-        await mongoose.connect('mongodb+srv://zoegiargei00:215133@clusterecommerce.lb7hufo.mongodb.net/ecommerce?retryWrites=true&w=majority')
+        await mongoose.connect(MONGO_CNX_STR)
+        //  'mongodb+srv://zoegiargei00:215133@clusterecommerce.lb7hufo.mongodb.net/ecommerce?retryWrites=true&w=majority'
     } catch (error) {
         console.log(error)
         throw new Error(error)
@@ -83,6 +80,9 @@ app.get('*', (req, res) => {
     }
     res.json({ message: `Unknown route: ${req.url}` })
 })
+
+console.log(MONGO_CNX_STR)
+console.log(SECRET_WORD)
 
 /* if (cluster.isPrimary) {
     let numWorkers = cpus().length
