@@ -1,6 +1,7 @@
 import { createTransport } from 'nodemailer'
 import config from '../../config.js'
 import errors from '../lib/customErrors.js'
+import { winstonLogger } from '../middlewares/logger/logger.js'
 
 class EmailsService {
     constructor (userNodemailer, passNodemailer) {
@@ -26,12 +27,13 @@ class EmailsService {
             const data = await this.clientNodemailer.sendMail(mailOptions)
             return (data)
         } catch (error) {
+            winstonLogger.error(error)
             console.log(error)
+            console.log(config.USER_NODEMAILER)
+            console.log(config.PASS_NODEMAILER)
             throw errors.internal_error.withDetails('Something was wrong in nodemailer service')
         }
     }
 }
-console.log(config.USER_NODEMAILER)
-console.log(config.PASS_NODEMAILER)
-const emailService = new EmailsService(config.USER_NODEMAILER, config.PASS_NODEMAILER)
+const emailService = new EmailsService(process.env.USER_NODEMAILER, process.env.PASS_NODEMAILER)
 export default emailService
