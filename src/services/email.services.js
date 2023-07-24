@@ -26,9 +26,12 @@ class EmailsService {
             const data = await this.clientNodemailer.sendMail(mailOptions)
             return (data)
         } catch (error) {
+            console.log(error)
             throw errors.internal_error.withDetails('Something was wrong in nodemailer service')
         }
     }
 }
+console.log(config.USER_NODEMAILER)
+console.log(config.PASS_NODEMAILER)
 const emailService = new EmailsService(config.USER_NODEMAILER, config.PASS_NODEMAILER)
 export default emailService

@@ -23,7 +23,6 @@ import { engine } from 'express-handlebars'
 cluster.schedulingPolicy = cluster.SCHED_RR
 
 const app = express()
-// const PORT = config.PORT
 
 const corsOptions = {
     origin: `http://localhost:${PORT}`,
@@ -48,7 +47,6 @@ async function connectMongoose () {
     try {
         const mongoose = await import('mongoose')
         await mongoose.connect(MONGO_CNX_STR)
-        //  'mongodb+srv://zoegiargei00:215133@clusterecommerce.lb7hufo.mongodb.net/ecommerce?retryWrites=true&w=majority'
     } catch (error) {
         console.log(error)
         throw new Error(error)
