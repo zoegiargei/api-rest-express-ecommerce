@@ -1,2 +1,1 @@
-import config from '../../config.js'
-export const PORT = config.PORT || 8080
+export const PORT = process.env.PORT || 8080

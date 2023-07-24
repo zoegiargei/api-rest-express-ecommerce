@@ -1,4 +1,3 @@
-import config from '../../../config.js'
 import productServices from '../../services/product.services.js'
 
 export async function handlerPostProducts (req, res, next) {
@@ -9,7 +8,7 @@ export async function handlerPostProducts (req, res, next) {
         if (req.user.role === 'Premium') {
             owner = req.user.email
         } else {
-            owner = config.ADMIN_EMAIL
+            owner = process.env.ADMIN_EMAIL
         }
         const result = await productServices.loadProduct(productData, productImages, owner)
         res.sendCreated({ message: 'Product created successfully', object: result })

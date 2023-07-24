@@ -1,4 +1,3 @@
-import config from '../../config.js'
 import ticketDaoMemory from '../DAO/memory/ticket.dao.memory.js'
 import ticketDaoMongo from '../DAO/mongo/ticket.dao.mongo.js'
 import Ticket from '../models/Ticket.js'
@@ -28,7 +27,7 @@ class TicketServices {
 }
 
 let ticketServices
-if (config.NODE_ENV === 'dev') {
+if (process.env.NODE_ENV === 'dev') {
     ticketServices = new TicketServices(ticketDaoMemory)
 } else {
     ticketServices = new TicketServices(ticketDaoMongo)

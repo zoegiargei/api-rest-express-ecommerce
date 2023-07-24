@@ -4,12 +4,11 @@ import mongoose from 'mongoose'
 import { after, before, describe, it } from 'mocha'
 import generatorUserMock from '../../mocks/utils/mocks/generator.user.mock.js'
 import usersService from '../../src/services/users.service.js'
-import config from '../../config.js'
 
 const PORT = 8080
 const serverBaseUrl = `http://localhost:${PORT}`
 const httpClient = supertest.agent(serverBaseUrl)
-const MONGO_CNX_STR_TEST = config.MONGO_CNX_STR
+const MONGO_CNX_STR_TEST = process.env.MONGO_CNX_STR
 
 let user
 describe.only('Testing router carts', () => {

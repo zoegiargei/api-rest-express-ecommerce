@@ -2,7 +2,6 @@ import { faker } from '@faker-js/faker'
 import { User } from '../src/models/User/User.js'
 import { Product } from '../src/models/Product/Product.js'
 import productsDaoMongo from '../src/DAO/mongo/products.dao.mongo.js'
-import config from '../config.js'
 
 const categories = ['Category 1', 'Category 2', 'Category 3', 'Category 4', 'Category 5']
 
@@ -43,7 +42,7 @@ class GenerateMocks {
                 stock: Number(faker.number.int({ min: 10, max: 50 })),
                 category: categories[randomIndex],
                 thumbnail: thumbnailArray,
-                owner: config.ADMIN_EMAIL
+                owner: process.env.ADMIN_EMAIL
             })
             const prodDto = newProduct.toDto()
             products.push(prodDto)

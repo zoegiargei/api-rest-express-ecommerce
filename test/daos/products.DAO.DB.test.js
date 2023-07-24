@@ -3,9 +3,8 @@ import assert from 'assert'
 import mongoose from 'mongoose'
 import { afterEach, beforeEach, describe, it } from 'mocha'
 import ProductsDbDAO from '../../src/DAO/DB_DAOs/Products.DAO.db.js'
-import config from '../../config.js'
 
-const MONGO_CNX_STR_TEST = config.MONGO_CNX_STR
+const MONGO_CNX_STR_TEST = process.env.MONGO_CNX_STR
 
 describe('Products DAO mongoose', () => {
     beforeEach(async () => {

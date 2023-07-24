@@ -1,5 +1,4 @@
 import { buildCheckFunction } from 'express-validator'
-import config from '../../../config.js'
 import userServices from '../../services/user.services.js'
 import { validateResult } from './validation.result.js'
 
@@ -14,7 +13,7 @@ const validateSignUp = [
     .normalizeEmail({ all_lowercase: true })
     .isEmail({ blacklisted_chars: ['<', '>', '&', "'", '"', '/'] })
     .custom(async value => {
-        if (config.NODE_ENV === 'dev') {
+        if (process.env.NODE_ENV === 'dev') {
             const users = await userServices.getUsers()
             if (users.find(u => u.email === value)) {
                 throw new Error('Email already exist')

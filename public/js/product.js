@@ -64,6 +64,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     location.reload()
                 }, 4000)
             } else {
+                spinner()
                 Swal.fire({
                     icon: 'error',
                     title: 'You are not authenticated'

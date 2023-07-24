@@ -4,7 +4,6 @@ import { userRepository } from '../DAO/repositories/user.repository.js'
 import userDaoMongo from '../DAO/mongo/user.dao.mongo.js'
 import encryptedPass from '../utils/password/encrypted.pass.js'
 import cartServices from './cart.services.js'
-import config from '../../config.js'
 import userDaoMemory from '../DAO/memory/user.dao.memory.js'
 import Document from '../models/Document.js'
 import tokenServices from './token.services.js'
@@ -24,7 +23,7 @@ class UserServices {
         const cid = await cartServices.getLastOne()
 
         const userData = { ...data, cart: cid }
-        if (config.NODE_ENV === 'dev') userData._id = String(uuidv4())
+        if (process.env.NODE_ENV === 'dev') userData._id = String(uuidv4())
         const newUser = new User(userData)
         const userAsDto = newUser.toDto()
         if (userAsDto._id === null) {
@@ -135,8 +134,8 @@ class UserServices {
         const message = templatesForEmails.templateEmailResetPass(url, user.username)
 
         let userEmail
-        if (config.NODE_ENV === 'dev' || config.NODE_ENV === 'test') {
-            userEmail = String(config.HARDCODED_EMAIL)
+        if (process.env.NODE_ENV === 'dev' || process.env.NODE_ENV === 'test') {
+            userEmail = String(process.env.HARDCODED_EMAIL)
         } else {
             userEmail = user.email
         }
@@ -186,8 +185,8 @@ class UserServices {
                 const message = templatesForEmails.templateSendExpiredAccount()
 
                 let userEmail
-                if (config.NODE_ENV === 'dev' || config.NODE_ENV === 'test') {
-                    userEmail = String(config.HARDCODED_EMAIL)
+                if (process.env.NODE_ENV === 'dev' || process.env.NODE_ENV === 'test') {
+                    userEmail = process.env.HARDCODED_EMAIL
                 } else {
                     userEmail = em
                 }
@@ -212,7 +211,7 @@ class UserServices {
     }
 }
 let userServices
-if (config.NODE_ENV === 'dev') {
+if (process.env.NODE_ENV === 'dev') {
     userServices = new UserServices(userRepository, userDaoMemory)
 } else {
     userServices = new UserServices(userRepository, userDaoMongo)

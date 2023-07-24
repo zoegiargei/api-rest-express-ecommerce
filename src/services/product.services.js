@@ -1,4 +1,3 @@
-import config from '../../config.js'
 import productDaoMemory from '../DAO/memory/product.dao.memory.js'
 import productsDaoMongo from '../DAO/mongo/products.dao.mongo.js'
 import productModel from '../DAO/mongoSchemas/Product.model.js'
@@ -81,8 +80,8 @@ class ProductServices {
     async deleteProduct (pid) {
         const product = await this.productsDao.findElementById(pid)
         let owner
-        if (config.NODE_ENV === 'dev' || config.NODE_ENV === 'test') {
-            owner = String(config.HARDCODED_EMAIL)
+        if (process.env.NODE_ENV === 'dev' || process.env.NODE_ENV === 'test') {
+            owner = String(process.env.HARDCODED_EMAIL)
         } else {
             owner = product.owner
         }
@@ -103,7 +102,7 @@ class ProductServices {
 }
 
 let productServices
-if (config.NODE_ENV === 'dev') {
+if (process.env.NODE_ENV === 'dev') {
     productServices = new ProductServices(productDaoMemory)
 } else {
     productServices = new ProductServices(productsDaoMongo)

@@ -6,12 +6,11 @@ import generatorProductsMock from '../../mocks/utils/mocks/generator.products.mo
 import generatorUserMock from '../../mocks/utils/mocks/generator.user.mock.js'
 import UsersDAODb from '../../src/DAO/DB_DAOs/Users.DAO.db.js'
 import ProductsDbDAO from '../../src/DAO/DB_DAOs/Products.DAO.db.js'
-import config from '../../config.js'
 
 const PORT = 8080
 const serverBaseUrl = `http://localhost:${PORT}`
 const httpClient = supertest.agent(serverBaseUrl)
-const MONGO_CNX_STR_TEST = config.MONGO_CNX_STR
+const MONGO_CNX_STR_TEST = process.env.MONGO_CNX_STR
 
 // eslint-disable-next-line no-unused-vars
 let user

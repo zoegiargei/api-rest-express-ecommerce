@@ -3,7 +3,6 @@ import Token from '../models/Token.js'
 import encryptedJWT from '../utils/jwt/encrypted.jwt.js'
 import { v4 as uuidv4 } from 'uuid'
 import errors from '../lib/customErrors.js'
-import config from '../../config.js'
 import tokenDaoMemory from '../DAO/memory/token.dao.memory.js'
 
 class TokenServices {
@@ -50,7 +49,7 @@ class TokenServices {
 }
 
 let tokenServices
-if (config.NODE_ENV === 'dev') {
+if (process.env.NODE_ENV === 'dev') {
     tokenServices = new TokenServices(tokenDaoMemory)
 } else {
     tokenServices = new TokenServices(tokenDaoMongo)

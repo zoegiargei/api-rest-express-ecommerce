@@ -6,9 +6,8 @@ import { SECRET_WORD } from './configs/cookie.config.js'
 import { passportInitialize } from './middlewares/passport/passport.strategies.js'
 import cors from 'cors'
 import { customResponses } from './lib/custom.responses.js'
-// import config from '../config.js'
 import { PORT } from './configs/server.config.js'
-import { MONGO_CNX_STR } from './configs/mongo.config.js'
+// import { MONGO_CNX_STR } from './configs/mongo.config.js'
 import { logger } from './middlewares/logger/logger.js'
 import compression from 'express-compression'
 import cluster from 'cluster'
@@ -78,9 +77,6 @@ app.get('*', (req, res) => {
     }
     res.json({ message: `Unknown route: ${req.url}` })
 })
-
-console.log(MONGO_CNX_STR)
-console.log(SECRET_WORD)
 
 /* if (cluster.isPrimary) {
     let numWorkers = cpus().length

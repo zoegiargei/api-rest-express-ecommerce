@@ -1,4 +1,3 @@
- import config from '../../config.js'
 import cartDaoMemory from '../DAO/memory/cart.dao.memory.js'
 import cartDaoMongo from '../DAO/mongo/cart.dao.mongo.js'
 import errors from '../lib/customErrors.js'
@@ -158,8 +157,8 @@ class CartServices {
         const message = templatesForEmails.templateSendTicket(ticket)
 
         let purchaser
-        if (config.NODE_ENV === 'dev' || config.NODE_ENV === 'test') {
-            purchaser = String(config.HARDCODED_EMAIL)
+        if (process.env.NODE_ENV === 'dev' || process.env.NODE_ENV === 'test') {
+            purchaser = process.env.HARDCODED_EMAIL
         } else {
             purchaser = user.email
         }
@@ -168,7 +167,7 @@ class CartServices {
     }
 }
 let cartServices
-if (config.NODE_ENV === 'dev') {
+if (process.env.NODE_ENV === 'dev') {
     cartServices = new CartServices(cartDaoMemory)
 } else {
     cartServices = new CartServices(cartDaoMongo)

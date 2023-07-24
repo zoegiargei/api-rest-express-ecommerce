@@ -1,5 +1,4 @@
 import winston, { format } from 'winston'
-import config from '../../../config.js'
 
 let transports
 // eslint-disable-next-line no-unused-vars
@@ -28,19 +27,19 @@ const myFormat = format.printf(({ level, message, timestamp }) => {
     return `${timestamp} ${level}: ${newMessage}`
 })
 
-if (config.NODE_ENV === 'debug') {
+if (process.env.NODE_ENV === 'debug') {
     transports = [
         new winston.transports.Console({
             level: 'debug'
         })
     ]
-} else if (config.NODE_ENV === 'dev') {
+} else if (process.env.NODE_ENV === 'dev') {
     transports = [
         new winston.transports.Console({
             level: 'warn'
         })
     ]
-} else if (config.NODE_ENV === 'test') {
+} else if (process.env.NODE_ENV === 'test') {
     transports = [
         new winston.transports.Console({
             level: 'error'
@@ -50,7 +49,7 @@ if (config.NODE_ENV === 'debug') {
             filename: 'error.log.envTest'
         })
     ]
-} else if (config.NODE_ENV === 'prod') {
+} else if (process.env.NODE_ENV === 'prod') {
     transports = [
         new winston.transports.File({
             level: 'fatal',

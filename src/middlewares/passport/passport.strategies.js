@@ -5,7 +5,6 @@ import userServices from '../../services/user.services.js'
 import { ExtractJwt, Strategy as JwtStrategy } from 'passport-jwt'
 import { Strategy as LocalStrategy } from 'passport-local'
 import encryptedPass from '../../utils/password/encrypted.pass.js'
-import config from '../../../config.js'
 import cartServices from '../../services/cart.services.js'
 import errors from '../../lib/customErrors.js'
 import { JWT_PRIVATE_KEY } from '../../configs/auth.config.js'
@@ -22,8 +21,8 @@ passport.use('register', new LocalStrategy({ passReqToCallback: true, usernameFi
 
 passport.use('login', new LocalStrategy({ usernameField: 'email' }, async (username, password, done) => {
     try {
-        const adminEmail = config.ADMIN_EMAIL
-        const adminPassword = config.ADMIN_PASSWORD
+        const adminEmail = process.env.ADMIN_EMAIL
+        const adminPassword = process.env.ADMIN_PASSWORD
         if (username === adminEmail && password === adminPassword) {
             const exist = await cartServices.getCartByQuery({ userEmail: adminEmail })
             console.log(exist)
