@@ -46,7 +46,7 @@ const specs = swaggerJSDoc(swaggerOptions)
 async function connectMongoose () {
     try {
         const mongoose = await import('mongoose')
-        await mongoose.connect(MONGO_CNX_STR)
+        await mongoose.connect(process.env.MONGO_CNX_STR)
     } catch (error) {
         console.log(error)
         throw new Error(error)
