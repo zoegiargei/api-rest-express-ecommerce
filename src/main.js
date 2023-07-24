@@ -43,6 +43,11 @@ const swaggerOptions = {
 // http://localhost:8080/docs/#/Products/get_products_product__id_
 const specs = swaggerJSDoc(swaggerOptions)
 
+if (config.PERSISTENCE === 'MONGO') {
+    const mongoose = await import('mongoose')
+    await mongoose.connect(MONGO_CNX_STR)
+}
+
 app.use(logger)
 app.use(cookieParser(SECRET_WORD))
 app.use(passportInitialize)
@@ -91,8 +96,3 @@ app.get('*', (req, res) => {
 
 const server = createServer(app)
 server.listen(PORT, '0.0.0.0', () => { console.log(`Server running on port: ${PORT}`) })
-
-if (config.PERSISTENCE === 'MONGO') {
-    const mongoose = await import('mongoose')
-    await mongoose.connect(MONGO_CNX_STR)
-}
