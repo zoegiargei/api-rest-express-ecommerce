@@ -16,6 +16,14 @@ class DAODb {
         return await this.db.findOne({ _id: id }).lean()
     }
 
+    async findOneByQuery (query, selectOptions = null) {
+        if (selectOptions !== null) {
+            return await this.db.findOne(query).select(selectOptions).lean()
+        } else {
+            return await this.db.findOne(query).lean()
+        }
+    }
+
     async findElementByIdAndQuery (id, query) {
         return await this.db.findOne({ _id: id }, query)
     }
@@ -34,6 +42,10 @@ class DAODb {
 
     async updateElement (id, newValues) {
         return await this.db.updateOne({ _id: id }, newValues)
+    }
+
+    async updateFieldElement (id, updateQuery) {
+        return await this.db.updateOne({ _id: id }, updateQuery)
     }
 
     async sortElements (value) {

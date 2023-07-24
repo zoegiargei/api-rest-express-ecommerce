@@ -45,12 +45,13 @@ passport.use('login', new LocalStrategy({ usernameField: 'email' }, async (usern
             return done(null, userAdmin)
         }
 
-        const user = await userServices.getUserByQuery({ email: username })
+        const user = await userServices.getUserByEmail(username)
+        console.log(user)
         if (!user || user.length === 0) throw errors.invalid_auth.withDetails('One of the credentials is wrong')
 
-        const isValidatePassword = encryptedPass.isValidPassword(user[0].password, password)
+        const isValidatePassword = encryptedPass.isValidPassword(user.password, password)
         if (isValidatePassword === false) throw errors.invalid_auth.withDetails('One of the credentials is wrong')
-        const userToSend = user[0]
+        const userToSend = user
         done(null, userToSend)
     } catch (error) {
         done(error, null)

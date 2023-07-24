@@ -35,7 +35,7 @@ export async function handlerRegister (req, res, next) {
 export async function handlerPostDocuments (req, res, next) {
     try {
         const files = req.files
-        const uid = req.params.uid
+        const uid = req.user._id
         const result = await userServices.addUserDocuments(files, uid)
         res.sendCreated({ message: 'Upload successful', object: result })
     } catch (error) {

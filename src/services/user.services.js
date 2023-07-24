@@ -40,6 +40,13 @@ class UserServices {
         return user
     }
 
+    async getUserByEmail (userEmail, selectOptions = null) {
+        if (selectOptions !== null) {
+            return await this.userDao.findOneByQuery({ email: userEmail }, selectOptions)
+        }
+        return await this.userDao.findOneByQuery({ email: userEmail })
+    }
+
     async getUserByQuery (query) {
         return await this.userDao.findElementsByQuery(query)
     }
@@ -59,23 +66,22 @@ class UserServices {
 
     async addUserDocuments (files, uid) {
         const docNames = Object.keys(files)
-        const user = await this.getUserById(uid)
+        const userDocuments = await this.getUsersByProjection({ _id: uid }, { projection: { documents: 1 } })
+        userDocuments.splice(0, 1)
         docNames.forEach(fieldName => {
             const newDocument = new Document(fieldName, files[fieldName][0].filename, uid)
-            const userDocuments = user.documents || []
-            const existingIndex = userDocuments.findIndex(doc => doc.typeDoc === newDocument.typeDoc)
+            const existingIndex = userDocuments?.findIndex(doc => doc.typeDoc === newDocument.typeDoc)
             if (existingIndex >= 0) {
-                user.documents.splice(existingIndex, 1, newDocument)
+                userDocuments.splice(existingIndex, 1, newDocument)
             } else {
                 if (userDocuments.length) {
-                    user.documents.push(newDocument)
+                    userDocuments.push(newDocument)
                 } else {
-                    user.documents = []
-                    user.documents.push(newDocument)
+                    userDocuments.push(newDocument)
                 }
             }
         })
-        return this.updateUser(uid, user)
+        return await this.userDao.updateFieldElement(uid, { $set: { documents: userDocuments } })
     }
 
     async convertToPremium (uid, DocumentTypes) {

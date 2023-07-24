@@ -26,7 +26,7 @@ userRouter.param('uid', (req, res, next, param) => {
 
 userRouter.post('/register', validateSignUp, registerAuthentication, handlerRegister)
 userRouter.post('/', authJwtApi, authByRole(['Admin', 'Premium']), validateSignUp, handlerPostUser)
-userRouter.post('/:uid/documents', authJwtApi, upload.fields([{ name: 'identification', maxCount: 1 }, { name: 'proofAddress', maxCount: 1 }, { name: 'statementAccount', maxCount: 1 }]), handlerPostDocuments)
+userRouter.post('/documents', authJwtApi, upload.fields([{ name: 'identification', maxCount: 1 }, { name: 'proofAddress', maxCount: 1 }, { name: 'statementAccount', maxCount: 1 }]), handlerPostDocuments)
 userRouter.get('/', authJwtApi, authByRole(['Admin', 'Premium']), handlerGetUsers)
 userRouter.get('/premium/:uid', authJwtApi, authByRole(['Admin', 'User']), handlerConvertToPremium)
 userRouter.post('/profileImage', authJwtApi, upload.single('profileImage'), handlerPostProfileImg)
