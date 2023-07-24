@@ -45,7 +45,9 @@ const specs = swaggerJSDoc(swaggerOptions)
 
 if (config.PERSISTENCE === 'MONGO') {
     const mongoose = await import('mongoose')
-    await mongoose.connect(MONGO_CNX_STR)
+    console.log('process.env.mongo_conexion_string')
+    console.log(process.env.MONGO_CNX_STR)
+    await mongoose.connect(process.env.MONGO_CNX_STR)
 }
 
 app.use(logger)
