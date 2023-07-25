@@ -126,10 +126,11 @@ class UserServices {
         const tokenToUrl = token.token
         await tokenServices.saveTockenUpdatePass(user._id, token)
         let url
+        const domain = process.env.DOMAIN || 'http://localhost:8080/'
         if (web) {
-            url = `http://localhost:8080/web/users/updatePassword?token=${tokenToUrl}`
+            url = `${domain}web/users/updatePassword?token=${tokenToUrl}`
         } else {
-            url = `http://localhost:8080/api/users/updatePassword?token=${tokenToUrl}`
+            url = `${domain}api/users/updatePassword?token=${tokenToUrl}`
         }
         const message = templatesForEmails.templateEmailResetPass(url, user.username)
 
