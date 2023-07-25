@@ -11,6 +11,7 @@ import templatesForEmails from '../utils/templates/templates.send.email.js'
 import emailService from './email.services.js'
 import { winstonLogger } from '../middlewares/logger/logger.js'
 import { v4 as uuidv4 } from 'uuid'
+import { PORT } from '../configs/server.config.js'
 
 class UserServices {
     constructor (repository, dao) {
@@ -126,7 +127,7 @@ class UserServices {
         const tokenToUrl = token.token
         await tokenServices.saveTockenUpdatePass(user._id, token)
         let url
-        const domain = process.env.DOMAIN || 'http://localhost:8080/'
+        const domain = process.env.DOMAIN || `http://localhost:${PORT}/`
         if (web) {
             url = `${domain}web/users/updatePassword?token=${tokenToUrl}`
         } else {

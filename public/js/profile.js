@@ -1,23 +1,27 @@
 /* eslint-disable no-undef */
+function spinner () {
+    document.getElementById('loader').classList.toggle('loader2')
+}
+
 const logoutForm = document.getElementById('logoutForm')
 if (logoutForm instanceof HTMLFormElement) {
     logoutForm.addEventListener('submit', (e) => {
         e.preventDefault()
 
+        spinner()
         fetch('/api/auth/logout', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             }
-        }).then(
-            result => {
-                if (result.status === 200) {
-                    window.location.replace('/web/auth/login/')
-                } else {
-                    window.location.replace('/web/error/')
-                }
+        }).then(result => {
+            spinner()
+            if (result.status === 200) {
+                window.location.replace('/web/auth/login/')
+            } else {
+                window.location.replace('/web/error/')
             }
-        )
+        })
     })
 }
 

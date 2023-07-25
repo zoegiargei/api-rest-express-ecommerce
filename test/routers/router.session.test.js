@@ -6,7 +6,7 @@ import generatorUserMock from '../../mocks/utils/mocks/generator.user.mock.js'
 import UsersDAODb from '../../src/DAO/DB_DAOs/Users.DAO.db.js'
 
 const PORT = 8080
-const serverBaseUrl = `http://localhost:${PORT}`
+const serverBaseUrl = `http:// :${PORT}`
 const httpClient = supertest.agent(serverBaseUrl)
 const MONGO_CNX_STR_TEST = process.env.MONGO_CNX_STR
 

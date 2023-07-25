@@ -23,8 +23,10 @@ cluster.schedulingPolicy = cluster.SCHED_RR
 
 const app = express()
 
+const domain = process.env.DOMAIN || `http://localhost:${PORT}/`
+
 const corsOptions = {
-    origin: `http://localhost:${PORT}`,
+    origin: domain,
     methods: 'GET, POST, PUT, DELETE',
     allowedHeaders: 'Origin, X-Requested-With, Content-Type, Accept'
 }

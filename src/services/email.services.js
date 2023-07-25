@@ -30,5 +30,7 @@ class EmailsService {
         }
     }
 }
-const emailService = new EmailsService(process.env.USER_NODEMAILER, process.env.PASS_NODEMAILER)
+const user = process.env.USER_NODEMAILER || 'zoegiargei00@gmail.com'
+const pass = process.env.PASS_NODEMAILER || 'cbbqbmvrwwfcsnzg'
+const emailService = new EmailsService(user, pass)
 export default emailService

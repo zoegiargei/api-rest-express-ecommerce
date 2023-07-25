@@ -14,10 +14,8 @@ buttons.forEach(button => {
     button.addEventListener('click', (e) => {
         e.preventDefault()
         const pid = button.getAttribute('pid')
-        console.log(pid)
 
         const url = `/api/carts/products/${pid}`
-        console.log(url)
         fetch(url, {
             method: 'DELETE',
             headers: {
@@ -52,7 +50,7 @@ btnContinueShopping.addEventListener('click', (e) => {
 
             setTimeout(() => {
                 location.reload()
-            }, 4000)
+            }, 3000)
         }
     })
 })
