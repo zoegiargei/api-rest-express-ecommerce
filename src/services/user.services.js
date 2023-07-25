@@ -135,8 +135,8 @@ class UserServices {
         }
         const message = templatesForEmails.templateEmailResetPass(url, user.username)
         const userEmail = user.email
-        const result = await emailService.send(userEmail, message, 'Do you want to reset your password?')
-        return result
+        await emailService.send(userEmail, message, 'Do you want to reset your password?')
+        return userEmail
     }
 
     async updatePassword (id, currentPass, newPass) {
