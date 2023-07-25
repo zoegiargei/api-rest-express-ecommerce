@@ -59,6 +59,8 @@ _Asegúrate de tener instalado lo siguiente:_
     * ACCOUNT_SID_TWILIO <account_id_twilio>
     * AUTH_TOKEN_TWILIO <token_twilio>
     * PHONE_NUMBER_TWILIO <phone_number_of_twilio>
+    * HARDCODED_EMAIL <email>
+    * DOMAIN <domain>
   
 5. Inicia el servidor ejecutando el siguiente comando:
 
@@ -68,4 +70,4 @@ _Asegúrate de tener instalado lo siguiente:_
 
 ### Uso
 
-_Una vez que el servidor esté en funcionamiento, podrás acceder a los diferentes endpoints de la API para gestionar Usuarios, Productos y el Carrito de compra. Puedes consultar la documentación de la API para obtener más detalles sobre cómo interactuar con los diferentes endpoints._
+_Una vez que el servidor esté en funcionamiento, podrás acceder a los diferentes endpoints de la API para gestionar Usuarios y productos (si eres usuario Admin), ver productos, agregarlos al carrito de compras (si eres usuario Premium o User). Puedes consultar la documentación de la API para obtener más detalles sobre cómo interactuar con los diferentes endpoints._
