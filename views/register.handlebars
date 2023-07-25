@@ -13,40 +13,44 @@
                         <div class="mb-3">
                             <label for="firstName" class="form-label" style="font-size: 1.2em;">First Name</label>
                             <input type="text" class="form-control" id="firstName" name="firstName"
-                                aria-describedby="nameHelp">
+                                aria-describedby="nameHelp" required>
                             <div id="nameHelp" class="form-text">My name is...</div>
                         </div>
 
                         <div class="mb-3">
                             <label for="lastName" class="form-label" style="font-size: 1.2em;">Last Name</label>
                             <input type="text" class="form-control" id="lastName" name="lastName"
-                                aria-describedby="lastNameHelp">
+                                aria-describedby="lastNameHelp" required>
                             <div id="nameHelp" class="form-text">My last name is...</div>
                         </div>
 
                         <div class="mb-3">
-                            <label for="exampleInputEmail1" class="form-label" style="font-size: 1.2em;">Email address</label>
-                            <input type="email" class="form-control" id="exampleInputEmail1" name="regEmail"
-                                aria-describedby="emailHelp">
+                            <label for="email" class="form-label" style="font-size: 1.2em;">Email address</label>
+                            <input type="email" class="form-control" id="regEmail" name="regEmail"
+                                aria-describedby="emailHelp" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}" title="The format of the email that I entered is invalid" required>
                             <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
                         </div>
 
                         <div class="mb-3">
                             <label for="age" class="form-label" style="font-size: 1.2em;">Age</label>
-                            <input type="number" class="form-control" id="age" name="age" aria-describedby="ageHelp">
+                            <input type="number" class="form-control" id="age" name="age" aria-describedby="ageHelp" 
+                                pattern="^(?:[2-8][0-9]|1[0-9]|[2-9])$" title="Age must be an integer greater than 1 and less than 90" required aria-required="true">
                             <div id="ageHelp" class="form-text">30</div>
                         </div>
 
                         <div class="mb-3">
-                            <label for="exampleInputPassword1" class="form-label" style="font-size: 1.2em;">Password</label>
-                            <input type="password" class="form-control" id="registerPassword" name="regPassword"
-                                placeholder="example: 'wMH432595@'">
+                            <label for="regPassword" class="form-label" style="font-size: 1.2em;">Password</label>
+                            <input type="password" class="form-control" id="regPassword" name="regPassword"
+                                placeholder="example: 'wMH432595@'" 
+                                pattern="^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$" title="Password Must contain at least one uppercase letter [A-Z]). Must contain at least one lowercase letter. Must contain at least one digit. Must contain at least one special character from the set. Must be at least 8 characters long" required>
                         </div>
 
                         <div class="mb-3">
-                            <label for="exampleInputPassword1" class="form-label" style="font-size: 1.2em;">Confirm password</label>
-                            <input type="password" class="form-control" id="registerPassword" name="confirmPassword"
-                                placeholder="example: 'wMH432595@'">
+                            <label for="confirmPassword" class="form-label" style="font-size: 1.2em;">Confirm password</label>
+                            <input type="password" class="form-control" id="confirmPassword" name="confirmPassword"
+                                placeholder="example: 'wMH432595@'" 
+                                pattern="^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$" 
+                                title="Password Must contain at least one uppercase letter [A-Z]). Must contain at least one lowercase letter. Must contain at least one digit. Must contain at least one special character from the set. Must be at least 8 characters long" required aria-required="true">
                         </div>
 
                         <button type="submit" class="btn btn-primary">Submit</button>

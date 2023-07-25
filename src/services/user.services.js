@@ -134,13 +134,6 @@ class UserServices {
             url = `${domain}api/users/updatePassword?token=${tokenToUrl}`
         }
         const message = templatesForEmails.templateEmailResetPass(url, user.username)
-
-        /* let userEmail
-        if (process.env.NODE_ENV === 'dev' || process.env.NODE_ENV === 'test') {
-            userEmail = process.env.HARDCODED_EMAIL
-        } else {
-            userEmail = user.email
-        } */
         const userEmail = user.email
         const result = await emailService.send(userEmail, message, 'Do you want to reset your password?')
         return result

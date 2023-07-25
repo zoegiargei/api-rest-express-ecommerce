@@ -49,6 +49,11 @@ registerForm.addEventListener('submit', e => {
             })
         }
     }).catch(error => {
+        registerForm.reset()
+        Swal.fire({
+            icon: 'warning',
+            title: 'One of the fields is wrong'
+        })
         console.log(error)
     })
 })
