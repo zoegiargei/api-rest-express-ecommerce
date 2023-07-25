@@ -64,8 +64,6 @@ passport.use('jwt', new JwtStrategy({
             if (req && req.signedCookies) {
                 token = req.signedCookies.jwt_authorization
             }
-            console.log('Token to signedCookie')
-            console.log(token)
             return token
         }
     ]),
