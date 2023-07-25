@@ -3,7 +3,7 @@ import userServices from '../../services/user.services.js'
 
 export async function handlerShowRegister (req, res, next) {
     try {
-        res.render('Register', { title: 'Register', loggedin: null, quantity: null, admin: null })
+        res.render('register', { title: 'Register', loggedin: null, quantity: null, admin: null })
     } catch (error) {
         next(error)
     }

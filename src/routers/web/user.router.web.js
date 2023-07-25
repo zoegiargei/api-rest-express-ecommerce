@@ -10,4 +10,5 @@ userRouterWeb.get('/register', authLoggedinWeb, handlerShowRegister)
 userRouterWeb.get('/users', authJwtWeb, authUserAdmin, handlerShowUsers)
 userRouterWeb.get('/profile', authJwtWeb, handlerShowProfile)
 userRouterWeb.get('/updatePassword', authJwtWeb, handlerShowUpdatePassword)
+userRouterWeb.get('/recoverPassword', (req, res, next) => { res.send('We are working in this page') })
 export default userRouterWeb
