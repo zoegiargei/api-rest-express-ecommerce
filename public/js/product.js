@@ -63,18 +63,14 @@ document.addEventListener('DOMContentLoaded', function () {
                 setTimeout(() => {
                     location.reload()
                 }, 4000)
-            } else {
-                spinner()
-                Swal.fire({
-                    icon: 'error',
-                    title: result.message
-                })
             }
-            return result.json()
-        }).then(data => {
-            console.log(data)
         }).catch(error => {
-            console.error(error)
+            console.log(error)
+            spinner()
+            Swal.fire({
+                icon: 'error',
+                title: 'You cannot add products to the cart'
+            })
         })
     })
 })

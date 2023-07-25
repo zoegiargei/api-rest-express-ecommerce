@@ -22,25 +22,21 @@
                 </ul>
 
                 <div class="card-body">
-                    {{#if loggedin}}
                     {{#unless admin}}
-                    <div class="form-group" style="max-width: 120px;">
-                        <label for="quantity">Cantidad:</label>
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                <button class="btn btn-outline-secondary" type="button" id="decrementBtn">-</button>
-                            </div>
-                            <input type="number" class="form-control" id="quantity" value="1">
-                            <div class="input-group-append">
-                                <button class="btn btn-outline-secondary" type="button" id="incrementBtn">+</button>
+                        <div class="form-group" style="max-width: 120px;">
+                            <label for="quantity">Cantidad:</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <button class="btn btn-outline-secondary" type="button" id="decrementBtn">-</button>
+                                </div>
+                                <input type="number" class="form-control" id="quantity" value="1">
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-secondary" type="button" id="incrementBtn">+</button>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <button class="btn btn-primary" id="addToCart" pid={{product._id}}>Add to cart</button>
+                        <button class="btn btn-primary" id="addToCart" pid={{product._id}}>Add to cart</button>
                     {{/unless}}
-                    {{else}}
-                    <button class="btn btn-primary disabled" id="addToCart" pid={{product._id}}>Add to cart</button>
-                    {{/if}}
                 </div>
             </div>
         </div>

@@ -1,4 +1,5 @@
 /* eslint-disable dot-notation */
+import { PORT } from '../../configs/server.config.js'
 import productServices from '../../services/product.services.js'
 
 export async function handlerShowProducts (req, res, next) {
@@ -7,8 +8,10 @@ export async function handlerShowProducts (req, res, next) {
         const limitValue = 10
         const allProducts = await productServices.productsByPaginate(limitValue, page)
         const thIsProd = allProducts['docs'].length > 0
-        const prevLink = allProducts.hasPrevPage ? `${process.env.DOMAIN}web/home?page=${allProducts.prevPage}` : null
-        const nextLink = allProducts.hasNextPage ? `${process.env.DOMAIN}web/home?page=${allProducts.nextPage}` : null
+        const urlPrev = process.env.DOMAIN ? `${process.env.DOMAIN}web/home?page=${allProducts.prevPage}` : `http://localhost:${PORT}/web/home?page=${allProducts.prevPage}`
+        const urlNext = process.env.DOMAIN ? `${process.env.DOMAIN}web/home?page=${allProducts.nextPage}` : `http://localhost:${PORT}/web/home?page=${allProducts.nextPage}`
+        const prevLink = allProducts.hasPrevPage ? urlPrev : null
+        const nextLink = allProducts.hasNextPage ? urlNext : null
         const numPage = allProducts.page
         const user = req.user
         let dataCart

@@ -20,10 +20,14 @@ export async function errorHandler (error, req, res, next) {
     // req.logger.error({ status: error.httpCode, details: error.details })
     // if (error !== {}) req.logger.error(error)
     if (error !== {}) console.log(error)
+    let details
     if (error.httpCode) {
         console.log({ status: error.httpCode, details: error.details })
+        details = error.details
+    } else {
+        details = error.message
     }
     console.log('Instance of error: ' + instanceOfError)
     const statusCode = error.httpCode ? error.httpCode : 500
-    res.status(statusCode).json(error)
+    res.status(statusCode).send(details)
 }
