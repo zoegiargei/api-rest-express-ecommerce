@@ -2,11 +2,13 @@
     <div class="row w-100 h-100">
         <div class="col-8 m-5 mx-auto">
 
-            <div class="card bg-light animate__animated animate__fadeIn animate__delay-0.9s" style="width: 100%; height: min-content; background-color: rgba(169, 145, 211, 0.097);" id="productId" value={{product._id}}>
+            <div class="card bg-light animate__animated animate__fadeIn animate__delay-0.9s"
+                style="width: 100%; height: min-content; background-color: rgba(169, 145, 211, 0.097);" id="productId"
+                value={{product._id}}>
                 {{#each product.thumbnail}}
-                    {{#if @first}}
-                        <img src={{this.url}} class="card-img-top p-5 mx-auto" style="width:auto; height: 500px">
-                    {{/if}}
+                {{#if @first}}
+                <img src={{this.url}} class="card-img-top p-5 mx-auto" style="width:auto; height: 500px">
+                {{/if}}
                 {{/each}}
                 <div class="card-body">
                     <h5 class="card-title">{{product.title}}</h5>
@@ -20,6 +22,8 @@
                 </ul>
 
                 <div class="card-body">
+                    {{#if loggedin}}
+                    {{#unless admin}}
                     <div class="form-group" style="max-width: 120px;">
                         <label for="quantity">Cantidad:</label>
                         <div class="input-group">
@@ -32,11 +36,10 @@
                             </div>
                         </div>
                     </div>
-
-                    {{#if loggedin}}
-                        <button class="btn btn-primary" id="addToCart" pid={{product._id}}>Add to cart</button>
+                    <button class="btn btn-primary" id="addToCart" pid={{product._id}}>Add to cart</button>
+                    {{/unless}}
                     {{else}}
-                        <button class="btn btn-primary disabled" id="addToCart" pid={{product._id}}>Add to cart</button>
+                    <button class="btn btn-primary disabled" id="addToCart" pid={{product._id}}>Add to cart</button>
                     {{/if}}
                 </div>
             </div>

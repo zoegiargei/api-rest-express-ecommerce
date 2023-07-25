@@ -16,7 +16,7 @@ webRouter.get('/', (req, res) => {
 webRouter.get('/error', (req, res, next) => {
     const dataUser = req.user ? req.user : null
     const dataCart = req.quantity
-    res.render('error', { title: 'ERROR', loggedin: dataUser, quantity: dataCart })
+    res.render('error', { title: 'ERROR', loggedin: dataUser, admin: req.admin, quantity: dataCart })
 })
 
 webRouter.use('/products', productsRouterWeb)

@@ -52,15 +52,20 @@ class CartServices {
         return await this.cartDao.findElementByIdAndQuery(cid, query)
     }
 
-    async addToCart (cid, pid, quantity = 1) {
+    async addToCart (cid, pid, quantity = 1, userEmail) {
         const cartInDb = await this.validateCartId(cid)
         const productsCart = cartInDb.productsCart
+        const owner = await productServices.getProductsByProjection({ _id: pid }, { owner: 1 })
         if (productsCart) {
             const index = productsCart.findIndex(prod => String(prod.product._id) === pid)
             if (index !== -1) {
                 productsCart[index].quantity += Number(quantity)
             } else {
-                productsCart.push({ product: pid, quantity })
+                if (owner[0].owner !== userEmail) {
+                    productsCart.push({ product: pid, quantity })
+                } else {
+                    throw errors.permission_failes.withDetails('You can not buy your own products')
+                }
             }
             const result = await this.updateProductsCart(cid, productsCart)
             return result

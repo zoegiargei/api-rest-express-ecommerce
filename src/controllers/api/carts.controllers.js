@@ -15,8 +15,9 @@ export async function handlerAddProductToCart (req, res, next) {
     try {
         const cid = req.user.cart[0]._id
         const pid = req.params.pid
+        const userEmail = req.user.email
         const quantity = Number(req.body.quantity)
-        const result = await cartServices.addToCart(cid, pid, quantity)
+        const result = await cartServices.addToCart(cid, pid, quantity, userEmail)
         res.sendCreated({ message: 'Product added to cart successfully', object: result })
     } catch (error) {
         next(error)

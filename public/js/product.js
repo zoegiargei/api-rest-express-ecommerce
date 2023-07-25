@@ -67,12 +67,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 spinner()
                 Swal.fire({
                     icon: 'error',
-                    title: 'You are not authenticated'
+                    title: result.message
                 })
-
-                setTimeout(() => {
-                    window.location.replace('/web/auth/login')
-                }, 4000)
             }
             return result.json()
         }).then(data => {

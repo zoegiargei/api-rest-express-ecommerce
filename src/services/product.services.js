@@ -42,6 +42,11 @@ class ProductServices {
         return await this.productsDao.findElementsByQuery(queryCli)
     }
 
+    async getProductsByProjection (param1, param2) {
+        if (typeof param1 !== 'object' || typeof param2 !== 'object') throw errors.invalid_input_format.withDetails('The data type of the projection search parameters must be "Object"')
+        return await this.productsDao.findElementByProjection(param1, param2)
+    }
+
     async getProductById (pid) {
         const product = await this.productsDao.findElementById(pid)
         if (!product) throw errors.not_found.withDetails(`Product not found: ${pid}`)

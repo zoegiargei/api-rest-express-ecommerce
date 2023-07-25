@@ -46,6 +46,8 @@ btnContinueShopping.addEventListener('click', (e) => {
             Swal.fire({
                 icon: 'success',
                 title: 'We send you the email with the details of the purchase! Thank you for choosing us!'
+            }).then(() => {
+                location.reload()
             })
 
             setTimeout(() => {
