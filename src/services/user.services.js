@@ -135,13 +135,14 @@ class UserServices {
         }
         const message = templatesForEmails.templateEmailResetPass(url, user.username)
 
-        let userEmail
+        /* let userEmail
         if (process.env.NODE_ENV === 'dev' || process.env.NODE_ENV === 'test') {
-            userEmail = String(process.env.HARDCODED_EMAIL)
+            userEmail = process.env.HARDCODED_EMAIL
         } else {
             userEmail = user.email
-        }
-        const result = await emailService.send(userEmail, message)
+        } */
+        const userEmail = user.email
+        const result = await emailService.send(userEmail, message, 'Do you want to reset your password?')
         return result
     }
 

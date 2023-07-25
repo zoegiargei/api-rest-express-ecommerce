@@ -29,17 +29,22 @@ const formResetPassword = document.getElementById('formResetPassword')
 formResetPassword.addEventListener('submit', (e) => {
     e.preventDefault()
 
+    spinner()
     fetch('/api/users/updatePassword/firstStep/true', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         }
     }).then(result => {
+        spinner()
         if (result.status === 200) {
             Swal.fire({
                 icon: 'success',
                 title: 'We sent you the email to reset your password'
             })
         }
+    }).catch(error => {
+        spinner()
+        console.log(error)
     })
 })

@@ -40,5 +40,7 @@ newPasswordForm.addEventListener('submit', e => {
                 title: 'One of the credentials is wrong'
             })
         }
+    }).catch(error => {
+        console.log(error)
     })
 })

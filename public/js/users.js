@@ -21,6 +21,8 @@ buttons.forEach(button => {
             if (result.status === 200) {
                 location.reload()
             }
+        }).catch(error => {
+            console.log(error)
         })
     })
 })
@@ -55,6 +57,8 @@ forms.forEach(form => {
                     title: 'Internal Server Error'
                 })
             }
+        }).catch(error => {
+            console.log(error)
         })
     })
 })

@@ -48,8 +48,7 @@ registerForm.addEventListener('submit', e => {
                 title: 'One of the fields is wrong'
             })
         }
-        result.json()
-    }).then(json => {
-        console.log(String(json))
+    }).catch(error => {
+        console.log(error)
     })
 })
