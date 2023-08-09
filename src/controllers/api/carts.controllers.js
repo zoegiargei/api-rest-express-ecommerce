@@ -48,7 +48,7 @@ export async function handlerDelProdInCart (req, res, next) {
     }
 }
 
-export async function handlerCleanCart (req, res, next) {
+export async function handlerDeleteProducts (req, res, next) {
     try {
         const cid = req.user.cart[0]._id
         const result = await cartServices.deleteAllProducts(cid)

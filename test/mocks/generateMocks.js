@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker'
-import { User } from '../src/models/User/User.js'
-import { Product } from '../src/models/Product/Product.js'
-import productsDaoMongo from '../src/DAO/mongo/products.dao.mongo.js'
+import { User } from '../../src/models/User/User.js'
+import { Product } from '../../src/models/Product/Product.js'
+import productsDaoMongo from '../../src/DAO/mongo/products.dao.mongo.js'
 
 const categories = ['Category 1', 'Category 2', 'Category 3', 'Category 4', 'Category 5']
 

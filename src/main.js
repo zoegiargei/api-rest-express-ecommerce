@@ -10,51 +10,30 @@ import { PORT } from './configs/server.config.js'
 import { MONGO_CNX_STR } from './configs/mongo.config.js'
 import { logger } from './middlewares/logger/logger.js'
 import compression from 'express-compression'
-import cluster from 'cluster'
-// import { cpus } from 'node:os'
 import { createServer } from 'http'
-import swaggerJSDoc from 'swagger-jsdoc'
 import swaggerUi from 'swagger-ui-express'
 import webRouter from './routers/web/web.router.js'
 import { engine } from 'express-handlebars'
-// import generateMocks from '../mocks/generateMocks.js'
-
-cluster.schedulingPolicy = cluster.SCHED_RR
+import swaggerSpecs from './options/swagger.options.js'
+import corsOptions from './options/cors.options.js'
+// import cluster from 'cluster'
+// import { cpus } from 'node:os'
+// cluster.schedulingPolicy = cluster.SCHED_RR
 
 const app = express()
 
-const domain = process.env.DOMAIN || `http://localhost:${PORT}/`
-
-const corsOptions = {
-    origin: domain,
-    methods: 'GET, POST, PUT, DELETE',
-    allowedHeaders: 'Origin, X-Requested-With, Content-Type, Accept'
-}
-
-const swaggerOptions = {
-    definition: {
-        openapi: '3.0.0',
-        info: {
-            title: 'Server Express API Documentation with Swagger',
-            description: 'API documentation for an Express server'
+if (process.env.PERSISTENCE === 'MONGO') {
+    async function connectMongoose () {
+        try {
+            const mongoose = await import('mongoose')
+            await mongoose.connect(MONGO_CNX_STR)
+        } catch (error) {
+            console.log(error)
+            throw new Error(error)
         }
-    },
-    apis: ['./docs/**/*.yaml']
-}
-// http://localhost:8080/docs/#/Products/get_products_product__id_
-const specs = swaggerJSDoc(swaggerOptions)
-
-async function connectMongoose () {
-    try {
-        const mongoose = await import('mongoose')
-        await mongoose.connect(MONGO_CNX_STR)
-    } catch (error) {
-        console.log(error)
-        throw new Error(error)
     }
+    await connectMongoose()
 }
-
-await connectMongoose()
 
 app.use(logger)
 app.use(cookieParser(SECRET_WORD))
@@ -68,7 +47,7 @@ app.use(express.static('./public'))
 app.engine('handlebars', engine())
 app.set('views', './views')
 app.set('view engine', 'handlebars')
-app.use('/docs', swaggerUi.serve, swaggerUi.setup(specs))
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpecs))
 app.use('/api', apiRouter)
 app.use('/web', webRouter)
 app.use(errorHandler)
@@ -99,7 +78,6 @@ app.get('*', (req, res) => {
     cluster.on('error', (err) => {
         winstonLogger.fatal(err)
     })
-    // await generateMocks.createProductMock(30)
 } */
 
 const server = createServer(app)

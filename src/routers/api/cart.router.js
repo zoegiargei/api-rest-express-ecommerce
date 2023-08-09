@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { handlerAddProductToCart, handlerCleanCart, handlerDeleteCart, handlerDelProdInCart, handlerGetCart, handlerPurchase, handlerPutProductsCart } from '../../controllers/api/carts.controllers.js'
+import { handlerAddProductToCart, handlerDeleteCart, handlerDeleteProducts, handlerDelProdInCart, handlerGetCart, handlerPurchase, handlerPutProductsCart } from '../../controllers/api/carts.controllers.js'
 import errors from '../../lib/customErrors.js'
 import { authByRole } from '../../middlewares/api/authentication/auth.role.api.js'
 import { authJwtApi } from '../../middlewares/api/authentication/jwt/auth.byJwt.api.js'
@@ -23,7 +23,7 @@ cartRouter.post('/products/:pid', authJwtApi, authByRole(['Premium', 'User']), v
 cartRouter.post('/purchase', authJwtApi, authByRole(['Premium', 'User']), handlerPurchase)
 cartRouter.put('/products', authJwtApi, authByRole(['Premium', 'User']), validateQuantity, handlerPutProductsCart)
 cartRouter.delete('/products/:pid', authJwtApi, authByRole(['Premium', 'User']), handlerDelProdInCart)
+cartRouter.delete('/products', authJwtApi, handlerDeleteProducts)
 cartRouter.delete('/:cid', authJwtApi, authByRole(['Premium', 'User']), handlerDeleteCart)
-cartRouter.delete('/cleanCart/:cid', authByRole(['Premium', 'User']), authJwtApi, handlerCleanCart)
 
 export default cartRouter
