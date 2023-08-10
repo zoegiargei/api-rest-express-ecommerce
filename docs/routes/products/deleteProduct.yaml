@@ -1,0 +1,22 @@
+paths:
+  /products/{pid}:
+    delete:
+      summary: Delete a product by ID
+      tags:
+        - Products
+      parameters:
+        - name: pid
+          in: path
+          description: Product ID
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: Product deleted successfully
+        "401":
+          description: Unauthorized Error
+        "404":
+          description: Product not found
+        "500":
+          description: Internal server error

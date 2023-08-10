@@ -1,8 +1,10 @@
 components:
-  requestBodyes:
-    NewProduct:
+  schemas:
+    Product:
       type: object
       properties:
+        _id:
+          type: string
         title:
           type: string
         description:
@@ -11,13 +13,12 @@ components:
           type: string
         price:
           type: number
-          format: float
         status:
           type: boolean
         stock:
-          type: integer
+          type: number
         category:
-          type: integer
+          type: string
         thumbnail:
           type: array
           items:
@@ -31,13 +32,15 @@ components:
         - price
         - stock
         - category
+        - owner
       example:
-        title: "Example Product"
-        description: "This is an example product"
-        code: "ABC123"
-        price: 9.99
-        status: true
-        stock: 50
-        category: 1
-        thumbnail: ["image1.jpg", "image2.jpg"]
-        owner: "Admin"
+        _id: "60f1ad1267c593001cb58123",
+        title: "Sample Product",
+        description: "This is a sample product description.",
+        code: "PRD123",
+        price: 29.99,
+        status: true,
+        stock: 100,
+        category: "Electronics",
+        thumbnail: ["thumbnail_url1", "thumbnail_url2"],
+        owner: "example@gmail.com"

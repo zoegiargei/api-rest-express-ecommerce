@@ -1,0 +1,25 @@
+paths:
+  /carts/:
+    delete:
+      summary: Delete user's cart
+      tags:
+        - Carts
+      responses:
+        "200":
+          description: Cart deleted successfully
+          content:
+            application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                type: string
+                description: Success message
+              object:
+                type: object
+                properties:
+                  "data base response"
+        "401":
+          description: Unauthorized Error
+        "500":
+          description: Internal server error

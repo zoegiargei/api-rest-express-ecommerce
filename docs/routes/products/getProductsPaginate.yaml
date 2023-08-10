@@ -1,0 +1,30 @@
+paths:
+  /products/paginate:
+    get:
+      summary: Get paginated list of products
+      tags:
+        - Products
+      parameters:
+        - name: page
+          in: query
+          description: Page number
+          required: false
+          schema:
+            type: integer
+        - name: limit
+          in: query
+          description: Number of items per page
+          required: false
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Products lookup by page were found successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+        "500":
+          description: Internal server error

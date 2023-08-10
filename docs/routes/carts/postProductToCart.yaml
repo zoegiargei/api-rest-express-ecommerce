@@ -1,16 +1,10 @@
 paths:
-  /cart/{cid}/product/{pid}:
+  /carts/product/{pid}:
     post:
       summary: Add product to cart
       tags:
         - Carts
       parameters:
-        - name: cid
-          in: path
-          description: Cart ID
-          required: true
-          schema:
-            type: string
         - name: pid
           in: path
           description: Product ID
@@ -18,7 +12,6 @@ paths:
           schema:
             type: string
       requestBody:
-        required: true
         content:
           application/json:
             schema:
@@ -28,8 +21,9 @@ paths:
                   type: integer
               required:
                 - quantity
+        required: true
       responses:
-        "200":
+        "201":
           description: Product added to cart successfully
           content:
             application/json:

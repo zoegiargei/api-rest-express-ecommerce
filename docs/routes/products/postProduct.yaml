@@ -1,0 +1,64 @@
+paths:
+  /products:
+    post:
+      summary: Create a new product
+      tags:
+        - Products
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                productData:
+                  type: object
+                  properties:
+                    _id:
+                      type: string
+                    title:
+                      type: string
+                    description:
+                      type: string
+                    code:
+                      type: string
+                    price:
+                      type: number
+                    status:
+                      type: string
+                    stock:
+                      type: number
+                    category:
+                      type: string
+                    thumbnail:
+                      type: string
+                    owner:
+                      type: string
+                  required:
+                    - _id
+                    - title
+                    - description
+                    - code
+                    - price
+                    - status
+                    - stock
+                    - category
+                    - thumbnail
+                    - owner
+                productImages:
+                  type: array
+                  items:
+                    type: string
+                    format: binary
+        required: true
+      responses:
+        "201":
+          description: Product created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        "401":
+          description: Unauthorized Error
+        "500":
+          description: Internal server error
+          

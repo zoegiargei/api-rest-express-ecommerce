@@ -24,6 +24,6 @@ cartRouter.post('/purchase', authJwtApi, authByRole(['Premium', 'User']), handle
 cartRouter.put('/products', authJwtApi, authByRole(['Premium', 'User']), validateQuantity, handlerPutProductsCart)
 cartRouter.delete('/products/:pid', authJwtApi, authByRole(['Premium', 'User']), handlerDelProdInCart)
 cartRouter.delete('/products', authJwtApi, handlerDeleteProducts)
-cartRouter.delete('/:cid', authJwtApi, authByRole(['Premium', 'User']), handlerDeleteCart)
+cartRouter.delete('/', authJwtApi, authByRole(['Premium', 'User']), handlerDeleteCart)
 
 export default cartRouter

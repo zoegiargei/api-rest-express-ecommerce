@@ -17,30 +17,6 @@ export async function handlerPostProducts (req, res, next) {
     }
 }
 
-export async function handlerDeleteProduct (req, res, next) {
-    try {
-        const pid = req.params.pid
-        await productServices.deleteProduct(pid)
-        res.sendNoContent({ message: null, object: null })
-    } catch (error) {
-        next(error)
-    }
-}
-
-export async function handlerPutProduct (req, res, next) {
-    try {
-        const pid = req.params.pid
-        const data = req.body
-        const role = req.user.role
-        const userEmail = req.user.email
-
-        const result = productServices.updateProductByOwner(pid, data, role, userEmail)
-        res.sendOk({ message: 'Product updated successfully', object: result })
-    } catch (error) {
-        next(error)
-    }
-}
-
 export async function handlerGetProduct (req, res, next) {
     try {
         const pid = req.params.pid
@@ -65,6 +41,20 @@ export async function handlerGetProducts (req, res, next) {
     }
 }
 
+export async function handlerPutProduct (req, res, next) {
+    try {
+        const pid = req.params.pid
+        const data = req.body
+        const role = req.user.role
+        const userEmail = req.user.email
+
+        const result = productServices.updateProductByOwner(pid, data, role, userEmail)
+        res.sendOk({ message: 'Product updated successfully', object: result })
+    } catch (error) {
+        next(error)
+    }
+}
+
 export async function handlerGetProductsPaginate (req, res, next) {
     try {
         const page = req.query.page || 1
@@ -76,6 +66,16 @@ export async function handlerGetProductsPaginate (req, res, next) {
 
         // eslint-disable-next-line dot-notation
         return res.sendOk({ message: 'Products lookup by page were found successfully', object: [result['docs'], prevLink, nextLink] })
+    } catch (error) {
+        next(error)
+    }
+}
+
+export async function handlerDeleteProduct (req, res, next) {
+    try {
+        const pid = req.params.pid
+        await productServices.deleteProduct(pid)
+        res.sendNoContent({ message: null, object: null })
     } catch (error) {
         next(error)
     }

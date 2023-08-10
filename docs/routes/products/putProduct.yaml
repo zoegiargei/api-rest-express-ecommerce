@@ -1,0 +1,33 @@
+paths:
+  /products/{pid}:
+    put:
+      summary: Update a product by ID
+      tags:
+        - Products
+      parameters:
+        - name: pid
+          in: path
+          description: Product ID
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+        required: true
+      responses:
+        "200":
+          description: Product updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        "401":
+          description: Unauthorized Error
+        "404":
+          description: Product not found
+        "500":
+          description: Internal server error
+          

@@ -1,0 +1,40 @@
+paths:
+  /products:
+    get:
+      summary: Get products
+      tags:
+        - Products
+      parameters:
+        - name: category
+          in: query
+          description: Filter products by category
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Products found successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductList'
+        "500":
+          description: Internal server error
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+        "400":
+          description: Bad request
+        "401":
+          description: Unauthorized Error
+        "404":
+          description: Not found Error
+        "500":
+          description: Internal server error
+          

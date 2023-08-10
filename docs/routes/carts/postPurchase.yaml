@@ -1,0 +1,29 @@
+paths:
+  /carts/purchase:
+    post:
+      summary: Perform a purchase
+      tags: 
+        - Carts
+      responses:
+        "200":
+        description: Purchase successfull
+        content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                description: Success message
+              object:
+                type: object
+                properties:
+                totalPurchase:
+                  type: number
+                  description: Total purchase amount
+                purchaseData:
+                  type: object
+                  description: Purchase data
+                ticket:
+                  type: object
+                  description: Purchase ticket details

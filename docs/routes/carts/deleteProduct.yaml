@@ -1,0 +1,24 @@
+paths:
+  /carts/product/{pid}:
+    delete:
+      summary: Delete product from cart
+      tags:
+        - Carts
+      parameters:
+        - name: pid
+          in: path
+          description: Product ID
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Product deleted from cart successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cart'
+        "401":
+          description: Unauthorized Error
+        "500":
+          description: Internal server error

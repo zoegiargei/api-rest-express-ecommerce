@@ -1,0 +1,25 @@
+paths:
+  /products/{pid}:
+    get:
+      summary: Get a product by ID
+      tags:
+        - Products
+      parameters:
+        - name: pid
+          in: path
+          description: Product ID
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Product found successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        "404":
+          description: Product not found
+        "500":
+          description: Internal server error
+          

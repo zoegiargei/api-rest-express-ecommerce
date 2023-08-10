@@ -1,0 +1,35 @@
+paths:
+  /carts/product/{pid}:
+    post:
+      summary: Update product quantity in cart
+      tags:
+        - Carts
+      parameters:
+        - name: pid
+          in: path
+          description: Product ID
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                quantity:
+                  type: integer
+              required:
+                - quantity
+        required: true
+      responses:
+        "200":
+          description: Product quantity updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        "401":
+          description: Unauthorized Error
+        "500":
+          description: Internal server error
